@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TrucksIL road restriction (draft)",
+  "type": "object",
+  "required": ["id", "roadSegmentId", "restrictionType", "value", "unit", "status", "source", "observedAt"],
+  "properties": {
+    "id": {"type": "string"},
+    "roadSegmentId": {"type": "string"},
+    "restrictionType": {"enum": ["max_height", "max_width", "max_length", "max_gross_weight", "max_axle_weight", "truck_prohibited", "hazmat_restriction"]},
+    "value": {"type": "number", "minimum": 0},
+    "unit": {"enum": ["m", "t", "boolean"]},
+    "status": {"enum": ["unverified", "verified", "disputed", "expired"]},
+    "source": {"type": "object", "required": ["name", "reference"], "properties": {"name": {"type": "string"}, "reference": {"type": "string"}}},
+    "observedAt": {"type": "string", "format": "date-time"},
+    "verifiedAt": {"type": ["string", "null"], "format": "date-time"},
+    "reviewDueAt": {"type": ["string", "null"], "format": "date-time"}
+  },
+  "additionalProperties": false
+}
