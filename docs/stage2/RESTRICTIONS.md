@@ -62,4 +62,15 @@ All access observations below were made on 2026-10-09. Access date is not public
 
 ## Work log and limitations
 
+### Continuation: actual road-specific acquisition attempt
+
+Checkpoint `2026-10-09T09:22:33Z` (host clock normalized to UTC). Search/review occurred before this checkpoint; individual request timestamps were not retained. Acquisition results are logged in `data/acquisition/restriction-discovery-20261009.json`; these are **discovery/rights-review records, not routing restriction records**.
+
+- Carmel Tunnels: located the operator's safety page, then opened its terms. Clause 7 restricts use to private purposes and requires prior written permission for copying, publication and commercial use. Consequently no numeric restriction, geometry, closure schedule, source snapshot or operational record was imported. Operator material must be distinguished from a government traffic order. Permission and current authoritative spatial/temporal applicability are unresolved.
+- Route 1: Ministry of Transport `nativ-plus-harel` page surfaced as a potentially relevant truck-access source, but direct retrieval returned HTTP 403. General gov.il terms retrieval also returned 403. Search excerpts were not promoted into facts or route records. Exact restriction extent, weight basis, exceptions, calendar and current force remain unverified.
+- Older official material surfaced, including a 2008 Knesset study and a 2020 government report. Historical reports are not current traffic orders; no thresholds were accepted. Police incident notices lacked established current validity in this pass and were not converted into live closures.
+- Searches found no acceptable current road-specific length, gross-mass or axle-load record in this pass. This is a research outcome, not evidence that such restrictions do not exist.
+
+Next acquisition gate: obtain an explicitly reusable authority dataset/order or written operator permission; then retain the source revision, current applicability and exact segment/direction before independent verification. No permission request was sent externally. **Verified road restriction count from this task remains zero.**
+
 2026-10-09: read existing verification/product requirements; searched official government, police and municipal domains; retrieved R-01 and R-02; documented blocked R-03 and unresolved edition R-04. Secondary legal websites and historical/proposed municipal material were excluded as a basis for current restrictions. No coverage percentage can be computed without a known denominator and authority inventories. No deployment, main-branch change, route-safety certification or background monitoring performed by this task.

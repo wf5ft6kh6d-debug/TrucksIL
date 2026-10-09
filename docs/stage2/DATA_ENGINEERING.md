@@ -96,3 +96,43 @@ external audit storage require separate design/review.
 
 No automatic ingest adapter, live feed, nationwide road import, redistribution
 permission, coverage certification or deployment is claimed.
+
+## Follow-up database execution check — 2026-10-09
+
+The environment was checked for `psql`, `postgres`, `initdb`, `docker`, installed
+PostgreSQL directories and cached Debian packages. None were available; apt had
+no PostgreSQL/PostGIS package candidates in its local index. The advertised
+network allowlist does not include Ubuntu package mirrors, so no installation
+or network-bound package download was attempted. **PostGIS tests remain NOT RUN.**
+
+`db/test_stage2.sql` now provides synthetic transactional checks for foreign
+keys, unit/value restrictions including NaN/Infinity, absent/out-of-range
+location, incomplete verified attestations, official-source label integrity,
+incomplete coverage reviews, successful-write audit count and unknown route
+suitability. All fixtures roll back. It refuses TCP and database names outside
+`trucksil_stage2_test_*`. It does not test actual evidence, licensing truth or
+nationwide coverage. It intentionally demonstrates only database staging
+constraints, which are weaker than the full import contract.
+
+Once PostgreSQL/PostGIS is available, a local operator can use a **new disposable
+local database** (replace socket directory with that local instance's socket):
+
+```sh
+createdb --host=/var/run/postgresql trucksil_stage2_test_local
+psql --host=/var/run/postgresql --dbname=trucksil_stage2_test_local \
+  --set=ON_ERROR_STOP=1 --file=db/stage2.sql
+psql --host=/var/run/postgresql --dbname=trucksil_stage2_test_local \
+  --set=ON_ERROR_STOP=1 --file=db/test_stage2.sql
+```
+
+These commands were **not executed here**. Do not point them at an existing
+application or production database. The fixture script rolls back test data;
+the earlier DDL remains in the disposable database. End-to-end SQL execution,
+PostGIS version compatibility and migration idempotency are still open gates.
+
+Audit limitation: current events record table, entity ID, action, database actor
+and timestamp only. They do **not** store old/new values or the application
+reviewer's identity, so they cannot reconstruct a restriction's edit history.
+An immutable revision log with authenticated actors and evidence lineage is an
+open prerequisite before operational use; the current audit table is not a
+complete chain of custody.

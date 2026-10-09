@@ -40,3 +40,27 @@ The repository baseline contains draft requirements, a proposed phased architect
 ## Coordinator addendum — not independent sign-off
 
 After the auditor reached an agent usage limit, the coordinator corrected both reported code defects and ran all 16 tests successfully. The independent auditor did not re-review the fixes or completed SQL design. Therefore final independent acceptance remains **PENDING**; preserve this as a draft PR and do not merge/deploy on the basis of this report. SQL has not been executed against PostGIS.
+
+## Resumed independent review — commit `3516469`
+
+Review date: 2026-10-09. This section supersedes the pending *code re-review* state above; it does not close the stage 2 or database-integration gates.
+
+Executed independently:
+
+- `python -m unittest discover -s tests -v`: **16 tests passed**.
+- Direct parser probes reject `+01:99`, `-00:99`, `-00:00` and `+24:00`; a known `+03:00` offset remains accepted. The earlier timestamp defect is **closed**.
+- Direct validator probes reject unsupported assertions in `anyOf` and `if`, and an unsupported `format` in an unused property. Recursive schema preflight prevents their being swallowed as data mismatches. The earlier schema-branch defect is **closed**.
+- Inspected the strengthened JSON schema, local importer, engineering documentation and `db/stage2.sql`. Source attribution, physical units, provenance fields, independent-review attestations, review deadlines and unconditional unknown/false output are represented. The importer verifies declared structure and chronology, not the truth of those declarations.
+- Checked client availability: `psql` is absent. **No SQL execution, transaction, trigger, geometry or database-integration result is claimed.**
+
+### Remaining findings / acceptance gates
+
+| Severity and scope | Observation | Required resolution before operational use |
+| --- | --- | --- |
+| High — database integration | SQL is deliberately a partial staging model. Direct inserts can bypass importer-only checks; source/license currency, conditions and normalized columns versus `validated_record` are not enforced consistently. | Implement a controlled ingest adapter and database roles, define authoritative fields, and run adversarial integration tests. No direct SQL row may be treated as verified evidence merely because its status says `verified`. |
+| High — evidence history | SQL mutation events record actor/time/table/key/action, but no old/new values or restriction revision. Updating a record does not preserve its prior evidence in these events. | Add immutable evidence/review revisions or protected before/after references with a retention policy before real mutable evidence is ingested. Current events are a mutation journal, not a reconstructable evidence history. |
+| High — geographic integrity | Foreign keys and coordinate bounds do not prove endpoint connectivity, source revision alignment, correct deck/underpass linkage, jurisdiction or real segment identity. | Execute PostGIS checks and independent spatial reconciliation on acquired data; quarantine unmatched or ambiguous records. |
+| High — source trust and licensing | `official`, `permitted` and reviewer names remain submitted attestations; no authenticated source/identity system is implemented. | Complete source-specific authentication and reuse reviews; do not infer legal approval or review independence from strings. |
+| Blocking for driver guidance | No licensed national road graph, real verified restrictions, measured coverage, conflict adjudication, routing integration or field validation has been delivered by this change. | Complete the outstanding stage 2 acceptance criteria and subsequent routing/safety phases. |
+
+**Independent disposition:** the two reported implementation defects are fixed and verified. The change is suitable to remain a **draft, non-operational foundation for review**, with its limitations explicit. This audit does not approve merging, deployment, completion of stage 2, any real restriction, or any truck route. PostgreSQL/PostGIS execution and all road-data acceptance gates remain open.

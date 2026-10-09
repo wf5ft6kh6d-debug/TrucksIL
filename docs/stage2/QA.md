@@ -37,3 +37,7 @@ These are black-box CLI and repository-schema-backed checks. A separate Draft 20
 The tester, data engineer and independent auditor stopped due to an agent usage limit before final sign-off. The coordinator fixed the timezone parser (invalid offset components and unknown `-00:00` rejected) and added a recursive schema preflight so unsupported assertions in conditional/alternative branches cannot be swallowed as ordinary data mismatches.
 
 Final executed command: `python -m unittest discover -s tests -v`. **16 tests passed** on 2026-10-09, including both audit regressions. This is coordinator verification, not a completed independent re-audit. PostGIS and a separate JSON Schema engine remain untested.
+
+## Resumed tester verification
+
+On 2026-10-09 the tester independently reran `python -m unittest discover -s tests -v` at commit `3516469`: **16 tests passed**. This includes the invalid/unknown timezone-offset and unsupported-schema-keyword regressions corrected by the coordinator. Both the default Python and the provided primary-runtime Python were checked; neither has a separate `jsonschema` package installed. No external package installation was attempted. This rerun verifies the executed importer tests, not data correctness or completion of the entire stage.
