@@ -85,7 +85,11 @@
       "license": "OSM ODbL-1.0; official unknown",
       "evidence": "gap-research-summary.json",
       "status": "open",
-      "closure_condition": "Подтвердить уровни/порталы/габариты; отдельно исследовать касания и наложения, не охваченные strict crossing"
+      "closure_condition": "Подтвердить физические уровни, порталы и габариты. Технический скрининг касаний/наложений выполнен: 8 контекстных crossing UNKNOWN и 2 near пары без новых соединений; официальные свидетельства отсутствуют.",
+      "additional_evidence": [
+        "data/stage3/topology-audit.json",
+        "docs/stage3/BRIDGES_TUNNELS_REVIEW_RU.md"
+      ]
     },
     {
       "id": "G09",

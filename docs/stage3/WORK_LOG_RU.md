@@ -298,3 +298,37 @@ manifest; новых официальных лицензий нет, verified=0,
 check; NetworkX, JSON Schema, миграции, PostGIS и старые проверки сохранены.
 Результат удалённого CI и итоговый SHA фиксируются после публикации в Draft PR №2
 и финальном отчёте; до получения результата удалённый PASS не заявляется.
+
+## Полный геометрический/топологический аудит — 10.10.2026
+
+Подтверждён HEAD 5fc5fcccc3f010d57c07995585a292de8ed78f4a, Draft PR №2.
+Новые src/topology_audit.py и scripts/stage3/audit_topology.py выполняют
+диагностику без изменения нормализатора/графа. Полный реестр:
+data/stage3/topology-audit.json; отчёты TOPOLOGY_AUDIT_RU.md и
+BRIDGES_TUNNELS_REVIEW_RU.md. Сохранены source SHA-256, ODbL и прежний bbox.
+
+2168 сегментов / 2349028 возможных пар: 2861 endpoint-touch с общим node ID,
+0 interior/T touches, overlap, duplicate, cross без node, invalid, non-simple,
+zero length. 2 disjoint near pairs при 0.5 м EPSG:32636 (0.346613/0.299816 м),
+обе имеют существующий соседний недиректированный путь. Прямое соединение не
+создавалось. 9 infrastructure ways: 1 footbridge, 3 tunnels (2 footway passages),
+остальные layer tags. Контекст: 41 пара, 33 с shared nodes, 8 crossings без
+shared nodes; у второй стороны layer неизвестен. Эти 8 — UNKNOWN, не доказанные
+ошибки. Все 6 концов тоннельных ways имеют смежные ways; физических порталов
+подтверждено 0. Один конец footway passage вне bbox сохранён только как контекст.
+
+Подтверждённых/исправленных технических дефектов: 0/0. Эксплуатационные блокеры
+сохраняются. 575 directions unknown, 113 relations quarantine, verified=0.
+Новые данные не загружались, обращения не отправлялись, TIL-HAIFA-001 остаётся
+sent_user_confirmed; получение/регистрационный номер неизвестны.
+
+Локально фактически `python -m unittest discover -s tests -v` — 72/72 OK
+(60 сохранены +12 новых регрессий). Установлены во временную директорию
+shapely==2.0.6 numpy==2.1.3 pyproj==3.7.0 certifi==2024.8.30.
+`PYTHONPATH=/tmp/trucksil-topology-deps python scripts/stage3/audit_topology.py
+/tmp/trucksil-topology.json /tmp/trucksil-gaps.sql` выполнено; точный целочисленный
+и Shapely алгоритмы согласованы. Workflow повторяет генерацию/cmp, прежний
+NetworkX и JSON Schema, затем PostGIS сравнивает все пары/DE-9IM/0.5м и 41
+контекстную матрицу. Старые миграции/audit/rollback checks сохранены.
+Удалённый CI проверяется после публикации; фактический результат и итоговый SHA
+будут в Draft PR №2 и финальном отчёте, без преждевременного PASS.
