@@ -15,7 +15,8 @@
       "license": "unknown",
       "evidence": "document-requests-20261010.json",
       "status": "open",
-      "closure_condition": "Получить действующий документ, участок, направление, сроки и заменённые редакции"
+      "closure_condition": "Получить действующий документ, участок, направление, сроки и заменённые редакции",
+      "latest_evidence": "data/stage3/infrastructure-evidence.json"
     },
     {
       "id": "G02",
@@ -25,7 +26,8 @@
       "license": "unknown",
       "evidence": "official-documents-20261010.json",
       "status": "open",
-      "closure_condition": "Явные условия конкретного документа и разрешённая переработка; лицензия портала недостаточна"
+      "closure_condition": "Явные условия конкретного документа и разрешённая переработка; лицензия портала недостаточна",
+      "latest_evidence": "data/stage3/infrastructure-evidence.json"
     },
     {
       "id": "G03",
@@ -35,7 +37,8 @@
       "license": "unknown",
       "evidence": "gap-research-summary.json",
       "status": "open",
-      "closure_condition": "Подтвердить класс ТС, высоту/массу/ось/ширину/длину/HGV/опасные грузы и единицы; отсутствие тега не разрешение"
+      "closure_condition": "Подтвердить класс ТС, высоту/массу/ось/ширину/длину/HGV/опасные грузы и единицы; отсутствие тега не разрешение",
+      "latest_evidence": "data/stage3/infrastructure-evidence.json"
     },
     {
       "id": "G04",
@@ -45,7 +48,8 @@
       "license": "unknown",
       "evidence": "docs/stage3/OFFICIAL_DOCUMENT_INTAKE_RU.md",
       "status": "open",
-      "closure_condition": "Пройти все ворота приёмки отдельно для каждого источника"
+      "closure_condition": "Пройти все ворота приёмки отдельно для каждого источника",
+      "latest_evidence": "data/stage3/infrastructure-evidence.json"
     },
     {
       "id": "G05",
@@ -89,7 +93,8 @@
       "additional_evidence": [
         "data/stage3/topology-audit.json",
         "docs/stage3/BRIDGES_TUNNELS_REVIEW_RU.md"
-      ]
+      ],
+      "latest_evidence": "data/stage3/infrastructure-evidence.json"
     },
     {
       "id": "G09",
@@ -99,7 +104,10 @@
       "license": "not_applicable",
       "evidence": "document-requests-20261010.json",
       "status": "open",
-      "closure_condition": "Получить подтверждение адресата/регистрационный номер; сообщение отправителя не доказательство получения"
+      "closure_condition": "Получить подтверждение адресата/регистрационный номер; сообщение отправителя не доказательство получения",
+      "latest_evidence": "data/stage3/infrastructure-evidence.json",
+      "response_status": "awaiting_response",
+      "outgoing_observed_in_outlook": true
     },
     {
       "id": "G10",

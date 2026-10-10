@@ -332,3 +332,57 @@ NetworkX и JSON Schema, затем PostGIS сравнивает все пары
 контекстную матрицу. Старые миграции/audit/rollback checks сохранены.
 Удалённый CI проверяется после публикации; фактический результат и итоговый SHA
 будут в Draft PR №2 и финальном отчёте, без преждевременного PASS.
+
+## Официальная проверка инфраструктуры — 10.10.2026
+
+GitHub HEAD/Draft PR №2: 4fa8498bd5debe2e89d3a5ab6a791e842696a82c.
+Прочитаны topology/bridges/official documents и сохранённый raw. Новый реестр
+infrastructure-evidence.json содержит 8 crossing cases с точными way versions,
+node pairs, WGS84, tags, датами OSM и provenance; 3 tunnel cases / 6 endpoints;
+10 параметров Natanzon с value/unit/document/effective dates=null, status=UNKNOWN.
+Скрипт build_infrastructure_evidence.py воспроизводит сопоставление из сохранённых
+данных, проверяет source SHA и ровно одну пару исходных сегментов на crossing.
+Геометрия пересечения не создаёт OSM node. Навигационный статус QUARANTINE.
+
+Outlook доступен. Поиск по Rasha@haifa.muni.il, домену муниципалитета, TrucksIL
+и TIL-HAIFA-001 с 10.10.2026 обнаружил исходящее обращение и копию владельцу;
+муниципального ответа не найдено. response_status=awaiting_response;
+получение/регистрационный номер не подтверждены. Проверка ограничена доступными
+результатами и моментом проверки (2026-10-10T11:27:09Z). Письма, приватные IDs,
+личные адреса и вложения не публиковались; новых отправок нет.
+
+Адресный поиск официальных источников: найден муниципальный мостовой аудит
+февраля–марта 2016 с описанием пешеходного моста courthouse/government complex
+над PalYam и ссылкой на обследование ноября 2014 (PDF стр.19, индекс18,
+проверен визуально). Это исторический кандидат, не актуальный уровень/габарит
+или однозначное соответствие всем семи crossing points. Прочитаны метаданные
+Haifa_Eng_Public/35: EPSG2039, HasZ=false, licenseInfo пустое; запрос bbox count
+не получен (ошибка fetching), не нулевое покрытие. Data.gov LEVELSEPARATION,
+MOT safety GIS specification и Netivei 2019 signal annex вернули 403; Hatzav
+вернул timeout. Ограничения не обходились. Lighting tender 42/2025 не принят
+как сведения о тоннеле. URL/даты/границы выводов/права/причины sha256=null — в
+infrastructure-sources.json. Официальные оригиналы без подтверждённых прав не
+сохранялись и не импортировались. OSM ODbL сохранена, новых лицензий нет.
+
+Итог доказательств: 8/8 текущих уровней UNKNOWN, 0 подтверждённых физических
+порталов, 0 verified HGV restrictions; у Natanzon все 10 параметров UNKNOWN.
+OUT_OF_SCOPE только прежний внешний endpoint footway 557750809; bbox не расширен.
+Конфликт официального и OSM значения не заявлен: сопоставимого действующего
+официального значения нет. Граф 1995/2168/5, 575 unknown, 113 quarantine сохранён.
+
+Созданы INFRASTRUCTURE_EVIDENCE_RU.md, NATANZON_TUNNEL_RU.md и точный
+TIL-HAIFA-003 HE/RU с приложением восьми пересечений и трёх тоннелей; только
+черновик draft_not_sent, требуется отдельное разрешение. TIL-HAIFA-002 резервный.
+Реестр отсутствующих данных обновлён: 10 открытых/3 прежних closed_evidence
+категории; новых закрытий нет. Процедура сопоставления требует отдельной
+проверки подлинности, компетенции, версии/даты, CRS, прав и независимого ревью.
+
+Локально фактически `python -m unittest discover -s tests -v`: 72/72 OK.
+Подтверждённых исправлений нет, регрессионные тесты не добавлялись.
+`python scripts/stage3/build_infrastructure_evidence.py data/stage3/infrastructure-evidence.json`
+выполнено. CI дополнен воспроизведением/сравнением этого реестра; весь прежний
+NetworkX/Shapely/PostGIS/JSON Schema/migration/audit/rollback pipeline сохранён.
+Итоговый SHA/run и фактический удалённый результат публикуются в Draft PR №2 и
+финальном отчёте после выполнения, без преждевременного PASS. Main/merge/deploy
+не затронуты. Следующий шаг: приёмка муниципального ответа; TIL-HAIFA-003 только
+после отдельного разрешения, не автоматическая повторная отправка.

@@ -20,11 +20,13 @@
       "request_number": null,
       "sent_on": "2026-10-10",
       "channel": "Outlook",
-      "evidence": "User statement; original transmitted message not independently inspected",
+      "evidence": "Connected Outlook search found outgoing request and owner copy; no matching municipal response. No receipt/registration confirmation.",
       "owner_copy": "sent_user_confirmed; personal address withheld",
       "receipt_status": "unconfirmed",
       "registration_status": "unconfirmed",
-      "next_action": "Await response; no resend authorized"
+      "next_action": "Await municipal response; supplemental draft TIL-HAIFA-003 requires separate approval",
+      "response_status": "awaiting_response",
+      "mailbox_checked_at": "2026-10-10T11:27:09Z"
     },
     {
       "id": "TIL-HAIFA-002",
@@ -52,6 +54,20 @@
         "Recheck recipient",
         "Confirm any formal fee/submission requirements"
       ]
+    },
+    {
+      "id": "TIL-HAIFA-003",
+      "recipient": "Haifa Municipality Traffic Planning; forward to competent engineering/GIS/asset owner",
+      "email": "Rasha@haifa.muni.il",
+      "source_url": "https://www.haifa.muni.il/development-and-construction/roads-and-traffic/traffic-planning/",
+      "status": "draft_not_sent",
+      "draft": "docs/stage3/requests/INFRASTRUCTURE_SUPPLEMENT_HE_RU.md",
+      "languages": [
+        "he",
+        "ru"
+      ],
+      "user_send_approval": false,
+      "purpose": "8 exact crossings, 3 tunnel ways, current as-built plans, levels, portals, HGV limits and per-document reuse rights"
     }
   ],
   "online_form_observation": "Link from municipal FOI page returned 404; do not assume successful submission",

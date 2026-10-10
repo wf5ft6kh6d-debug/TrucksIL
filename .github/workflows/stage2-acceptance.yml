@@ -44,6 +44,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          python scripts/stage3/build_infrastructure_evidence.py evidence/infrastructure-evidence.json | tee evidence/infrastructure-evidence.log
+          cmp data/stage3/infrastructure-evidence.json evidence/infrastructure-evidence.json
           python scripts/stage3/build_pilot.py --output evidence/pilot
           python scripts/stage3/review_relations.py evidence/pilot/relation-review.json | tee evidence/relation-review.log
           python scripts/stage3/compare_review_engine.py evidence/pilot/relation-review.json | tee evidence/review-independent.log
