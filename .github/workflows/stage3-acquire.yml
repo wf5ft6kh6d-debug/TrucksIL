@@ -2,7 +2,7 @@ name: Stage 3 one-time OSM pilot acquisition
 on:
   push:
     branches: [stage3/israel-road-data-foundation]
-    paths: [scripts/stage3/acquire_osm.py, .github/workflows/stage3-acquire.yml]
+    paths: [scripts/stage3/acquire_osm.py, scripts/stage3/acquire_members.py, .github/workflows/stage3-acquire.yml]
 permissions:
   contents: read
 jobs:
@@ -28,5 +28,19 @@ jobs:
         with:
           name: osm-pilot-raw
           path: acquisition/
+          retention-days: 90
+          if-no-files-found: error
+      - name: Fetch only five historical dependencies if not frozen
+        run: |
+          if test -f data/stage3/osm-members-20261010/raw.json.gz; then
+            echo 'Frozen dependencies exist; no request.'
+          else
+            python scripts/stage3/acquire_members.py --output acquisition-members
+          fi
+      - if: ${{ hashFiles('acquisition-members/manifest.json') != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: osm-members-raw
+          path: acquisition-members/
           retention-days: 90
           if-no-files-found: error
