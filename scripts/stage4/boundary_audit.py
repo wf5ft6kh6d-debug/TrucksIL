@@ -87,6 +87,7 @@ def export_postgis(database,boundary,registry,output):
     poly=load_poly(boundary)
     with Path(output).open('w') as f:
         f.write("\\set ON_ERROR_STOP on\nBEGIN;\nDO $$ BEGIN IF current_database() !~ '^trucksil_stage4_test_' OR inet_server_addr() IS NOT NULL THEN RAISE EXCEPTION 'isolated stage4 Unix socket test database required'; END IF; END $$;\n")
+        f.write("CREATE EXTENSION IF NOT EXISTS postgis;\n")
         f.write("CREATE TEMP TABLE boundary_polygon(geom geometry);\nINSERT INTO boundary_polygon VALUES(ST_GeomFromText('%s',4326));\n"%poly.wkt)
         f.write("CREATE TEMP TABLE boundary_parents(id bigint PRIMARY KEY,geom geometry);\nCOPY boundary_parents FROM STDIN;\n")
         for wid in sorted({r['osm_way_id'] for r in records}):

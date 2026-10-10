@@ -44,3 +44,19 @@ class OSMEvidenceTests(unittest.TestCase):
   self.assertEqual(evidence['reconstruction'],'NOT PERFORMED')
   self.assertFalse(evidence['current_geometry_evidence']['way_intersects_source_polygon'])
   self.assertEqual(evidence['history_evidence'][0]['versions'][-1]['visible'],'true')
+
+@unittest.skipUnless(AVAILABLE,'Shapely dependency required')
+class BoundarySQLIsolationTests(unittest.TestCase):
+ def test_standalone_sql_provisions_postgis_after_guard_before_geometry(self):
+  import sqlite3
+  from scripts.stage4.boundary_audit import export_postgis
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d);db=root/'graph.sqlite';sqlite3.connect(db).close()
+   poly=root/'source.poly';poly.write_text('source\n1\n0 0\n1 0\n1 1\n0 1\n0 0\nEND\nEND\n')
+   registry=root/'outside.jsonl';registry.write_text('')
+   out=root/'boundary.sql';export_postgis(db,poly,registry,out);sql=out.read_text()
+   self.assertIn('CREATE EXTENSION IF NOT EXISTS postgis;',sql)
+   self.assertLess(sql.index('BEGIN;'),sql.index('current_database()'))
+   self.assertLess(sql.index('inet_server_addr()'),sql.index('CREATE EXTENSION'))
+   self.assertLess(sql.index('CREATE EXTENSION'),sql.index('CREATE TEMP TABLE boundary_polygon'))
+   self.assertTrue(sql.rstrip().endswith('ROLLBACK;'))
