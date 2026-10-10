@@ -1,0 +1,540 @@
+{
+  "source_snapshot_at": "2026-10-10T09:31:18Z",
+  "reviewed_on": "2026-10-10",
+  "endpoints": [
+    {
+      "osm_node": 675491465,
+      "version": 2,
+      "coordinates": [
+        35.0002389,
+        32.8130907
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 773204891,
+      "version": 2,
+      "coordinates": [
+        34.9947176,
+        32.8151039
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 773205795,
+      "version": 2,
+      "coordinates": [
+        34.9944311,
+        32.8141872
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 884418752,
+      "version": 3,
+      "coordinates": [
+        34.9964745,
+        32.8116957
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 960212669,
+      "version": 3,
+      "coordinates": [
+        35.003062,
+        32.8171322
+      ],
+      "tags": {
+        "barrier": "gate",
+        "name": "שער 3",
+        "name:en": "Gate 3",
+        "name:he": "שער 3"
+      },
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 1455324896,
+      "version": 2,
+      "coordinates": [
+        35.001208,
+        32.8135169
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 1460924202,
+      "version": 3,
+      "coordinates": [
+        35.0021504,
+        32.8141669
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 1460982856,
+      "version": 4,
+      "coordinates": [
+        35.0003233,
+        32.8162896
+      ],
+      "tags": {
+        "amenity": "parking_entrance"
+      },
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 1461002510,
+      "version": 3,
+      "coordinates": [
+        34.9984039,
+        32.8151631
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 1461002515,
+      "version": 2,
+      "coordinates": [
+        34.9987674,
+        32.8158758
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 1469092988,
+      "version": 1,
+      "coordinates": [
+        34.9943625,
+        32.8186407
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 1470604438,
+      "version": 1,
+      "coordinates": [
+        35.003506,
+        32.8163352
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 1870358989,
+      "version": 1,
+      "coordinates": [
+        34.990016,
+        32.8198164
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 1999155456,
+      "version": 1,
+      "coordinates": [
+        35.0005509,
+        32.8140122
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 2391982134,
+      "version": 1,
+      "coordinates": [
+        34.9973691,
+        32.8157288
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 3307421767,
+      "version": 1,
+      "coordinates": [
+        34.9965158,
+        32.8162465
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 3362865764,
+      "version": 1,
+      "coordinates": [
+        35.0027216,
+        32.8172799
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 3362865765,
+      "version": 1,
+      "coordinates": [
+        34.999831,
+        32.819182
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 3362874882,
+      "version": 1,
+      "coordinates": [
+        34.9992942,
+        32.8196792
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 3398372374,
+      "version": 1,
+      "coordinates": [
+        34.9939554,
+        32.8202906
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 3621295554,
+      "version": 1,
+      "coordinates": [
+        35.0016775,
+        32.8123502
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 3621295568,
+      "version": 1,
+      "coordinates": [
+        35.0016475,
+        32.8112451
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 4730348485,
+      "version": 1,
+      "coordinates": [
+        34.991942,
+        32.8124753
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 8663820617,
+      "version": 1,
+      "coordinates": [
+        34.9982285,
+        32.8151417
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 8663820652,
+      "version": 1,
+      "coordinates": [
+        34.9984125,
+        32.8152642
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9679759578,
+      "version": 1,
+      "coordinates": [
+        35.0012996,
+        32.8151367
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9833622686,
+      "version": 1,
+      "coordinates": [
+        34.9963359,
+        32.8208787
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9833622688,
+      "version": 1,
+      "coordinates": [
+        34.9962421,
+        32.8207953
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9833622692,
+      "version": 1,
+      "coordinates": [
+        34.996572,
+        32.8205023
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9835969153,
+      "version": 1,
+      "coordinates": [
+        35.0016921,
+        32.8162583
+      ],
+      "tags": {
+        "amenity": "parking_entrance"
+      },
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9835969155,
+      "version": 1,
+      "coordinates": [
+        35.001723,
+        32.8162364
+      ],
+      "tags": {
+        "amenity": "parking_entrance"
+      },
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9835969172,
+      "version": 1,
+      "coordinates": [
+        35.0009009,
+        32.8165922
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9835969174,
+      "version": 1,
+      "coordinates": [
+        35.0010383,
+        32.8164998
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9835969194,
+      "version": 1,
+      "coordinates": [
+        35.0013448,
+        32.81604
+      ],
+      "tags": {
+        "amenity": "parking_entrance"
+      },
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9835969212,
+      "version": 1,
+      "coordinates": [
+        35.001468,
+        32.8162221
+      ],
+      "tags": {
+        "amenity": "parking_entrance"
+      },
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9835971709,
+      "version": 1,
+      "coordinates": [
+        35.0029789,
+        32.815688
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9835971715,
+      "version": 1,
+      "coordinates": [
+        35.0033786,
+        32.8155392
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 9835971806,
+      "version": 1,
+      "coordinates": [
+        35.0002132,
+        32.8149122
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 10096179078,
+      "version": 1,
+      "coordinates": [
+        35.0015249,
+        32.8117725
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 10096179103,
+      "version": 1,
+      "coordinates": [
+        35.0019549,
+        32.8117883
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 10096204722,
+      "version": 1,
+      "coordinates": [
+        35.0007939,
+        32.8118417
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 10096204745,
+      "version": 1,
+      "coordinates": [
+        35.000741,
+        32.8113391
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    },
+    {
+      "osm_node": 11215585747,
+      "version": 1,
+      "coordinates": [
+        34.994757,
+        32.8115111
+      ],
+      "tags": {},
+      "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+      "real_world_cause": "unknown",
+      "truck_access": "unknown"
+    }
+  ],
+  "tagged": 6,
+  "untagged": 37,
+  "verified": 0
+}
