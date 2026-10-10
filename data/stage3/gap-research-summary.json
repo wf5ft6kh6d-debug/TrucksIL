@@ -1,0 +1,218 @@
+{
+  "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+  "scope_bbox": [
+    34.99,
+    32.811,
+    35.004,
+    32.821
+  ],
+  "summary": {
+    "endpoints_reviewed": 43,
+    "unknown_segments": 575,
+    "unknown_ways": 158,
+    "unknown_by_highway": {
+      "living_street": 11,
+      "residential": 229,
+      "service": 144,
+      "tertiary": 181,
+      "unclassified": 10
+    },
+    "proper_crossings_without_shared_node": 0,
+    "crossing_findings": {},
+    "coincident_distinct_node_groups": 0,
+    "relation_types": {
+      "no_left_turn": 26,
+      "no_right_turn": 19,
+      "no_u_turn": 27,
+      "only_right_turn": 6,
+      "only_straight_on": 35
+    },
+    "quarantined_relations": 113,
+    "verified_restrictions": 0,
+    "graph_changed": false
+  },
+  "infrastructure": [
+    {
+      "id": 62384760,
+      "version": 16,
+      "nodes": [
+        779195975,
+        1469743486,
+        11518843347,
+        11518843353,
+        779195959
+      ],
+      "tags": {
+        "alt_name:en": "Sara",
+        "haifa-ref": "356",
+        "highway": "service",
+        "layer": "1",
+        "maxspeed": "50",
+        "name": "שרה",
+        "name:ar": "ساره",
+        "name:en": "Sarah",
+        "name:he": "שרה",
+        "name:ru": "Сара",
+        "oneway": "yes",
+        "surface": "asphalt"
+      },
+      "retained_segments": 4
+    },
+    {
+      "id": 318037625,
+      "version": 9,
+      "nodes": [
+        11518843348,
+        11518843349,
+        3244024346,
+        2007160822,
+        2983065324
+      ],
+      "tags": {
+        "alt_name:en": "Ne'emanim;HaNeEmanim",
+        "haifa-ref": "365",
+        "highway": "service",
+        "layer": "1",
+        "maxspeed": "50",
+        "name": "הנאמנים",
+        "name:ar": "نِأمنيم",
+        "name:en": "Neemanim",
+        "name:he": "הנאמנים",
+        "name:ru": "Нееманим",
+        "oneway": "yes",
+        "surface": "asphalt"
+      },
+      "retained_segments": 4
+    },
+    {
+      "id": 329404598,
+      "version": 3,
+      "nodes": [
+        3362874883,
+        3362874884
+      ],
+      "tags": {
+        "highway": "footway",
+        "layer": "0"
+      },
+      "retained_segments": 0
+    },
+    {
+      "id": 355094022,
+      "version": 5,
+      "nodes": [
+        779195959,
+        1469818808,
+        3244024346,
+        3244024347
+      ],
+      "tags": {
+        "alt_name:en": "Pikadon",
+        "haifa-ref": "381",
+        "highway": "service",
+        "layer": "1",
+        "maxspeed": "50",
+        "name": "פיקדון",
+        "name:ar": "پيكادون",
+        "name:en": "Pickadon",
+        "name:he": "פיקדון",
+        "name:ru": "Пикадон",
+        "oneway": "yes",
+        "surface": "asphalt"
+      },
+      "retained_segments": 3
+    },
+    {
+      "id": 445158792,
+      "version": 1,
+      "nodes": [
+        4426306615,
+        4426306616
+      ],
+      "tags": {
+        "highway": "footway",
+        "tunnel": "building_passage"
+      },
+      "retained_segments": 0
+    },
+    {
+      "id": 557750809,
+      "version": 2,
+      "nodes": [
+        9833622687,
+        5379009752
+      ],
+      "tags": {
+        "highway": "footway",
+        "tunnel": "building_passage"
+      },
+      "retained_segments": 0
+    },
+    {
+      "id": 731754156,
+      "version": 5,
+      "nodes": [
+        6852518467,
+        9835971651
+      ],
+      "tags": {
+        "covered": "yes",
+        "haifa-ref": "444",
+        "highway": "residential",
+        "lanes": "2",
+        "layer": "-1",
+        "name": "נתנזון",
+        "name:ar": "نَتنزون",
+        "name:en": "Natanzon",
+        "name:he": "נתנזון",
+        "name:ru": "Натанзон",
+        "surface": "asphalt",
+        "tunnel": "yes"
+      },
+      "retained_segments": 1
+    },
+    {
+      "id": 1053293268,
+      "version": 2,
+      "nodes": [
+        1999155667,
+        9679759622,
+        9679759623
+      ],
+      "tags": {
+        "bridge": "yes",
+        "highway": "footway",
+        "layer": "1",
+        "surface": "paving_stones"
+      },
+      "retained_segments": 0
+    },
+    {
+      "id": 1239866204,
+      "version": 3,
+      "nodes": [
+        11518843348,
+        11518843350,
+        1469743485,
+        2908873036
+      ],
+      "tags": {
+        "alt_name:en": "Ne'emanim;HaNeEmanim",
+        "alt_name:he": "הנאמנים",
+        "haifa-ref": "365",
+        "highway": "service",
+        "layer": "1",
+        "maxspeed": "50",
+        "name": "נאמנים",
+        "name:ar": "نِأمنيم",
+        "name:en": "Neemanim",
+        "name:he": "נאמנים",
+        "name:ru": "Нееманим",
+        "oneway": "yes",
+        "surface": "asphalt"
+      },
+      "retained_segments": 3
+    }
+  ],
+  "limits": "Strict interior crossings only; collinear overlaps and endpoint-to-interior contacts not classified; missing layer is unknown, not zero. No physical or legal verification."
+}

@@ -1,0 +1,44 @@
+{
+  "scope": "four relation histories only; no graph import",
+  "license": "ODbL-1.0",
+  "license_evidence": "https://www.openstreetmap.org/copyright",
+  "attribution": "© OpenStreetMap contributors",
+  "entries": [
+    {
+      "id": 12303230,
+      "url": "https://api.openstreetmap.org/api/0.6/relation/12303230/history",
+      "retrieved_at": "2026-10-10T10:27:41.219155+00:00",
+      "file": "relation-12303230.xml",
+      "sha256": "1630226acdbe220a70fe9ca9038c0c1897334aa39337b2d1ffc492a6ede03894",
+      "bytes": 1000,
+      "status": "received"
+    },
+    {
+      "id": 13395546,
+      "url": "https://api.openstreetmap.org/api/0.6/relation/13395546/history",
+      "retrieved_at": "2026-10-10T10:27:41.592001+00:00",
+      "file": "relation-13395546.xml",
+      "sha256": "6741ae686f830cbda09e71c30afcb52ce931abce887f97869bbfcf33a6c9390f",
+      "bytes": 1385,
+      "status": "received"
+    },
+    {
+      "id": 10115408,
+      "url": "https://api.openstreetmap.org/api/0.6/relation/10115408/history",
+      "retrieved_at": "2026-10-10T10:27:41.886065+00:00",
+      "file": "relation-10115408.xml",
+      "sha256": "b0c55de987e6ee90bd69ebdd5fa71cee077a38f7feeea41824ab8db0c2c667c6",
+      "bytes": 1375,
+      "status": "received"
+    },
+    {
+      "id": 10115411,
+      "url": "https://api.openstreetmap.org/api/0.6/relation/10115411/history",
+      "retrieved_at": "2026-10-10T10:27:42.200752+00:00",
+      "file": "relation-10115411.xml",
+      "sha256": "d8d85599acad8062bd8729fb45f43d3c2c5dd2b7b4e0035b6189c98bbf742a69",
+      "bytes": 661,
+      "status": "received"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "scope_bbox": [
+    34.99,
+    32.811,
+    35.004,
+    32.821
+  ],
+  "candidates": [
+    {
+      "reviewed_on": "2026-10-10",
+      "status": "candidate_not_imported",
+      "license": null,
+      "reuse_decision": "pending",
+      "coordinates": null,
+      "verified": false,
+      "navigation_imported": false,
+      "id": "HAIFA-PURIM-2025",
+      "url": "https://www.haifa.muni.il/article/חיפה-חוגגת-פורים/",
+      "owner": "Haifa Municipality",
+      "published_at": "2025-03-12T12:18:00+02:00",
+      "section_identifier": "Natanzon street; exact sign limits unspecified",
+      "osm_context_ways": [
+        983720407,
+        731754155
+      ],
+      "osm_link_is_inference": true,
+      "type": "temporary_general_traffic_closure",
+      "value": null,
+      "unit": null,
+      "applicability": "general vehicle traffic; truck exceptions not specified",
+      "direction": "unknown",
+      "valid_from": "2025-03-13 evening; exact start unspecified",
+      "valid_to": "2025-03-16T06:00:00+02:00",
+      "current_status": "expired",
+      "evidence": "Official article read; street-name overlap only, no authoritative OSM ID linkage"
+    },
+    {
+      "reviewed_on": "2026-10-10",
+      "status": "candidate_not_imported",
+      "license": null,
+      "reuse_decision": "pending",
+      "coordinates": null,
+      "verified": false,
+      "navigation_imported": false,
+      "id": "HAIFA-MEMORIAL-2025",
+      "url": "https://www.haifa.muni.il/article/transport-atzmaut/",
+      "owner": "Haifa Municipality",
+      "published_at": "2025-04-27T11:41:00+03:00",
+      "section_identifier": "Bialik street among streets listed; exact segment unspecified",
+      "osm_context_ways": [
+        1052978893
+      ],
+      "osm_link_is_inference": true,
+      "type": "temporary_general_traffic_closure",
+      "value": null,
+      "unit": null,
+      "applicability": "general vehicle traffic; see publication for exceptions, no truck-specific verification",
+      "direction": "unknown",
+      "valid_from": "2025-04-29T19:00:00+03:00",
+      "valid_to": "2025-04-29T22:00:00+03:00",
+      "current_status": "expired",
+      "evidence": "Official article read, not an order confirming current turn geometry"
+    },
+    {
+      "reviewed_on": "2026-10-10",
+      "status": "candidate_not_imported",
+      "license": null,
+      "reuse_decision": "pending",
+      "coordinates": null,
+      "verified": false,
+      "navigation_imported": false,
+      "id": "GOV-LOWER-CITY-2015-LEAD",
+      "url": "https://www.gov.il/BlobFolder/reports/haifa_bay_report/he/HaifaBay_haifa_bay_2015.pdf",
+      "owner": "Ministry of Environmental Protection",
+      "published_at": null,
+      "section_identifier": "Lower city Haifa; exact extent unconfirmed",
+      "type": "heavy_truck_time_restriction_lead",
+      "value": null,
+      "unit": null,
+      "applicability": "not verified from full source",
+      "direction": "unknown",
+      "valid_from": null,
+      "valid_to": null,
+      "current_status": "unknown",
+      "evidence": "Search excerpt mentions restrictions from January 2016 at peak times; full source returned HTTP 403; no numeric threshold or hours inferred"
+    }
+  ],
+  "access_review": [
+    {
+      "owner": "MOT",
+      "url": "https://geo.mot.gov.il/",
+      "result": "Timeout fetching; no dataset metadata",
+      "permitted_next_step": "Official layer export with resource licence and effective dates"
+    },
+    {
+      "owner": "Netivei Israel",
+      "url": "https://www.iroads.co.il/",
+      "result": "HTTP 403",
+      "permitted_next_step": "Official published export or owner-authorized data supply"
+    },
+    {
+      "owner": "Govmap",
+      "url": "https://www.govmap.gov.il/",
+      "result": "No readable layer metadata",
+      "permitted_next_step": "Identify official layer, owner and licensed export"
+    },
+    {
+      "owner": "Israel Police",
+      "url": "https://www.police.gov.il/",
+      "result": "Targeted official-domain search did not establish a current restriction for reviewed pilot streets",
+      "permitted_next_step": "Current traffic order and authorized data access"
+    },
+    {
+      "owner": "Carmel Tunnels",
+      "url": "https://www.carmeltunnels.co.il/",
+      "result": "Previously reviewed operator is outside pilot; prior permission requirement remains, no in-pilot evidence",
+      "permitted_next_step": "Do not use outside-pilot values; request authorized in-scope infrastructure evidence if identified"
+    }
+  ],
+  "approved_records": 0
+}

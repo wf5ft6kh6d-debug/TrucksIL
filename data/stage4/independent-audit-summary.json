@@ -1,0 +1,58 @@
+{
+  "source_hashes_before": {
+    "sqlite": "fd4d29f0424f9d24b861c00b8ae0f954afb90c2d8af87cc9ff8f575a6aa1440a",
+    "pbf": "dff1ce395df33b8df901b85f7fd822bacd7a10985ceb2d893144251455646670"
+  },
+  "source_pbf_reconciliation": {
+    "nodes": 4414569,
+    "highway_ways": 533306,
+    "candidates": 26188,
+    "relations": 14463
+  },
+  "automotive": {
+    "preserved_rows": {
+      "ways": 533306,
+      "nodes": 4414569,
+      "segments": 4708889
+    },
+    "disjoint_complete_segment_partition": {
+      "automotive_segments": 2488844,
+      "quarantine_segments": 1594559,
+      "excluded_segments": 625486
+    },
+    "independent_networkx": {
+      "nodes": 2363504,
+      "unique_undirected_edges": 2488825,
+      "components": 1365,
+      "largest_components": [
+        2306546,
+        8147,
+        5401,
+        3448,
+        2868,
+        2360,
+        1859,
+        1502,
+        1114,
+        924
+      ]
+    }
+  },
+  "source_hashes_after": {
+    "sqlite": "fd4d29f0424f9d24b861c00b8ae0f954afb90c2d8af87cc9ff8f575a6aa1440a",
+    "pbf": "dff1ce395df33b8df901b85f7fd822bacd7a10985ceb2d893144251455646670"
+  },
+  "source_preservation": "PASS",
+  "claims_excluded": [
+    "official truck restriction verification",
+    "physical road safety",
+    "legal national boundary",
+    "full national pairwise intersection audit"
+  ],
+  "acceptance_status": "PARTIAL_FULL_REGISTRY_RUN_IN_PROGRESS",
+  "pending": [
+    "full final registries",
+    "all classification guards",
+    "PostGIS CI"
+  ]
+}

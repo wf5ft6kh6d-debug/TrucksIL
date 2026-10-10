@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!*.example
+# Raw datasets and local staging outputs must not enter Git without license review.
+data/raw/
+data/local/

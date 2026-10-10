@@ -1,0 +1,66 @@
+{
+  "status": "research_only",
+  "source_sha256": "dff1ce395df33b8df901b85f7fd822bacd7a10985ceb2d893144251455646670",
+  "ways_checked": 533306,
+  "nonsimple_ways": 1662,
+  "categories": {
+    "touch_ways": 1662,
+    "touch_events": 3446,
+    "repeated_coordinates_ways": 1662,
+    "repeated_coordinates_events": 1678,
+    "repeated_node_ids_ways": 1662,
+    "repeated_node_ids_events": 1678
+  },
+  "exact_shapely_disagreements": 0,
+  "repairs_applied": 0,
+  "degenerate_pairs_rechecked": 1,
+  "repeated_pair_groups": 1534,
+  "repeated_pair_extra_occurrences": 1566,
+  "within_way_only_groups": 0,
+  "cross_way_groups": 1534,
+  "elapsed_seconds": 30.89778804600064,
+  "postgis": "NOT_EXECUTED_BY_THIS_SCRIPT",
+  "identical_coordinate_sequence_extra_ways": 2,
+  "repeat_pair_evidence_flags": {
+    "different_tags": 1442,
+    "different_highway_classes": 1275,
+    "identical_tags": 92,
+    "layer_tag_disagreement": 36
+  },
+  "confirmed_semantic_duplicates": 0,
+  "national_cross_way_overlaps": "owned by separate infrastructure audit; not inferred from pair counts",
+  "artifacts": {
+    "geometry-postgis.sql": "3105735b1ecc045fee98c3d1f3b09a29e520ee1317042c07205accaf32dc5614",
+    "nonsimple-ways.jsonl": "b53bc310e58e055120569d7ed9876e5fb80a621ad92d263fd919c6489a68f3a7",
+    "identical-way-geometries.json": "0266d21bc6465fea5a999e7597bbb64e3e610fe81c55727a4712cd1d998fd8fc",
+    "degenerate-pairs.json": "2f633267615d8ba19f1dd6b4b815ad02e39cefe62cb4648dbe9bf0569f2dbd91",
+    "repeated-pairs.jsonl": "26c83c6e7e942e2fa75d95299fa6320f6df507dee7da36d33cca704d73617811",
+    "automotive-impact.json": "848247999cbd177fd45e4b96282107b9d50df5bf5728ff3139a2652c4eaf618e"
+  },
+  "automotive_impact": {
+    "nonsimple_ways": {
+      "ways_by_status": {
+        "INCLUDED": 926,
+        "EXCLUDED": 288,
+        "QUARANTINE": 448
+      },
+      "segments_by_status": {
+        "INCLUDED": 14494,
+        "QUARANTINE": 12256,
+        "EXCLUDED": 4564
+      }
+    },
+    "repeated_pair_ways": {
+      "ways_by_status": {
+        "EXCLUDED": 682,
+        "INCLUDED": 288,
+        "QUARANTINE": 20
+      },
+      "segments_by_status": {
+        "EXCLUDED": 8800,
+        "INCLUDED": 3176,
+        "QUARANTINE": 293
+      }
+    }
+  }
+}

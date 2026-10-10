@@ -1,0 +1,1856 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-10",
+  "base_commit": "bc40773b71f0f89a87f4fbcad6d8b151050c0582",
+  "branch": "stage3/israel-road-data-foundation",
+  "bbox_wgs84_west_south_east_north": [
+    34.99,
+    32.811,
+    35.004,
+    32.821
+  ],
+  "status_definitions": {
+    "CONFIRMED": "Подтверждено официальным документом в указанном объёме; не подтверждение каждой записи на местности.",
+    "PARTIAL": "Подтверждена часть функции/покрытия/прав.",
+    "UNKNOWN": "Недостаточно доказательств; не означает отсутствие данных.",
+    "NOT SUPPORTED": "Источник явно исключает конкретный продукт/регион.",
+    "BLOCKED": "Невозможность прочитать источник в данной среде; не отсутствие продукта.",
+    "NOT LICENSED": "Рассмотренные условия не предоставляют нужные права; отдельный договор возможен."
+  },
+  "pilot_test_status": "NOT TESTED",
+  "pilot_test_reason": "Не предоставлены действующие разрешённые тестовые ключи и права на оценку записей. Публичные документы прочитаны, API данных не вызывались.",
+  "new_datasets_received": 0,
+  "confirmed_pilot_restrictions": 0,
+  "imports": 0,
+  "paid_requests": 0,
+  "messages_sent": 0,
+  "providers": [
+    {
+      "provider": "Yandex",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "UNKNOWN",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "UNKNOWN",
+        "programmatic_access_product": "CONFIRMED",
+        "storage_and_derivative_database_rights": "UNKNOWN",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Потребительский truck Navigator NOT SUPPORTED в Израиле: только Россия/Турция. Коммерческий API следует оценивать отдельно; для него Israel UNKNOWN.",
+      "evidence_urls": [
+        "https://yandex.ru/support/navigator/en/cargo-navigation"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "provider": "Yandex",
+        "agent": 1,
+        "checked_at": "2026-10-10",
+        "test_status": "NOT TESTED",
+        "imported_records": 0,
+        "summary_ru": "Грузовой режим потребительских Yandex Navigator и Maps официально ограничен Россией и Турцией. Израиль в этих продуктах NOT SUPPORTED. Для отдельного коммерческого HTTP Routing API покрытие грузовыми ограничениями Израиля и Хайфы не подтверждено: UNKNOWN; нельзя распространять отрицательный вывод о приложении на все договорные продукты.",
+        "israel_truck_consumer_status": "NOT SUPPORTED",
+        "israel_truck_api_status": "UNKNOWN",
+        "haifa_restriction_coverage": "UNKNOWN",
+        "raw_attributes": "UNKNOWN",
+        "programmatic_routing": "CONFIRMED",
+        "export_restrictions": "UNKNOWN",
+        "derived_database_rights": "UNKNOWN",
+        "current_project_license": "NOT LICENSED",
+        "actual_data_freshness": "UNKNOWN",
+        "independent_ground_evidence": "UNKNOWN",
+        "evidence": [
+          {
+            "id": "YAN-1",
+            "url": "https://yandex.ru/support/navigator/en/cargo-navigation",
+            "ref": "[session reference; see official URL]",
+            "claim": "Navigator truck navigation explicitly only online within Russia and Türkiye. Vehicle dimensions, actual/allowed weight, axle load are configurable. This is not Israeli restriction data.",
+            "status": "CONFIRMED"
+          },
+          {
+            "id": "YAN-2",
+            "url": "https://www.yandex.ru/support/m-maps/en/cargo-navigation",
+            "ref": "[session reference; see official URL]",
+            "claim": "Maps consumer truck feature has the same Russia/Türkiye limitation.",
+            "status": "CONFIRMED"
+          },
+          {
+            "id": "YAN-3",
+            "url": "https://yandex.com/maps-api/docs/router-api/request.html",
+            "ref": "[session reference; see official URL]",
+            "claim": "HTTP mode=truck exists; weight, axle_weight, max_weight and payload are metric tonnes; height,width,length metres. Documentation warns truck routing applies Russian Federation traffic rules; permits listed for Moscow and St Petersburg. No hazardous-goods parameter listed. Input options do not establish road-attribute export or Israel support.",
+            "status": "CONFIRMED"
+          },
+          {
+            "id": "YAN-4",
+            "url": "https://yandex.com/maps-api/products/router-api",
+            "ref": "[session reference; see official URL]",
+            "claim": "Published geography Russia, select CIS and Turkey; Israel not named. Basic annual <250,000 requests table shows $1,250 and $1,625 with storage; Advanced quoted individually. These are generic prices, not an Israel truck-data offer. Paid storage/modification option is not proof of rights to build an independent restriction database.",
+            "status": "PARTIAL"
+          },
+          {
+            "id": "YAN-5",
+            "url": "https://yandex.ru/legal/maps_api/en/",
+            "ref": "[session reference; see official URL]",
+            "claim": "General free terms clauses 5.1.4/5.1.5 restrict analogous services and storage/processing/modification, allowing limited performance caching up to30 days; 6.2.1 limits MapKit routing display to MapKit apps. Written commercial terms may differ (2.4); none obtained for TrucksIL.",
+            "status": "CONFIRMED"
+          },
+          {
+            "id": "YAN-6",
+            "url": "https://yandex.com/maps-api/docs/router-api/response.html",
+            "ref": "[session reference; see official URL]",
+            "claim": "Documented route response describes routes/legs/steps and maneuvers, not a standalone downloadable restriction inventory; no restriction match in page. This absence does not prove no private commercial data feed.",
+            "status": "PARTIAL"
+          },
+          {
+            "id": "YAN-7",
+            "url": "https://yandex.com/maps-api/docs/router-api/examples.html",
+            "ref": "[session reference; see official URL]",
+            "claim": "Current API examples include Dubai coordinates even for truck. This differs from product-page geography: therefore classify API Israel UNKNOWN, ask provider rather than assume universal absence.",
+            "status": "PARTIAL"
+          },
+          {
+            "id": "YAN-8",
+            "url": "https://yandex.com/maps-api/docs/router-api/troubleshooting.html",
+            "ref": "[session reference; see official URL]",
+            "claim": "Official Maps API feedback form is the contact channel for questions and documentation discrepancies.",
+            "status": "CONFIRMED"
+          }
+        ],
+        "matrix": {
+          "height": {
+            "global_feature": "CONFIRMED",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "Vehicle input parameter, not evidence of Israel dataset or attribute export"
+          },
+          "width": {
+            "global_feature": "CONFIRMED",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "Vehicle input parameter, not evidence of Israel dataset or attribute export"
+          },
+          "length": {
+            "global_feature": "CONFIRMED",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "Vehicle input parameter, not evidence of Israel dataset or attribute export"
+          },
+          "gross_mass": {
+            "global_feature": "CONFIRMED",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "Vehicle input parameter, not evidence of Israel dataset or attribute export"
+          },
+          "axle_load": {
+            "global_feature": "CONFIRMED",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "Vehicle input parameter, not evidence of Israel dataset or attribute export"
+          },
+          "hgv_prohibition": {
+            "global_feature": "PARTIAL",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "Truck routing rules and route maneuvers; no Haifa attributed restriction sample"
+          },
+          "directions": {
+            "global_feature": "PARTIAL",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "Truck routing rules and route maneuvers; no Haifa attributed restriction sample"
+          },
+          "turn_restrictions": {
+            "global_feature": "PARTIAL",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "Truck routing rules and route maneuvers; no Haifa attributed restriction sample"
+          },
+          "hazardous_goods": {
+            "global_feature": "UNKNOWN",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "No Israel-specific field/coverage evidence found; missing evidence is not NOT SUPPORTED"
+          },
+          "temporal_restrictions": {
+            "global_feature": "UNKNOWN",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "No Israel-specific field/coverage evidence found; missing evidence is not NOT SUPPORTED"
+          },
+          "bridges_tunnels": {
+            "global_feature": "UNKNOWN",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "No Israel-specific field/coverage evidence found; missing evidence is not NOT SUPPORTED"
+          },
+          "temporary_closures": {
+            "global_feature": "UNKNOWN",
+            "israel_data": "UNKNOWN",
+            "source": "YAN-3",
+            "note": "No Israel-specific field/coverage evidence found; missing evidence is not NOT SUPPORTED"
+          }
+        },
+        "contacts": [
+          {
+            "channel": "paid-api-maps@yandex-team.ru",
+            "source": "https://yandex.ru/legal/maps_api/en/",
+            "purpose": "Commercial Maps API licensing (public business address)"
+          },
+          {
+            "channel": "https://yandex.com/maps-api/docs/router-api/troubleshooting.html",
+            "purpose": "Official feedback form / API technical questions"
+          }
+        ],
+        "questions_en": [
+          "Is truck routing legally and technically supported in Israel by each contracted product, despite the consumer Russia/Türkiye limitation and the API Russian-traffic-rules warning?",
+          "Supply a dated coverage report and licensed sample within WGS84 bbox [34.990,32.811,35.004,32.821], identifying completeness/unknowns for height,width,length,weight,axle,HGV,hazmat,time,oneway,turns,bridges,tunnels and closures.",
+          "Is there an API or export of link-level restrictions with units,direction,effective dates,source/provenance and update timestamps, rather than route results only?",
+          "Will the contract explicitly allow persistent local storage, modification, derived standalone restriction database, OSM-linked identifiers, third-party map display, commercial app use, redistribution and retention after termination?",
+          "Specify Israel data ownership/sublicensing, update SLA, fees, free evaluation limits and contract/legal entity. Do not activate paid use without written approval."
+        ],
+        "notes": [
+          "No API keys or lawful configured trial supplied; no routing requests, exports or payments made.",
+          "No separate Israel data license confirmed.",
+          "Only provider self-documentation available; no independent Haifa sign/document sample.",
+          "Do not conflate traffic forecasts with authoritative temporary closures."
+        ]
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age"
+    },
+    {
+      "provider": "HERE",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "CONFIRMED",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "CONFIRMED",
+        "programmatic_access_product": "CONFIRMED",
+        "storage_and_derivative_database_rights": "UNKNOWN",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Документация прямо подтверждает Israel truck restrictions с оговоркой о мельчайших дорогах. API возвращает атрибуты; договор/образец пилота не получен. Недельный релиз не доказывает свежесть отдельного знака.",
+      "evidence_urls": [
+        "https://docs.here.com/routing/docs/routing-v8-truck-routing-coverage",
+        "https://docs.here.com/map-attributes/docs/maps-and-layers"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "agent": "2_here",
+        "provider": "HERE Technologies",
+        "checked_on": "2026-10-10",
+        "scope_bbox_wgs84": [
+          34.99,
+          32.811,
+          35.004,
+          32.821
+        ],
+        "summary_ru": "Документально подтверждена грузовая маршрутизация Израиля и наличие API дорожных атрибутов. Конкретные ограничения пилота Хайфы, актуальность каждой записи и права собственной базы не доказаны. Приоритетный кандидат для договорного образца, не одобренный импорт.",
+        "israel_truck_coverage": {
+          "status": "CONFIRMED",
+          "basis": "provider_documentation",
+          "source_ids": [
+            "HERE01",
+            "HERE05"
+          ],
+          "caveat": "Not independent physical verification; smallest local roads may lack restrictions."
+        },
+        "haifa_restrictions": {
+          "status": "UNKNOWN",
+          "test_status": "NOT TESTED",
+          "reason": "No authorized API credentials / evaluation grant supplied; no account creation, paid calls or data extraction."
+        },
+        "fields": {
+          "max_height": {
+            "product_capability": "CONFIRMED",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE02"
+            ]
+          },
+          "max_width": {
+            "product_capability": "CONFIRMED",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE02"
+            ]
+          },
+          "max_length": {
+            "product_capability": "CONFIRMED",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE02"
+            ]
+          },
+          "gross_weight": {
+            "product_capability": "CONFIRMED",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE02"
+            ]
+          },
+          "axle_load": {
+            "product_capability": "CONFIRMED",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE02"
+            ]
+          },
+          "hgv_prohibition": {
+            "product_capability": "CONFIRMED",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE02"
+            ]
+          },
+          "hazardous_goods": {
+            "product_capability": "CONFIRMED",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE02"
+            ]
+          },
+          "time_restrictions": {
+            "product_capability": "CONFIRMED",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE02"
+            ]
+          },
+          "turn_restrictions": {
+            "product_capability": "CONFIRMED",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE02"
+            ]
+          },
+          "tunnels_bridges": {
+            "product_capability": "CONFIRMED",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE02"
+            ]
+          },
+          "directions": {
+            "product_capability": "PARTIAL",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE03"
+            ],
+            "note": "Connectivity/routing/turn layers documented; exact direction attributes require entitled layer metadata."
+          },
+          "temporary_closures": {
+            "product_capability": "PARTIAL",
+            "haifa_record_evidence": "UNKNOWN",
+            "source_ids": [
+              "HERE03"
+            ],
+            "note": "REAL_TIME_INCIDENTS documented; concrete Haifa closure coverage/freshness not tested."
+          }
+        },
+        "api": {
+          "status": "CONFIRMED",
+          "products": [
+            "Routing API v8",
+            "Tour Planning",
+            "Map Attributes API v8"
+          ],
+          "actual_attributes": true,
+          "source_ids": [
+            "HERE03",
+            "HERE04"
+          ]
+        },
+        "export": {
+          "status": "PARTIAL",
+          "note": "Technical attribute retrieval and GIS area-cut delivery documented; persistent export rights depend on contract. No actual export obtained.",
+          "source_ids": [
+            "HERE03",
+            "HERE09"
+          ]
+        },
+        "derived_database": {
+          "status": "UNKNOWN",
+          "trucksil_authorization": "NOT LICENSED",
+          "note": "No explicit grant to store, transform, redistribute or build separate restriction database. Avoid exposing proprietary content to ODbL; request written terms.",
+          "source_ids": [
+            "HERE06",
+            "HERE07"
+          ]
+        },
+        "commercial_use": {
+          "status": "PARTIAL",
+          "note": "Commercial products exist, but appropriate TrucksIL agreement not acquired. Base Plan exclusions must be resolved with sales.",
+          "source_ids": [
+            "HERE07"
+          ]
+        },
+        "freshness": {
+          "status": "PARTIAL",
+          "note": "Map Attributes weekly release; GIS suite quarterly. Individual Haifa source date, observation time and completeness UNKNOWN.",
+          "source_ids": [
+            "HERE03",
+            "HERE09"
+          ]
+        },
+        "independent_evidence": {
+          "status": "UNKNOWN",
+          "note": "Only vendor documentary evidence. No independent Haifa sign/order comparison."
+        },
+        "pricing": {
+          "status": "UNKNOWN",
+          "note": "Current numeric quote for Israel truck attributes/derived database not established; pricing page403. Do not conflate API tariff with content license.",
+          "source_ids": [
+            "HERE11"
+          ]
+        },
+        "license_review_limit": "Official platform terms open403; indexed snippets available. No definitive full-contract legal conclusion.",
+        "questions": [
+          "Provide dated restriction sample only within bbox, with source/observation date, direction, units, truck category, exceptions and missing-data policy.",
+          "Confirm maxheight/maxwidth/maxlength/grossweight/axle/HGV/hazmat/time/turn/tunnel/bridge per-field Israel and pilot coverage; report counts and age distribution.",
+          "Which Map Attributes layers and entitlements permit downloading a pilot sample? Confirm evaluation is free before use.",
+          "Grant or reject explicit retention, normalization, OSM ID matching, derivative database creation, commercial display/API redistribution and backups; clarify ODbL separation.",
+          "Clarify Base Plan asset-management exclusions, data contract, price, minimum term, refresh SLA, end-of-contract deletion obligations."
+        ],
+        "contact_draft_en": "Subject: TrucksIL — licensed Haifa truck-restriction pilot and data rights\nDear HERE Data Licensing Team,\nWe are evaluating a commercial truck-restriction database for a limited Lower Haifa pilot (WGS84 west/south/east/north 34.990,32.811,35.004,32.821). Your truck-coverage documentation lists Israel. Please confirm actual field coverage and provide a legally permitted, explicitly free evaluation sample with road geometry/IDs, restriction units, direction, truck applicability, effective dates and provenance. We need written terms for storage, normalization, matching against separately licensed OSM data, derivative databases and commercial redistribution, plus a quote and update/deletion obligations. Please clarify Map Attributes entitlements and Base Plan asset-management exclusions. We will not import or redistribute data until rights and evidence are accepted. This is an evaluation inquiry, not an order.",
+        "contact_draft_status": "DRAFT_NOT_SENT",
+        "sources": [
+          {
+            "id": "HERE01",
+            "url": "https://docs.here.com/routing/docs/routing-v8-truck-routing-coverage",
+            "ref": "[session reference; see official URL]",
+            "finding": "Israel explicitly in full truck restrictions coverage, with possible exclusion of smallest local roads. Vendor documentation, not an independently verified Haifa inventory.",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "id": "HERE02",
+            "url": "https://docs.here.com/routing/docs/routing-v8-truck-routing",
+            "ref": "[session reference; see official URL]",
+            "finding": "Truck mode supports physical, legal, hazardous-goods, tunnel-category and time-dependent constraints. Missing vehicle parameters default to 0/none; departureTime=any ignores time-dependent restrictions; violation notices possible.",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "id": "HERE03",
+            "url": "https://docs.here.com/map-attributes/docs/maps-and-layers",
+            "ref": "[session reference; see official URL]",
+            "finding": "Road-level truck and turn restriction layers, regional MEA, weekly releases and selectable older releases. Detailed layer docs and licensing use authenticated API.",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "id": "HERE04",
+            "url": "https://docs.here.com/map-attributes/reference/map-attributes-api-overview",
+            "ref": "[session reference; see official URL]",
+            "finding": "Returns actual road attributes using bbox/proximity/tile/route-path; truck restrictions and tunnel classifications.",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "id": "HERE05",
+            "url": "https://docs.here.com/tour-planning/docs/country-support",
+            "ref": "[session reference; see official URL]",
+            "finding": "Tour Planning worldwide except China; truck quality refers to Routing truck coverage.",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "id": "HERE06",
+            "url": "https://legal.here.com/us-en/terms/here-platform-terms",
+            "ref": "[session reference; see official URL]",
+            "finding": "Official indexed terms restrict external storage of Results beyond 30 days except internal test/evaluation/audit/legal-retention. Main open returned403; full current agreement must be obtained. No acquired TrucksIL license.",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "id": "HERE07",
+            "url": "https://www.here.com/get-started/pricing/base-plan-restrictions",
+            "ref": "[session reference; see official URL]",
+            "finding": "Base Plan excludes Asset Management (including route calculations) and optimization, with specific Tour Planning optimization exception; contact sales for excluded use cases.",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "id": "HERE08",
+            "url": "https://www.here.com/get-started/pricing/limited-plan-restrictions",
+            "ref": "[session reference; see official URL]",
+            "finding": "Limited plan excludes Asset Management and optimization; public 1000 daily requests and truck10RPS do not authorize excluded uses.",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "id": "HERE09",
+            "url": "https://docs.here.com/gis-data-suite/docs/gis-data-suite-introduction",
+            "ref": "[session reference; see official URL]",
+            "finding": "Commercial GIS suite supports project-area cuts/regional packages, roads height/weight attrs and quarterly updates. Israel tier availability not individually verified.",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "id": "HERE10",
+            "url": "https://www.here.com/contact?intref=dev_docum",
+            "ref": "[session reference; see official URL]",
+            "finding": "Official contact linked from Map Attributes docs, fetch403. Do not send without authorization.",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "id": "HERE11",
+            "url": "https://www.here.com/get-started/pricing",
+            "ref": "[session reference; see official URL]",
+            "finding": "Fetch403; no current numeric quote established for TrucksIL data license.",
+            "checked_on": "2026-10-10"
+          }
+        ]
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age"
+    },
+    {
+      "provider": "TomTom",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "UNKNOWN",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "CONFIRMED",
+        "programmatic_access_product": "CONFIRMED",
+        "storage_and_derivative_database_rights": "UNKNOWN",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Israel Calculate Route не равен truck-specific coverage. SnapToRoads содержит maximumDimensions. Текущая таблица Orbis Traffic не содержит Израиль; старый поисковый фрагмент не принимается.",
+      "evidence_urls": [
+        "https://docs.tomtom.com/routing-api/documentation/tomtom-orbis-maps/v3/product-information/market-coverage",
+        "https://docs.tomtom.com/snap-to-roads-api/documentation/snap-to-roads-api/synchronous-snap-to-roads",
+        "https://docs.tomtom.com/traffic-api/documentation/tomtom-orbis-maps/v1/product-information/market-coverage"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "agent": "3 TomTom",
+        "provider": "TomTom",
+        "checked_on": "2026-10-10",
+        "overall_status": "PARTIAL",
+        "israel_general_routing": "CONFIRMED",
+        "israel_truck_restrictions": "UNKNOWN",
+        "haifa_truck_restrictions": "UNKNOWN",
+        "real_pilot_test": "NOT TESTED",
+        "real_pilot_test_reason": "Законный действующий API-ключ и отдельное разрешение тестовой лицензии не установлены; запросов к платным/авторизованным endpoint не было.",
+        "official_sources": [
+          {
+            "id": "TT01",
+            "url": "https://docs.tomtom.com/routing-api/documentation/tomtom-maps/v1/product-information/market-coverage",
+            "ref": "[session reference; see official URL]",
+            "last_edit": "2026-09-17",
+            "claim": "Израиль отмечен Calculate Route; колонка real-time traffic пустая. Это общая маршрутизация, не таблица покрытия грузовых атрибутов."
+          },
+          {
+            "id": "TT02",
+            "url": "https://docs.tomtom.com/routing-api/documentation/tomtom-orbis-maps/v3/product-information/market-coverage",
+            "ref": "[session reference; see official URL]",
+            "claim": "Orbis v3 также отмечает Израиль Calculate Route; подробность HGV не установлена."
+          },
+          {
+            "id": "TT03",
+            "url": "https://docs.tomtom.com/routing-api/documentation/tomtom-maps/v1/calculate-route",
+            "ref": "[session reference; see official URL]",
+            "claim": "API документирует truck, vehicleHeight/Width/Length, Weight/AxleWeight, Commercial, LoadType, ADR tunnel code и время. Это возможности интерфейса, не доказательство заполненности Израиля."
+          },
+          {
+            "id": "TT04",
+            "url": "https://docs.tomtom.com/snap-to-roads-api/documentation/snap-to-roads-api/synchronous-snap-to-roads",
+            "ref": "[session reference; see official URL]",
+            "last_edit": "2023-05-26",
+            "claim": "Результат map matching содержит дорожные maximumDimensions: height,length,width,totalWeight,weightPerAxle; partOfTunnel, trafficSigns и ID/OpenLR. Реальные атрибуты, не только входные параметры. Наличие в Хайфе не проверено."
+          },
+          {
+            "id": "TT05",
+            "url": "https://download.tomtom.com/open/banners/Logistics-product-sheet.pdf",
+            "ref": "[session reference; see official URL]",
+            "publication_year": 2022,
+            "claim": "Исторический лист продукта Logistics описывает физические/HGV/dangerous-goods атрибуты и поставки MultiNet GDF/Shapefile/Oracle/PostgreSQL/NDS. Израиль и актуальный договор не установлены."
+          },
+          {
+            "id": "TT06",
+            "url": "https://docs.tomtom.com/legal/terms-and-conditions",
+            "ref": "[session reference; see official URL]",
+            "retrieval_status": "BLOCKED",
+            "claim": "Публичный URL открылся, но извлечение дало только оболочку сайта без условий. Лицензия хранения/производной БД не подтверждена; запрет нельзя заключать из недоступности текста."
+          },
+          {
+            "id": "TT07",
+            "url": "https://docs.tomtom.com/pricing",
+            "ref": "[session reference; see official URL]",
+            "claim": "Страница показывает Routing 20K запросов/месяц бесплатно, Snap to Roads 2.5K/месяц бесплатно; для специальных условий есть sales. Это не лицензия на экспорт/производную БД."
+          },
+          {
+            "id": "TT08",
+            "url": "https://www.tomtom.com/contact-sales/?source_app=docs-portal",
+            "ref": "[session reference; see official URL]",
+            "claim": "Официальная форма коммерческого отдела; не отправлена."
+          },
+          {
+            "id": "TT09",
+            "url": "https://help.tomtom.com/hc/en-us/articles/360013901020-About-Truck-navigation",
+            "ref": "[session reference; see official URL]",
+            "claim": "Статья Europe TRUCK перечисляет 45 стран маршрутизации и 22 страны ограничений; Израиля нет. Область статьи — этот европейский продукт, не все современные API."
+          },
+          {
+            "id": "TT10",
+            "url": "https://docs.tomtom.com/traffic-api/documentation/tomtom-orbis-maps/v1/product-information/market-coverage",
+            "ref": "[session reference; see official URL]",
+            "last_edit": "2026-09-15",
+            "claim": "При независимом прямом открытии Orbis Traffic Израиль отсутствует, легенда говорит missing = not supported. Поисковый индекс показал старую версию 2024-11-25 с Израилем: это расхождение устранено приоритетом актуальной открытой страницы; нужна письменная сверка поставщика."
+          },
+          {
+            "id": "TT11",
+            "url": "https://docs.tomtom.com/traffic-api/documentation/tomtom-maps/v1/product-information/market-coverage",
+            "ref": "[session reference; see official URL]",
+            "last_edit": "2026-09-15",
+            "claim": "Старый Traffic v4/5 Израиль не перечисляет; нельзя объединять с Orbis."
+          },
+          {
+            "id": "TT12",
+            "url": "https://docs.tomtom.com/intermediate-traffic-service/documentation/tomtom-orbis-maps/evaluation-api/overview",
+            "ref": "[session reference; see official URL]",
+            "claim": "Список evaluation городов Amsterdam/Barcelona/Munich/Detroit/Montreal/Melbourne; Хайфы нет. Не применимо как бесплатный тест Хайфы."
+          }
+        ],
+        "api_access_status": "PARTIAL",
+        "raw_attributes_status": "CONFIRMED",
+        "raw_attributes_scope": "Документированная возможность Snap to Roads и коммерческая поставка Logistics, не конкретная доступность ISR.",
+        "export_status": "PARTIAL",
+        "storage_status": "UNKNOWN",
+        "derived_database_status": "UNKNOWN",
+        "commercial_use_status": "PARTIAL",
+        "commercial_use_note": "Коммерческий продукт существует, но применимый TrucksIL договор/права не установлены.",
+        "israel_specific_license": "UNKNOWN",
+        "truck_attribute_freshness": "UNKNOWN",
+        "independent_local_evidence": "UNKNOWN",
+        "import_approved": false,
+        "field_matrix": {
+          "height": {
+            "product_capability": "CONFIRMED",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT04"
+            ]
+          },
+          "width": {
+            "product_capability": "CONFIRMED",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT04"
+            ]
+          },
+          "length": {
+            "product_capability": "CONFIRMED",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT04"
+            ]
+          },
+          "gross_weight": {
+            "product_capability": "CONFIRMED",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT04"
+            ]
+          },
+          "axle_load": {
+            "product_capability": "CONFIRMED",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT04"
+            ]
+          },
+          "hgv_ban": {
+            "product_capability": "CONFIRMED",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT05"
+            ]
+          },
+          "dangerous_goods": {
+            "product_capability": "CONFIRMED",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT05"
+            ]
+          },
+          "time_restrictions": {
+            "product_capability": "PARTIAL",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT04",
+              "TT05"
+            ],
+            "note": "Функции маршрутизации/описание продукта не подтверждают конкретный полный экспорт этого вида атрибутов."
+          },
+          "directions": {
+            "product_capability": "PARTIAL",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT04",
+              "TT05"
+            ],
+            "note": "Функции маршрутизации/описание продукта не подтверждают конкретный полный экспорт этого вида атрибутов."
+          },
+          "turn_prohibitions": {
+            "product_capability": "PARTIAL",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT04",
+              "TT05"
+            ],
+            "note": "Функции маршрутизации/описание продукта не подтверждают конкретный полный экспорт этого вида атрибутов."
+          },
+          "bridges": {
+            "product_capability": "PARTIAL",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT04",
+              "TT05"
+            ],
+            "note": "Функции маршрутизации/описание продукта не подтверждают конкретный полный экспорт этого вида атрибутов."
+          },
+          "tunnels": {
+            "product_capability": "PARTIAL",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT03",
+              "TT04",
+              "TT05"
+            ],
+            "note": "Функции маршрутизации/описание продукта не подтверждают конкретный полный экспорт этого вида атрибутов."
+          },
+          "temporary_closures": {
+            "product_capability": "CONFIRMED",
+            "israel_status": "UNKNOWN",
+            "haifa_records": "UNKNOWN",
+            "sources": [
+              "TT10",
+              "TT11"
+            ],
+            "note": "По текущим опубликованным таблицам Orbis и legacy Traffic Израиль не поддержан. Старый поисковый индекс противоречил прямому открытию; не подтверждаем текущую доступность. Хайфа не тестировалась."
+          }
+        },
+        "questions": [
+          "Подтвердите truck routing и поатрибутное покрытие Израиля и bbox [34.990,32.811,35.004,32.821], включая Natanzon.",
+          "Дайте лицензируемый образец исходных height/width/length/gross/axle/HGV/hazmat/time/direction/turn/bridge/tunnel атрибутов с датами и происхождением; отличайте no restriction от unknown.",
+          "Доступны ли maximumDimensions Snap to Roads в Израиле, какова семантика null и региональное покрытие?",
+          "Подтвердите различия Orbis Traffic и legacy Traffic/real-time Routing coverage; актуальные closures Хайфы.",
+          "Разрешены ли постоянное хранение, выгрузка, PostgreSQL/PostGIS нормализация, сопоставление с OSM, создание производной БД, коммерческая навигация и распространение?",
+          "Предоставьте отдельный договор Israel, стоимость, минимальную оплату, SLA обновления, исправления ошибок, независимые показатели полноты и условия прекращения лицензии."
+        ],
+        "draft_subject": "TrucksIL: Israel / Lower Haifa truck-restriction data coverage and licensing",
+        "draft_body_en": "Dear TomTom Data Licensing team, TrucksIL is evaluating licensed road restriction data for a limited Lower Haifa pilot, WGS84 bbox west/south/east/north [34.990,32.811,35.004,32.821]. Please provide an attribute-level Israel coverage statement and a legally usable pilot sample covering height, width, length, gross and axle weight, HGV access, dangerous goods, time conditions, directions, turns, bridges, tunnels and closures. Please distinguish Routing capability from populated local attributes, and confirm whether Snap to Roads maximumDimensions is populated here. For every sample record please include source, observation/update dates, units, direction and applicability. Please quote rights for retention, export, normalization in PostGIS, OSM matching, a derived restrictions database, commercial use and distribution; identify any attribution, segregation and termination requirements. Please clarify current Orbis versus legacy traffic coverage, sample/evaluation availability, pricing and update/error-correction SLA. No subscription or paid API activity is authorized by this inquiry. Regards, TrucksIL project owner.",
+        "draft_status": "draft_not_sent",
+        "audit_corrections": [
+          {
+            "issue": "Поисковый индекс Orbis Traffic содержал Израиль в версии 2024-11-25; независимое открытие показывает версию 2026-09-15 без Израиля.",
+            "resolution": "Убрано предварительное утверждение CONFIRMED traffic Israel. В текущей опубликованной таблице NOT SUPPORTED, общий статус реальной доступности UNKNOWN до ответа поставщика.",
+            "evidence": "[session reference; see official URL]",
+            "reviewer": "provider_auditor"
+          }
+        ]
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age"
+    },
+    {
+      "provider": "PTV",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "PARTIAL",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "CONFIRMED",
+        "programmatic_access_product": "CONFIRMED",
+        "storage_and_derivative_database_rights": "NOT LICENSED",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "IMEA truck profiles включают IL, но документация предупреждает о различиях атрибутов по странам. Стандартный GLA запрещает компиляцию БД/derivatives если отдельно не согласовано; отдельного соглашения нет.",
+      "evidence_urls": [
+        "https://developer-applications.myptv.com/CodeSamples/Misc/ProfilesAndCountries.htm",
+        "https://developer.myptv.com/en/documentation/vector-maps-api/concepts/truck-restrictions",
+        "https://developer.myptv.com/en/documentation/routing-api/concepts/truck-restrictions",
+        "https://www.ptvlogistics.com/en/PTV_Logistics_Licensing_Terms_Geodata_EN.pdf?inline="
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "id": "ptv",
+        "name": "PTV Logistics",
+        "checked_on": "2026-10-10",
+        "status": "PARTIAL",
+        "israel_truck_coverage": "PARTIAL",
+        "haifa_restrictions": "UNKNOWN",
+        "real_haifa_test": "NOT TESTED",
+        "summary_ru": "IMEA_TRUCK_40T и IMEA_TRUCK_7_49T поддерживают IL Israel; примечание документа прямо предупреждает, что Truck Attributes доступны не каждой стране. Векторный overlay действительно возвращает атрибуты, но конкретные значения Хайфы не проверены.",
+        "api_access": "CONFIRMED",
+        "restriction_attributes": {
+          "height": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "width": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "length": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "gross_weight": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "axle_load": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "hgv_ban": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "hazmat": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "time_restrictions": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "directions": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "turn_restrictions": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "tunnels_bridges": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "temporary_closures": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          }
+        },
+        "raw_export": "UNKNOWN",
+        "derived_database": "NOT LICENSED",
+        "commercial_use": "PARTIAL",
+        "current_haifa_data": "UNKNOWN",
+        "independent_ground_truth": "UNKNOWN",
+        "license_ru": "Geodata License Agreement 2026-03-30 V1.5.3: 4.3.1 запрещает компиляцию базы, 4.3.6 производные работы, если отдельно не согласовано; коммерческое API не разрешает собственную базу автоматически. Поля overlay высота/ширина/длина в cm, масса/ось kg; SRID3857. Не импортировано.",
+        "price_ru": "Стоимость конкретного договора Израиль/производная база UNKNOWN; требуется предложение.",
+        "contact_url": "https://support.ptvlogistics.com/",
+        "sources": [
+          {
+            "url": "https://developer-applications.myptv.com/CodeSamples/Misc/ProfilesAndCountries.htm",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://developer.myptv.com/en/documentation/vector-maps-api/concepts/truck-restrictions",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://developer.myptv.com/en/documentation/routing-api/concepts/truck-restrictions",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://www.ptvlogistics.com/en/PTV_Logistics_Licensing_Terms_Geodata_EN.pdf?inline=",
+            "checked_on": "2026-10-10"
+          }
+        ],
+        "questions_en": [
+          "Provide a versioned field-by-field truck restriction coverage statement for Israel and Haifa pilot bbox [34.990,32.811,35.004,32.821].",
+          "Can you provide a lawful no-charge evaluation of actual restriction attributes with stable road IDs, coordinates, units, effective dates and provenance?",
+          "Does a written commercial contract permit storing, exporting, normalizing, updating and combining these attributes with our ODbL OSM graph, creating and serving our own derived restriction database? Specify redistribution, attribution, deletion and termination obligations.",
+          "Provide update frequency, completeness measures, official verification sources, liability limitations and pricing for this exact use case."
+        ],
+        "israel_profile_support": "CONFIRMED",
+        "raw_attributes_api": "CONFIRMED",
+        "israel_attribute_coverage": "UNKNOWN"
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age"
+    },
+    {
+      "provider": "Trimble Maps",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "CONFIRMED",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "PARTIAL",
+        "programmatic_access_product": "CONFIRMED",
+        "storage_and_derivative_database_rights": "NOT LICENSED",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Независимая загрузка HTML подтвердила green SVG truck-attributes checkbox Israel/ME/Navigable. API расчёта не доказывает массовый экспорт. Blank hazmat не превращён в глобальное NOT SUPPORTED.",
+      "evidence_urls": [
+        "https://developer.trimblemaps.com/restful-apis/developer-guide/web-services-data-by-country/",
+        "https://developer.trimblemaps.com/restful-apis/routing/introduction/",
+        "https://developer.trimblemaps.com/terms/",
+        "https://transportation.trimble.com/en/legal/customer-terms"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "id": "trimble",
+        "name": "Trimble Maps",
+        "checked_on": "2026-10-10",
+        "status": "PARTIAL",
+        "israel_truck_coverage": "CONFIRMED",
+        "haifa_restrictions": "UNKNOWN",
+        "real_haifa_test": "NOT TESTED",
+        "summary_ru": "Официальная country matrix: Israel ME Navigable и SVG-галочка Truck Attributes. Парсер веб-текста теряет галочки; исходный HTML проверен. Галочки также Historical Traffic и Postal Codes; Hazmat/Live Traffic/Toll пустые, не отрицательное доказательство. Конкретные атрибуты Хайфы не получены.",
+        "api_access": "CONFIRMED",
+        "restriction_attributes": {
+          "height": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "width": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "length": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "gross_weight": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "axle_load": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "hgv_ban": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "hazmat": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "time_restrictions": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "directions": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "turn_restrictions": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "tunnels_bridges": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "temporary_closures": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          }
+        },
+        "raw_export": "UNKNOWN",
+        "derived_database": "NOT LICENSED",
+        "commercial_use": "PARTIAL",
+        "current_haifa_data": "UNKNOWN",
+        "independent_ground_truth": "UNKNOWN",
+        "license_ru": "Опубликованное Evaluation Agreement разрешает внутреннюю оценку и ограниченную демонстрацию; запрещает коммерческое применение и извлечение standalone data без письменного согласия. Коммерческий договор требуется отдельно; не принят.",
+        "price_ru": "Цена Израиль/выгрузка UNKNOWN, sales quotation.",
+        "contact_url": "https://developer.trimblemaps.com/get-an-api-key/",
+        "sources": [
+          {
+            "url": "https://developer.trimblemaps.com/restful-apis/developer-guide/web-services-data-by-country/",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://developer.trimblemaps.com/restful-apis/routing/introduction/",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://developer.trimblemaps.com/terms/",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://transportation.trimble.com/en/legal/customer-terms",
+            "checked_on": "2026-10-10"
+          }
+        ],
+        "questions_en": [
+          "Provide a versioned field-by-field truck restriction coverage statement for Israel and Haifa pilot bbox [34.990,32.811,35.004,32.821].",
+          "Can you provide a lawful no-charge evaluation of actual restriction attributes with stable road IDs, coordinates, units, effective dates and provenance?",
+          "Does a written commercial contract permit storing, exporting, normalizing, updating and combining these attributes with our ODbL OSM graph, creating and serving our own derived restriction database? Specify redistribution, attribution, deletion and termination obligations.",
+          "Provide update frequency, completeness measures, official verification sources, liability limitations and pricing for this exact use case."
+        ],
+        "coverage_evidence_method": "Public HTML Israel row; 9 cells; green SVG check at indices3,5,6 zero-based. Local research excerpt /tmp/trimble-israel-row.html."
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age"
+    },
+    {
+      "provider": "Sygic",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "UNKNOWN",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "UNKNOWN",
+        "programmatic_access_product": "CONFIRMED",
+        "storage_and_derivative_database_rights": "UNKNOWN",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Не принимать селектор страны магазина или доступность покупки за покрытие truck restrictions Израиля.",
+      "evidence_urls": [
+        "https://developers.sygic.com/maps-sdk/",
+        "https://apps.apple.com/us/app/sygic-truck-rv-navigation/id992127700",
+        "https://www.sygic.com/company/eula"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "id": "sygic",
+        "name": "Sygic Truck / Maps SDK",
+        "checked_on": "2026-10-10",
+        "status": "PARTIAL",
+        "israel_truck_coverage": "UNKNOWN",
+        "haifa_restrictions": "UNKNOWN",
+        "real_haifa_test": "NOT TESTED",
+        "summary_ru": "SDK документирует truck mode, offline maps и web API; приложение имеет размеры/массу/HAZMAT. Актуальное официальное подтверждение именно израильских truck restrictions не найдено. Israel в списке стран контактной формы/магазина не принято за покрытие.",
+        "api_access": "CONFIRMED",
+        "restriction_attributes": {
+          "height": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "width": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "length": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "gross_weight": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "axle_load": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "hgv_ban": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "hazmat": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "time_restrictions": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "directions": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "turn_restrictions": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "tunnels_bridges": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "temporary_closures": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          }
+        },
+        "raw_export": "UNKNOWN",
+        "derived_database": "UNKNOWN",
+        "commercial_use": "PARTIAL",
+        "current_haifa_data": "UNKNOWN",
+        "independent_ground_truth": "UNKNOWN",
+        "license_ru": "EULA URL вернул 403 при чтении; права экспортировать, хранить, перерабатывать исходные ограничения не подтверждены. Потребительская лицензия приложения не означает SDK/data license.",
+        "price_ru": "Цена нужной коммерческой data/SDK лицензии UNKNOWN; AppStore USD цены Северной Америки не перенесены на Израиль.",
+        "contact_url": "https://enterprise.sygic.com/",
+        "sources": [
+          {
+            "url": "https://developers.sygic.com/maps-sdk/",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://apps.apple.com/us/app/sygic-truck-rv-navigation/id992127700",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://www.sygic.com/company/eula",
+            "checked_on": "2026-10-10"
+          }
+        ],
+        "questions_en": [
+          "Provide a versioned field-by-field truck restriction coverage statement for Israel and Haifa pilot bbox [34.990,32.811,35.004,32.821].",
+          "Can you provide a lawful no-charge evaluation of actual restriction attributes with stable road IDs, coordinates, units, effective dates and provenance?",
+          "Does a written commercial contract permit storing, exporting, normalizing, updating and combining these attributes with our ODbL OSM graph, creating and serving our own derived restriction database? Specify redistribution, attribution, deletion and termination obligations.",
+          "Provide update frequency, completeness measures, official verification sources, liability limitations and pricing for this exact use case."
+        ]
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age"
+    },
+    {
+      "provider": "Mapbox",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "UNKNOWN",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "PARTIAL",
+        "programmatic_access_product": "CONFIRMED",
+        "storage_and_derivative_database_rights": "NOT LICENSED",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Ограничения vehicle parameters не доказывают truck coverage Хайфы или экспорт её атрибутов. Navigation API storage/extraction forbidden under reviewed standard terms; separate permission required.",
+      "evidence_urls": [
+        "https://docs.mapbox.com/api/navigation/directions/",
+        "https://www.mapbox.com/legal/product-terms",
+        "https://cdn.prod.website-files.com/609ed46055e27a02ffc0749b/6a60463142f6478d57642594_Mapbox%20Product%20Terms%20(July%2021%2C%202026).pdf",
+        "https://www.mapbox.com/pricing"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "id": "mapbox",
+        "name": "Mapbox Directions",
+        "checked_on": "2026-10-10",
+        "status": "PARTIAL",
+        "israel_truck_coverage": "UNKNOWN",
+        "haifa_restrictions": "UNKNOWN",
+        "real_haifa_test": "NOT TESTED",
+        "summary_ru": "Directions v5 документирует max_height/max_width/max_weight и route violation notifications с actual_value. Отдельного truck profile нет; покрытие этих ограничений зависит от региона. API-параметр не доказывает заполнение Израиля/Хайфы.",
+        "api_access": "CONFIRMED",
+        "restriction_attributes": {
+          "height": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "width": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "length": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "gross_weight": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "axle_load": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "hgv_ban": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "hazmat": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "time_restrictions": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "directions": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "turn_restrictions": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "tunnels_bridges": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "temporary_closures": {
+            "product_capability": "CONFIRMED",
+            "haifa_evidence": "UNKNOWN"
+          }
+        },
+        "raw_export": "NOT LICENSED",
+        "derived_database": "NOT LICENSED",
+        "commercial_use": "PARTIAL",
+        "current_haifa_data": "UNKNOWN",
+        "independent_ground_truth": "UNKNOWN",
+        "license_ru": "Product Terms 2026-07-21: 2.10.1 запрещает export/download/cache/store результатов Navigation API; 1.5/1.6 запрещают derived works/extraction. Стандартные условия не разрешают базу TrucksIL. PDF удалось прочитать через обычный публичный HTTP; веб-парсер PDF дал error.",
+        "price_ru": "Опубликован pricing URL; стоимость собственного набора не опубликована/не установлена. Не сделано платных запросов.",
+        "contact_url": "https://www.mapbox.com/contact/",
+        "sources": [
+          {
+            "url": "https://docs.mapbox.com/api/navigation/directions/",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://www.mapbox.com/legal/product-terms",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://cdn.prod.website-files.com/609ed46055e27a02ffc0749b/6a60463142f6478d57642594_Mapbox%20Product%20Terms%20(July%2021%2C%202026).pdf",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://www.mapbox.com/pricing",
+            "checked_on": "2026-10-10"
+          }
+        ],
+        "questions_en": [
+          "Provide a versioned field-by-field truck restriction coverage statement for Israel and Haifa pilot bbox [34.990,32.811,35.004,32.821].",
+          "Can you provide a lawful no-charge evaluation of actual restriction attributes with stable road IDs, coordinates, units, effective dates and provenance?",
+          "Does a written commercial contract permit storing, exporting, normalizing, updating and combining these attributes with our ODbL OSM graph, creating and serving our own derived restriction database? Specify redistribution, attribution, deletion and termination obligations.",
+          "Provide update frequency, completeness measures, official verification sources, liability limitations and pricing for this exact use case."
+        ],
+        "raw_attributes_api": "PARTIAL",
+        "license_local_evidence": "/tmp/mapbox-product-terms.txt"
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age"
+    },
+    {
+      "provider": "MapFactor",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "CONFIRMED",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "PARTIAL",
+        "programmatic_access_product": "UNKNOWN",
+        "storage_and_derivative_database_rights": "UNKNOWN",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Официальный продукт явно перечисляет Israel truck maps; документальное заявление, не измеренное покрытие Хайфы. Данные поставляет TomTom: это не независимое первичное свидетельство и не перенос прав на TomTom API.",
+      "evidence_urls": [
+        "https://www.mapfactor.com/product/navigator-truck-pro-android/"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "id": "mapfactor",
+        "name": "MapFactor Navigator Truck PRO",
+        "checked_on": "2026-10-10",
+        "status": "PARTIAL",
+        "israel_truck_coverage": "CONFIRMED",
+        "haifa_restrictions": "UNKNOWN",
+        "real_haifa_test": "NOT TESTED",
+        "summary_ru": "Дополнительный подтверждённый кандидат: официальный продукт прямо перечисляет Israel в TomTom Truck map regions. Это документированное предложение приложения, не независимая проверка актуальных ограничений пилота. Quarterly updates заявлены, дата обследования Хайфы UNKNOWN.",
+        "api_access": "UNKNOWN",
+        "restriction_attributes": {
+          "height": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "width": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "length": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "gross_weight": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "axle_load": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "hgv_ban": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "hazmat": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "time_restrictions": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "directions": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "turn_restrictions": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "tunnels_bridges": {
+            "product_capability": "PARTIAL",
+            "haifa_evidence": "UNKNOWN"
+          },
+          "temporary_closures": {
+            "product_capability": "UNKNOWN",
+            "haifa_evidence": "UNKNOWN"
+          }
+        },
+        "raw_export": "UNKNOWN",
+        "derived_database": "UNKNOWN",
+        "commercial_use": "PARTIAL",
+        "current_haifa_data": "UNKNOWN",
+        "independent_ground_truth": "UNKNOWN",
+        "license_ru": "Лицензия приложения и offline download не подтверждают экспорт сырой базы и право переработки. SDK/OCX присутствует в каталоге, наличие подходящего restriction extraction API UNKNOWN; нужен письменный договор.",
+        "price_ru": "Приложение от 4.99 EUR/месяц, trial7дней; это не цена лицензии на дорожные данные. Не активировано.",
+        "contact_url": "https://www.mapfactor.com/contact-us/",
+        "sources": [
+          {
+            "url": "https://www.mapfactor.com/product/navigator-truck-pro-android/",
+            "checked_on": "2026-10-10"
+          },
+          {
+            "url": "https://www.mapfactor.com/product/navigator-truck-pro-ios/",
+            "checked_on": "2026-10-10"
+          }
+        ],
+        "questions_en": [
+          "Provide a versioned field-by-field truck restriction coverage statement for Israel and Haifa pilot bbox [34.990,32.811,35.004,32.821].",
+          "Can you provide a lawful no-charge evaluation of actual restriction attributes with stable road IDs, coordinates, units, effective dates and provenance?",
+          "Does a written commercial contract permit storing, exporting, normalizing, updating and combining these attributes with our ODbL OSM graph, creating and serving our own derived restriction database? Specify redistribution, attribution, deletion and termination obligations.",
+          "Provide update frequency, completeness measures, official verification sources, liability limitations and pricing for this exact use case."
+        ]
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age"
+    },
+    {
+      "provider": "Haifa municipality",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "UNKNOWN",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "UNKNOWN",
+        "programmatic_access_product": "PARTIAL",
+        "storage_and_derivative_database_rights": "UNKNOWN",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Страница отдела подтверждает подготовку схем движения и утверждение временных схем возле строительных работ. Публикация не является самим приказом. GIS layer35 имеет metadata, но licenseInfo/accessInformation пустые; поле bridge не подтверждает габарит/нагрузку/допуск. Конкретный CleanAir GeoJSON опубликован с ODbL; создание/обновление 27.04.2025. Это граница зоны, не текущие условия въезда по классу грузовика. TIL-HAIFA-001 awaiting_response по существующему реестру; в этой задаче почта не проверялась, новое письмо не отправлено.",
+      "evidence_urls": [
+        "https://opendata.haifa.muni.il/dataset/clean_air/resource/be774cbd-c4b8-4e40-a50e-344ff3356954"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "id": "haifa_official",
+        "name": "Муниципалитет Хайфы / Traffic Planning / GIS",
+        "status": "PARTIAL",
+        "official_urls": [
+          "https://www.haifa.muni.il/development-and-construction/roads-and-traffic/traffic-planning/",
+          "https://gisserver.haifa.muni.il/arcgiswebadaptor/rest/services/PublicSite/Haifa_Eng_Public/MapServer/35/iteminfo",
+          "https://opendata.haifa.muni.il/dataset/clean_air/resource/be774cbd-c4b8-4e40-a50e-344ff3356954"
+        ],
+        "findings_ru": [
+          "Страница отдела подтверждает подготовку схем движения и утверждение временных схем возле строительных работ. Публикация не является самим приказом.",
+          "GIS layer35 имеет metadata, но licenseInfo/accessInformation пустые; поле bridge не подтверждает габарит/нагрузку/допуск.",
+          "Конкретный CleanAir GeoJSON опубликован с ODbL; создание/обновление 27.04.2025. Это граница зоны, не текущие условия въезда по классу грузовика.",
+          "TIL-HAIFA-001 awaiting_response по существующему реестру; в этой задаче почта не проверялась, новое письмо не отправлено."
+        ],
+        "license_ru": "ODbL CONFIRMED только для CleanAir GeoJSON. Для действующих схем, знаков и слоя35 права UNKNOWN.",
+        "contact": "Rasha@haifa.muni.il; адрес уже подтверждён официальной страницей; не отправлять повторно.",
+        "pilot_test": "NOT TESTED",
+        "pilot_restriction_coverage": "UNKNOWN",
+        "israel_presence": "CONFIRMED",
+        "restriction_attributes_api": "UNKNOWN",
+        "export": "UNKNOWN",
+        "derived_database": "UNKNOWN",
+        "commercial_use": "UNKNOWN",
+        "freshness": "UNKNOWN",
+        "independent_pilot_evidence": "UNKNOWN",
+        "matrix": {
+          "maxheight": "UNKNOWN",
+          "maxwidth": "UNKNOWN",
+          "maxlength": "UNKNOWN",
+          "gross_weight": "UNKNOWN",
+          "axle_load": "UNKNOWN",
+          "hgv_ban": "UNKNOWN",
+          "hazmat": "UNKNOWN",
+          "time_restrictions": "UNKNOWN",
+          "direction": "UNKNOWN",
+          "turn_restrictions": "UNKNOWN",
+          "tunnels_bridges": "UNKNOWN",
+          "temporary_closures": "UNKNOWN"
+        },
+        "clean_air_resource": {
+          "license": "ODbL",
+          "license_status": "CONFIRMED",
+          "export": "CONFIRMED",
+          "format": "GeoJSON",
+          "resource_update": "2025-04-27",
+          "restriction_values_verified": false,
+          "derived_database": "PARTIAL — только этот ресурс, с выполнением ODbL; не распространяется на другие документы"
+        }
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age",
+      "scope": "existing_pilot_only"
+    },
+    {
+      "provider": "Israel Ministry of Transport",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "UNKNOWN",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "UNKNOWN",
+        "programmatic_access_product": "UNKNOWN",
+        "storage_and_derivative_database_rights": "UNKNOWN",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Hatzav в повторной адресной проверке вернул timeout, cargo-transport 403; обход не выполнялся. Truck survey2017 — исторические потоки по камерам, не дорожные запреты. Heavy-truck — технический реестр автомобилей, не ограничения проезда. Не импортировались. Министерство — канал нормативного регулирования грузовых/опасных перевозок; наличие нормативов не доказывает набор актуальных ограничений конкретной улицы.",
+      "evidence_urls": [
+        "https://geo.mot.gov.il/",
+        "https://www.gov.il/he/departments/topics/cargo-transport",
+        "https://data.gov.il/he/datasets/ministry_of_transport/truck_survey_2017",
+        "https://data.gov.il/he/datasets/ministry_of_transport/heavy-truck"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "id": "mot_official",
+        "name": "Министерство транспорта Израиля / Hatzav / data.gov.il",
+        "status": "PARTIAL",
+        "official_urls": [
+          "https://geo.mot.gov.il/",
+          "https://www.gov.il/he/departments/topics/cargo-transport",
+          "https://data.gov.il/he/datasets/ministry_of_transport/truck_survey_2017",
+          "https://data.gov.il/he/datasets/ministry_of_transport/heavy-truck"
+        ],
+        "findings_ru": [
+          "Hatzav в повторной адресной проверке вернул timeout, cargo-transport 403; обход не выполнялся.",
+          "Truck survey2017 — исторические потоки по камерам, не дорожные запреты. Heavy-truck — технический реестр автомобилей, не ограничения проезда. Не импортировались.",
+          "Министерство — канал нормативного регулирования грузовых/опасных перевозок; наличие нормативов не доказывает набор актуальных ограничений конкретной улицы."
+        ],
+        "license_ru": "Лицензия конкретного пригодного набора ограничений не установлена.",
+        "contact": "geo@mot.gov.il указан в официальной карточке truck_survey_2017; запросить владельца и текущий набор, права и метод API/экспорта.",
+        "pilot_test": "NOT TESTED",
+        "pilot_restriction_coverage": "UNKNOWN",
+        "israel_presence": "CONFIRMED",
+        "restriction_attributes_api": "UNKNOWN",
+        "export": "UNKNOWN",
+        "derived_database": "UNKNOWN",
+        "commercial_use": "UNKNOWN",
+        "freshness": "UNKNOWN",
+        "independent_pilot_evidence": "UNKNOWN",
+        "matrix": {
+          "maxheight": "UNKNOWN",
+          "maxwidth": "UNKNOWN",
+          "maxlength": "UNKNOWN",
+          "gross_weight": "UNKNOWN",
+          "axle_load": "UNKNOWN",
+          "hgv_ban": "UNKNOWN",
+          "hazmat": "UNKNOWN",
+          "time_restrictions": "UNKNOWN",
+          "direction": "UNKNOWN",
+          "turn_restrictions": "UNKNOWN",
+          "tunnels_bridges": "UNKNOWN",
+          "temporary_closures": "UNKNOWN"
+        },
+        "access_status": "BLOCKED — отдельные страницы в данном инструменте, не доказательство отсутствия данных"
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age",
+      "scope": "existing_pilot_only"
+    },
+    {
+      "provider": "Netivei Israel",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "UNKNOWN",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "UNKNOWN",
+        "programmatic_access_product": "UNKNOWN",
+        "storage_and_derivative_database_rights": "UNKNOWN",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Официальный поисковый индекс технического задания содержит слой минимальных высот мостов/тоннелей над каждым проездом. Это свидетельство требований к инвентарю, не получение инвентаря или подтверждение покрытия Хайфы. Прямое получение спецификации не удалось (Internal Error). Фактический владелец конкретных городских объектов не установлен.",
+      "evidence_urls": [
+        "https://www.iroads.co.il/media/12446/נספח-י-להסכם-מפרט-טכני-לאשכולות-א-ו-ב.pdf",
+        "https://www.iroads.co.il/media/bfwpbano/פרק-25-תכנון-גשרים-מבנים-ומנהרות-2026.pdf"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "id": "netivei_official",
+        "name": "Netivei Israel",
+        "status": "PARTIAL",
+        "official_urls": [
+          "https://www.iroads.co.il/media/12446/נספח-י-להסכם-מפרט-טכני-לאשכולות-א-ו-ב.pdf",
+          "https://www.iroads.co.il/media/bfwpbano/פרק-25-תכנון-גשרים-מבנים-ומנהרות-2026.pdf"
+        ],
+        "findings_ru": [
+          "Официальный поисковый индекс технического задания содержит слой минимальных высот мостов/тоннелей над каждым проездом. Это свидетельство требований к инвентарю, не получение инвентаря или подтверждение покрытия Хайфы.",
+          "Прямое получение спецификации не удалось (Internal Error). Фактический владелец конкретных городских объектов не установлен."
+        ],
+        "license_ru": "UNKNOWN; техническое задание не лицензирует коммерческую производную базу.",
+        "contact": "Через официальный сайт Netivei Israel запросить подразделение GIS/эксплуатации и компетенцию по конкретным asset IDs; адрес не угадывать.",
+        "pilot_test": "NOT TESTED",
+        "pilot_restriction_coverage": "UNKNOWN",
+        "israel_presence": "CONFIRMED",
+        "restriction_attributes_api": "UNKNOWN",
+        "export": "UNKNOWN",
+        "derived_database": "UNKNOWN",
+        "commercial_use": "UNKNOWN",
+        "freshness": "UNKNOWN",
+        "independent_pilot_evidence": "UNKNOWN",
+        "matrix": {
+          "maxheight": "UNKNOWN",
+          "maxwidth": "UNKNOWN",
+          "maxlength": "UNKNOWN",
+          "gross_weight": "UNKNOWN",
+          "axle_load": "UNKNOWN",
+          "hgv_ban": "UNKNOWN",
+          "hazmat": "UNKNOWN",
+          "time_restrictions": "UNKNOWN",
+          "direction": "UNKNOWN",
+          "turn_restrictions": "UNKNOWN",
+          "tunnels_bridges": "UNKNOWN",
+          "temporary_closures": "UNKNOWN"
+        }
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age",
+      "scope": "existing_pilot_only"
+    },
+    {
+      "provider": "Govmap",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "UNKNOWN",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "UNKNOWN",
+        "programmatic_access_product": "PARTIAL",
+        "storage_and_derivative_database_rights": "NOT LICENSED",
+        "commercial_use_rights_for_TrucksIL": "NOT LICENSED",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "На официальном сайте Govmap доступны общие условия: API/сервисы существуют, но права принадлежат владельцам отдельных слоёв. Условия требуют предварительного письменного разрешения для коммерческого/нечастного использования; запрещают сбор слоёв и API без явного разрешения. Прямая страница общих условий gov.il и docs API дали403; текст прочитан в официальном Govmap, а не стороннем пересказе. Не найден лицензированный набор HGV-ограничений пилота; наличие карты/API не доказательство данных.",
+      "evidence_urls": [
+        "https://www.govmap.gov.il/sites/emergency-services/index.html"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "id": "govmap_official",
+        "name": "Survey of Israel / Govmap",
+        "status": "PARTIAL",
+        "official_urls": [
+          "https://www.govmap.gov.il/sites/emergency-services/index.html",
+          "https://www.gov.il/he/pages/gov_terms_of_use",
+          "https://api.govmap.gov.il/docs/"
+        ],
+        "findings_ru": [
+          "На официальном сайте Govmap доступны общие условия: API/сервисы существуют, но права принадлежат владельцам отдельных слоёв.",
+          "Условия требуют предварительного письменного разрешения для коммерческого/нечастного использования; запрещают сбор слоёв и API без явного разрешения.",
+          "Прямая страница общих условий gov.il и docs API дали403; текст прочитан в официальном Govmap, а не стороннем пересказе.",
+          "Не найден лицензированный набор HGV-ограничений пилота; наличие карты/API не доказательство данных."
+        ],
+        "license_ru": "NOT LICENSED для планируемого коммерческого извлечения на имеющемся основании; возможно отдельное письменное разрешение. Это не утверждение, что лицензию невозможно получить.",
+        "contact": "Официальный Contact Us Govmap / поддержка Survey of Israel; запросить владельца конкретного слоя и письменные права.",
+        "pilot_test": "NOT TESTED",
+        "pilot_restriction_coverage": "UNKNOWN",
+        "israel_presence": "CONFIRMED",
+        "restriction_attributes_api": "UNKNOWN",
+        "export": "UNKNOWN",
+        "derived_database": "NOT LICENSED",
+        "commercial_use": "NOT LICENSED",
+        "freshness": "UNKNOWN",
+        "independent_pilot_evidence": "UNKNOWN",
+        "matrix": {
+          "maxheight": "UNKNOWN",
+          "maxwidth": "UNKNOWN",
+          "maxlength": "UNKNOWN",
+          "gross_weight": "UNKNOWN",
+          "axle_load": "UNKNOWN",
+          "hgv_ban": "UNKNOWN",
+          "hazmat": "UNKNOWN",
+          "time_restrictions": "UNKNOWN",
+          "direction": "UNKNOWN",
+          "turn_restrictions": "UNKNOWN",
+          "tunnels_bridges": "UNKNOWN",
+          "temporary_closures": "UNKNOWN"
+        }
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age",
+      "scope": "existing_pilot_only"
+    },
+    {
+      "provider": "Carmel Tunnels",
+      "dimensions": {
+        "israel_truck_restriction_coverage": "UNKNOWN",
+        "haifa_pilot_restriction_coverage": "UNKNOWN",
+        "actual_restriction_attributes_product": "UNKNOWN",
+        "programmatic_access_product": "UNKNOWN",
+        "storage_and_derivative_database_rights": "UNKNOWN",
+        "commercial_use_rights_for_TrucksIL": "UNKNOWN",
+        "pilot_record_freshness": "UNKNOWN",
+        "independent_pilot_ground_evidence": "UNKNOWN",
+        "vendor_questions": "CONFIRMED"
+      },
+      "finding_ru": "Официальная страница на иврите публикует ограничения высоты4.6м, ширины3м и запрет опасных грузов для Carmel Tunnels; также одностороннее движение и запрет U-turn. Английская версия страницы не содержит соответствующего нижнего раздела; вывод взят с ивритской страницы. Это пример опубликованных владельцем параметров в Израиле, но объект вне bbox пилота и не тоннель Natanzon. Значения не импортированы и не перенесены на Natanzon. Дата вступления ограничений в силу и номер приказа не опубликованы на проверенной странице. API и право экспорта не подтверждены.",
+      "evidence_urls": [
+        "https://www.carmeltunnels.co.il/about-page/בטיחות-במנהרות-הכרמל/",
+        "https://www.carmeltunnels.co.il/en/יצירת-קשר/"
+      ],
+      "test_status": "NOT TESTED",
+      "import_approved": false,
+      "questions_ru": [
+        "Дайте бесплатный лицензируемый образец только bbox [34.990,32.811,35.004,32.821] с покрытием по атрибутам.",
+        "Разрешены ли постоянное хранение, нормализация, сопоставление с OSM, производная БД и коммерческое использование/распространение?",
+        "Укажите первичные источники, дату каждого ограничения, направление, единицы, срок действия, unknown/null, обновление и прекращение лицензии."
+      ],
+      "research": {
+        "id": "carmel_operator",
+        "name": "Оператор Carmel Tunnels (вне пилота, не Natanzon)",
+        "status": "PARTIAL",
+        "official_urls": [
+          "https://www.carmeltunnels.co.il/about-page/בטיחות-במנהרות-הכרמל/",
+          "https://www.carmeltunnels.co.il/en/יצירת-קשר/"
+        ],
+        "findings_ru": [
+          "Официальная страница на иврите публикует ограничения высоты4.6м, ширины3м и запрет опасных грузов для Carmel Tunnels; также одностороннее движение и запрет U-turn.",
+          "Английская версия страницы не содержит соответствующего нижнего раздела; вывод взят с ивритской страницы.",
+          "Это пример опубликованных владельцем параметров в Израиле, но объект вне bbox пилота и не тоннель Natanzon. Значения не импортированы и не перенесены на Natanzon.",
+          "Дата вступления ограничений в силу и номер приказа не опубликованы на проверенной странице. API и право экспорта не подтверждены."
+        ],
+        "license_ru": "All rights reserved; права хранения/переработки/коммерческой базы UNKNOWN.",
+        "contact": "Официальная форма Contact Us; *5424 /04-6895424; письма не отправлялись.",
+        "pilot_test": "NOT TESTED",
+        "pilot_restriction_coverage": "UNKNOWN",
+        "israel_presence": "CONFIRMED",
+        "restriction_attributes_api": "UNKNOWN",
+        "export": "UNKNOWN",
+        "derived_database": "UNKNOWN",
+        "commercial_use": "UNKNOWN",
+        "freshness": "UNKNOWN",
+        "independent_pilot_evidence": "UNKNOWN",
+        "matrix": {
+          "maxheight": "UNKNOWN",
+          "maxwidth": "UNKNOWN",
+          "maxlength": "UNKNOWN",
+          "gross_weight": "UNKNOWN",
+          "axle_load": "UNKNOWN",
+          "hgv_ban": "UNKNOWN",
+          "hazmat": "UNKNOWN",
+          "time_restrictions": "UNKNOWN",
+          "direction": "UNKNOWN",
+          "turn_restrictions": "UNKNOWN",
+          "tunnels_bridges": "UNKNOWN",
+          "temporary_closures": "UNKNOWN"
+        },
+        "scope": "OUT_OF_SCOPE",
+        "operator_published_values_reference_only": {
+          "maxheight_m": 4.6,
+          "maxwidth_m": 3,
+          "hazmat": "prohibited per operator page",
+          "effective_date": null,
+          "not_imported": true
+        }
+      },
+      "checked_on": "2026-10-10",
+      "current_trucksil_data_grant": "NONE_SUPPLIED",
+      "sample_records_received": 0,
+      "publication_or_observation_date": "UNKNOWN unless explicitly identified in source evidence; page modification is not record age",
+      "scope": "OUT_OF_SCOPE"
+    }
+  ],
+  "independent_audit": {
+    "agent": "6_independent_auditor",
+    "checked_on": "2026-10-10",
+    "scope": "Lower Haifa existing pilot only",
+    "method": "Reviewed reports of all five researchers; independently reopened decisive official documents and independently retrieved Trimble public HTML. No provider data API calls, no subscriptions, no imports.",
+    "status_meaning": {
+      "CONFIRMED": "Документально подтверждено в явно указанном продуктовом/территориальном объёме; не означает проверенные локальные записи.",
+      "UNKNOWN": "Доказательств недостаточно; не отрицательный вывод.",
+      "NOT LICENSED": "Отсутствует нужное разрешение в применимых рассмотренных условиях; отдельный договор возможен."
+    },
+    "corrections": [
+      {
+        "id": "AUD-01",
+        "issue": "TomTom old indexed snippet claimed Israel Orbis Traffic",
+        "resolution": "Reopened current 2026-09-15 page omits Israel; agent corrected report. No confirmed current Israel traffic claim accepted.",
+        "url": "https://docs.tomtom.com/traffic-api/documentation/tomtom-orbis-maps/v1/product-information/market-coverage"
+      },
+      {
+        "id": "AUD-02",
+        "issue": "Trimble text extraction loses SVG checks",
+        "resolution": "Auditor independently fetched HTML; Israel truck check present. Do not interpret blank text as no coverage.",
+        "url": "https://developer.trimblemaps.com/restful-apis/developer-guide/web-services-data-by-country/"
+      },
+      {
+        "id": "AUD-03",
+        "issue": "Country coverage, truck attributes, API and derivative license were at risk of conflation",
+        "resolution": "Separate nine dimensions and test status; all actual pilot samples NOT TESTED."
+      },
+      {
+        "id": "AUD-04",
+        "issue": "Sygic app-store Israel country picker",
+        "resolution": "Not accepted as product coverage evidence."
+      }
+    ],
+    "recommendation_ru": "Приоритетно запросить HERE и Trimble письменное подтверждение по полям и лицензируемый бесплатный образец пилота. TomTom и PTV — второй уровень уточнения, особенно raw attributes и договор производной БД. Официальные действующие приказы/свидетельства остаются необходимыми. Никаких массовых выгрузок или публикаций без разрешения.",
+    "confirmed_pilot_restrictions": 0,
+    "commercial_imports_approved": 0,
+    "source_urls": {
+      "yandex": "https://yandex.ru/support/navigator/en/cargo-navigation",
+      "here": "https://docs.here.com/routing/docs/routing-v8-truck-routing-coverage",
+      "here_attrs": "https://docs.here.com/map-attributes/docs/maps-and-layers",
+      "tomtom": "https://docs.tomtom.com/routing-api/documentation/tomtom-orbis-maps/v3/product-information/market-coverage",
+      "tomtom_attrs": "https://docs.tomtom.com/snap-to-roads-api/documentation/snap-to-roads-api/synchronous-snap-to-roads",
+      "tomtom_traffic": "https://docs.tomtom.com/traffic-api/documentation/tomtom-orbis-maps/v1/product-information/market-coverage",
+      "trimble": "https://developer.trimblemaps.com/restful-apis/developer-guide/web-services-data-by-country/",
+      "ptv": "https://developer-applications.myptv.com/CodeSamples/Misc/ProfilesAndCountries.htm",
+      "ptv_license": "https://www.ptvlogistics.com/en/PTV_Logistics_Licensing_Terms_Geodata_EN.pdf?inline=",
+      "govmap": "https://www.govmap.gov.il/sites/emergency-services/index.html",
+      "haifa_license": "https://opendata.haifa.muni.il/dataset/clean_air/resource/be774cbd-c4b8-4e40-a50e-344ff3356954"
+    },
+    "reviewed_agent_reports": [
+      "/tmp/provider-yandex.json",
+      "/tmp/provider-here.json",
+      "/tmp/provider-tomtom.json",
+      "/tmp/provider-others.json",
+      "/tmp/provider-official.json"
+    ]
+  },
+  "recommendation_ru": "Приоритетно запросить HERE и Trimble письменное подтверждение по полям и лицензируемый бесплатный образец пилота. TomTom и PTV — второй уровень уточнения, особенно raw attributes и договор производной БД. Официальные действующие приказы/свидетельства остаются необходимыми. Никаких массовых выгрузок или публикаций без разрешения.",
+  "preserved_graph": {
+    "nodes": 1995,
+    "segments": 2168,
+    "components": 5,
+    "unknown_direction_segments": 575,
+    "quarantined_turn_relations": 113,
+    "raw_osm_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31"
+  },
+  "validation": {
+    "unit_tests": {
+      "command": "python -m unittest discover -s tests -v",
+      "passed": 72,
+      "failed": 0
+    },
+    "ci": "Pending publication; final result and exact commit in PR2 and delivery report. No provider data validation claimed."
+  }
+}

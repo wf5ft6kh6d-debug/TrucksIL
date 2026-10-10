@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.1.0 (1311 spike-08.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <relation id="10115408" visible="true" version="1" changeset="75300439" timestamp="2019-10-04T18:54:35Z" user="feket" uid="642552">
+  <member type="way" ref="731754150" role="from"/>
+  <member type="node" ref="6852518463" role="via"/>
+  <member type="way" ref="731754154" role="to"/>
+  <tag k="restriction" v="only_right_turn"/>
+  <tag k="type" v="restriction"/>
+ </relation>
+ <relation id="10115408" visible="true" version="2" changeset="95739020" timestamp="2020-12-12T22:30:36Z" user="Car162" uid="12223802">
+  <member type="way" ref="731754150" role="from"/>
+  <member type="node" ref="6852518463" role="via"/>
+  <tag k="restriction" v="only_right_turn"/>
+  <tag k="type" v="restriction"/>
+ </relation>
+ <relation id="10115408" visible="true" version="3" changeset="111264035" timestamp="2021-09-15T22:17:13Z" user="zstadler" uid="3127">
+  <member type="way" ref="983720407" role="to"/>
+  <member type="node" ref="8223132276" role="via"/>
+  <member type="way" ref="731754150" role="from"/>
+  <tag k="restriction" v="no_left_turn"/>
+  <tag k="type" v="restriction"/>
+ </relation>
+</osm>

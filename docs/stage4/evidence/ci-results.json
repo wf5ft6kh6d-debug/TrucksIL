@@ -1,0 +1,28 @@
+{
+  "tested_code_commit": "6125b35272170a86e7950da4027c1b1e48a3eb2d",
+  "national_run": "https://github.com/wf5ft6kh6d-debug/TrucksIL/actions/runs/38051002438",
+  "conclusion": "success",
+  "unit_tests": 91,
+  "schema_comparisons": 54,
+  "schema_mismatches": 0,
+  "segments": 4708889,
+  "candidate_records": 26188,
+  "relations": 14463,
+  "postgis": "3.4.3",
+  "postgresql": "16.4",
+  "full_row_postgis": true,
+  "rollback": true,
+  "sample_pair_predicates_only": 1000,
+  "verified_restrictions": 0,
+  "artifact_id": 11669364536,
+  "artifact_bytes": 719480969,
+  "inherited_run": "https://github.com/wf5ft6kh6d-debug/TrucksIL/actions/runs/38051006569",
+  "copy_seconds": {
+    "ways": 6.07192,
+    "nodes": 8.469486,
+    "segments": 92.72227,
+    "candidates": 0.278689,
+    "relations": 0.124766
+  },
+  "bbox_query_ms": 1.556
+}

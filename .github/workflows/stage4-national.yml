@@ -1,0 +1,75 @@
+name: Stage 4 full national extract research acceptance
+on:
+  push:
+    branches: [stage4/israel-national-road-graph]
+    paths: ['scripts/stage4/**', 'tests/test_stage4*', 'data/stage4/**', '.github/workflows/stage4-national.yml']
+permissions:
+  contents: read
+concurrency:
+  group: national-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  national:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12.8'
+      - name: Pinned research dependencies
+        run: |
+          python -m pip install pip==24.3.1
+          python -m pip install osmium==4.0.2 networkx==3.4.2 shapely==2.0.6 numpy==2.1.3 pyproj==3.7.0 jsonschema==4.23.0 requests==2.32.3 urllib3==2.2.3 idna==3.10 charset-normalizer==3.4.0 certifi==2024.8.30 attrs==24.2.0 jsonschema-specifications==2024.10.1 referencing==0.35.1 rpds-py==0.20.0 typing_extensions==4.12.2
+          mkdir -p evidence
+          python -m pip freeze > evidence/packages.txt
+          git rev-parse HEAD > evidence/commit.txt
+      - name: Existing and national unit tests
+        run: |
+          set -o pipefail
+          python -m unittest discover -s tests -v 2>&1 | tee evidence/unit.log
+          python scripts/compare_schema_engine.py | tee evidence/schema.log
+      - name: Download exact licensed snapshot and process ALL highway ways
+        run: |
+          set -o pipefail
+          python scripts/stage4/acquire_national.py source | tee evidence/acquisition.log
+          python scripts/stage4/national_graph.py source/israel-and-palestine-261008.osm.pbf national > evidence/build.log
+          python scripts/stage4/verify_national.py national | tee evidence/independent.log
+      - name: Five national research layers, independent source reconciliation and exact replay
+        run: |
+          set -euo pipefail
+          python scripts/stage4/run_derived_audits.py national/graph.sqlite source/israel-and-palestine-261008.osm.pbf derived --repeat | tee evidence/derived-audit.log
+          python scripts/stage4/extend_postgis_acceptance.py national/national-test.sql derived national/derived-test.sql
+      - name: Isolated full-row PostGIS import, spatial index, repeat and rollback
+        run: |
+          set -euo pipefail
+          docker pull postgis/postgis@sha256:44126d872ac91993766c341e369c539e8196614321765d36a6f1bab0419a5fa5
+          docker run -d --name national-postgis --network none -e POSTGRES_PASSWORD=disposable_ci_only postgis/postgis@sha256:44126d872ac91993766c341e369c539e8196614321765d36a6f1bab0419a5fa5
+          for n in $(seq 1 60); do
+            if test "$(docker exec national-postgis cat /proc/1/comm)" = postgres && docker exec --user postgres national-postgis pg_isready -h /var/run/postgresql; then break; fi
+            sleep 1
+          done
+          docker exec --user postgres national-postgis createdb -h /var/run/postgresql trucksil_stage4_test_national
+          docker exec -i --user postgres national-postgis psql -X -h /var/run/postgresql -d trucksil_stage4_test_national -v ON_ERROR_STOP=1 < national/derived-test.sql 2>&1 | tee evidence/postgis.log
+          for sql in derived/boundary/boundary-postgis.sql derived/geometry/geometry-postgis.sql derived/infrastructure/infrastructure-check.sql; do
+            docker exec -i --user postgres national-postgis psql -X -h /var/run/postgresql -d trucksil_stage4_test_national -v ON_ERROR_STOP=1 < "$sql" 2>&1 | tee "evidence/$(basename "$sql").log"
+          done
+          git fsck --full
+      - name: Preserve source and reproducible research output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: national-research-${{ github.run_id }}
+          path: |
+            source/
+            national/
+            derived/
+            evidence/
+          retention-days: 90
+          if-no-files-found: error
+      - name: Destroy disposable database
+        if: always()
+        run: docker rm -fv national-postgis || true

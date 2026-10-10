@@ -1,0 +1,51 @@
+{
+  "dataset_id": "osm-haifa-lower-city-pilot",
+  "source_url": "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A45%5D%5Bmaxsize%3A16777216%5D%3B%0Away%5B%22highway%22%5D%2832.811%2C34.990%2C32.821%2C35.004%29-%3E.roads%3B%0A%28.roads%3Bnode%28w.roads%29%3Brel%28bw.roads%29%5B%22type%22%3D%22restriction%22%5D%3B%29%3B%0Aout+meta%3B%0A",
+  "endpoint": "https://overpass-api.de/api/interpreter",
+  "query": "[out:json][timeout:45][maxsize:16777216];\nway[\"highway\"](32.811,34.990,32.821,35.004)->.roads;\n(.roads;node(w.roads);rel(bw.roads)[\"type\"=\"restriction\"];);\nout meta;\n",
+  "bbox_wgs84": [
+    34.99,
+    32.811,
+    35.004,
+    32.821
+  ],
+  "retrieved_at": "2026-10-10T09:33:16.343613Z",
+  "http_headers": {
+    "Content-Type": "application/json",
+    "Date": "Sat, 10 Oct 2026 09:33:13 GMT",
+    "Last-Modified": null,
+    "ETag": null
+  },
+  "source_snapshot_at": "2026-10-10T09:31:18Z",
+  "publication_date": null,
+  "format": "Overpass JSON",
+  "crs": "EPSG:4326",
+  "sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+  "bytes": 995046,
+  "raw_file": "raw.json",
+  "license": {
+    "identifier": "ODbL-1.0",
+    "decision": "permitted",
+    "reference": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "evidence_url": "https://www.openstreetmap.org/copyright",
+    "checked_on": "2026-10-10",
+    "reviewer": "TrucksIL source review",
+    "scope": "OSM pilot and its separate derived database only",
+    "attribution": "© OpenStreetMap contributors",
+    "obligations": [
+      "attribution",
+      "ODbL share-alike and access to derived database",
+      "no government endorsement; no navigation certification"
+    ]
+  },
+  "owner": "OpenStreetMap contributors; database licensed by OSM Foundation",
+  "distributor": "Overpass API",
+  "authenticated_official": false,
+  "route_safety_certified": false,
+  "coverage_status": "unknown",
+  "notes": [
+    "OSM edit timestamps are not field observation dates",
+    "Whole ways can extend outside requested bbox",
+    "Related restriction relations may have members outside this snapshot"
+  ]
+}

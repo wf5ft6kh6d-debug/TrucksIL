@@ -1,0 +1,10 @@
+{
+  "sample": "first 1000 segment IDs; not representative of national intersections",
+  "pair_counts": {
+    "intersects": 969,
+    "touches": 969,
+    "overlaps": 0,
+    "equals": 0,
+    "crosses": 0
+  }
+}

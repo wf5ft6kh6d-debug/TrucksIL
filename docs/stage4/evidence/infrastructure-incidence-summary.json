@@ -1,0 +1,13 @@
+{
+  "scope": "Derived counts from completed immutable infrastructure registries; endpoint incidence is not physical portal confirmation",
+  "counts": {
+    "relations_with_direction_conflict_candidates": 156,
+    "relations_with_via_incidence_missing": 14,
+    "bridge_endpoint_records": 9804,
+    "bridge_endpoints_only_own_way_incidence": 490,
+    "tunnel_endpoint_records": 3782,
+    "tunnel_endpoints_only_own_way_incidence": 277
+  },
+  "physical_portals_verified": 0,
+  "changes_to_graph": 0
+}

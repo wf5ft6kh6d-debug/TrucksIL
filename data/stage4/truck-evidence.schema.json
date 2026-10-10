@@ -1,0 +1,348 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TrucksIL unverified OSM research evidence queue",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "candidate_id",
+    "osm",
+    "raw_tags",
+    "categories",
+    "geometry",
+    "source_payload",
+    "provenance",
+    "status",
+    "navigation_eligible",
+    "context_only",
+    "measurements",
+    "direction",
+    "truck_applicability",
+    "independent_evidence",
+    "acceptance",
+    "temporal_applicability",
+    "quarantine_reason",
+    "required_additional_evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "candidate_id": {
+      "type": "string"
+    },
+    "osm": {
+      "type": "object",
+      "required": [
+        "type",
+        "id",
+        "version",
+        "timestamp",
+        "url"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "node",
+            "way",
+            "relation"
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "raw_tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "geometry": {
+      "type": "object"
+    },
+    "source_payload": {
+      "type": "object",
+      "required": [
+        "tags_json",
+        "categories_json",
+        "geometry_json"
+      ],
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "source_id",
+        "url",
+        "sha256",
+        "snapshot_at",
+        "retrieved_at",
+        "license",
+        "license_url",
+        "attribution"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "snapshot_at": {
+          "type": "string"
+        },
+        "retrieved_at": {
+          "type": "string"
+        },
+        "license_url": {
+          "type": "string"
+        },
+        "attribution": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "license": {
+          "const": "ODbL-1.0"
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "const": "QUARANTINE"
+    },
+    "navigation_eligible": {
+      "const": false
+    },
+    "context_only": {
+      "type": "boolean"
+    },
+    "measurements": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "raw",
+          "value",
+          "unit",
+          "status"
+        ],
+        "properties": {
+          "raw": {
+            "type": "string"
+          },
+          "value": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "exclusiveMinimum": 0
+          },
+          "unit": {
+            "enum": [
+              "m",
+              "t",
+              "kg",
+              null
+            ]
+          },
+          "status": {
+            "enum": [
+              "UNKNOWN",
+              "PARSED_EXPLICIT_UNIT"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "UNKNOWN"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "value": {
+                  "type": "null"
+                },
+                "unit": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "value": {
+                  "type": "number"
+                },
+                "unit": {
+                  "enum": [
+                    "m",
+                    "t",
+                    "kg"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "direction": {
+      "type": "object",
+      "required": [
+        "status",
+        "raw_tags"
+      ],
+      "properties": {
+        "status": {
+          "const": "UNKNOWN"
+        },
+        "raw_tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "truck_applicability": {
+      "const": "UNKNOWN"
+    },
+    "independent_evidence": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "acceptance": {
+      "type": "object",
+      "required": [
+        "automatic_promotion",
+        "required_gates",
+        "gate_status"
+      ],
+      "properties": {
+        "automatic_promotion": {
+          "const": false
+        },
+        "required_gates": {
+          "const": [
+            "competent_independent_source",
+            "document_identity_and_validity",
+            "exact_geometry_and_direction",
+            "vehicle_applicability",
+            "units_and_value",
+            "reuse_rights",
+            "independent_reviewer"
+          ]
+        },
+        "gate_status": {
+          "type": "object",
+          "required": [
+            "competent_independent_source",
+            "document_identity_and_validity",
+            "exact_geometry_and_direction",
+            "vehicle_applicability",
+            "units_and_value",
+            "reuse_rights",
+            "independent_reviewer"
+          ],
+          "properties": {
+            "competent_independent_source": {
+              "const": "UNKNOWN"
+            },
+            "document_identity_and_validity": {
+              "const": "UNKNOWN"
+            },
+            "exact_geometry_and_direction": {
+              "const": "UNKNOWN"
+            },
+            "vehicle_applicability": {
+              "const": "UNKNOWN"
+            },
+            "units_and_value": {
+              "const": "UNKNOWN"
+            },
+            "reuse_rights": {
+              "const": "UNKNOWN"
+            },
+            "independent_reviewer": {
+              "const": "UNKNOWN"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "temporal_applicability": {
+      "type": "object",
+      "required": [
+        "status",
+        "raw_tags"
+      ],
+      "properties": {
+        "status": {
+          "const": "UNKNOWN"
+        },
+        "raw_tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "quarantine_reason": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "no_independent_source_evidence",
+          "infrastructure_context_is_not_a_truck_restriction"
+        ]
+      }
+    },
+    "required_additional_evidence": {
+      "const": [
+        "competent_independent_source",
+        "document_identity_and_validity",
+        "exact_geometry_and_direction",
+        "vehicle_applicability",
+        "units_and_value",
+        "reuse_rights",
+        "independent_reviewer"
+      ]
+    }
+  },
+  "additionalProperties": false
+}
