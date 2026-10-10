@@ -1,14 +1,14 @@
-name: Stage 2 technical acceptance
+name: Stage 3 pilot and inherited technical acceptance
 on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
   push:
-    branches: [stage2/data-foundation-20261009]
+    branches: [stage3/israel-road-data-foundation]
 permissions:
   contents: read
 concurrency:
-  group: stage2-${{ github.event.pull_request.number || github.ref }}
+  group: stage3-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
   acceptance:
@@ -40,6 +40,12 @@ jobs:
           set -euo pipefail
           python -m unittest discover -s tests -v 2>&1 | tee evidence/unit-tests.log
           python scripts/compare_schema_engine.py 2>&1 | tee evidence/schema-comparison.log
+      - name: Reproduce frozen OSM pilot without source network access
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/stage3/build_pilot.py --output evidence/pilot
+          python src/ingest_restrictions.py evidence/pilot/restrictions.json --as-of 2026-10-10T10:00:00Z --output evidence/pilot/validated-empty-batch.json
       - name: Start disposable PostGIS without network or exposed ports
         shell: bash
         run: |
@@ -84,6 +90,12 @@ jobs:
           cmp evidence/ledger-before.txt evidence/ledger-after.txt
           psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -v ON_ERROR_STOP=1 < db/test_stage2_hardening.sql 2>&1 | tee evidence/hardening-tests.log
           test "$(psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -Atc 'SELECT count(*) FROM trucksil_stage2.audit_events')" = 0
+      - name: Real pilot PostGIS replay and rollback verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -v ON_ERROR_STOP=1 < evidence/pilot/pilot-replay.sql 2>&1 | tee evidence/pilot-postgis.log
+          test "$(psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -Atc 'SELECT (SELECT count(*) FROM trucksil_stage2.sources)+(SELECT count(*) FROM trucksil_stage2.road_nodes)+(SELECT count(*) FROM trucksil_stage2.road_segments)+(SELECT count(*) FROM trucksil_stage2.audit_events)')" = 0
       - name: Refuse checksum mismatch and unversioned schema; prove failure rollback
         shell: bash
         run: |

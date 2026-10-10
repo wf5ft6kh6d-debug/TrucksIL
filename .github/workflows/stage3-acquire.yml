@@ -17,8 +17,14 @@ jobs:
         with:
           python-version: '3.12.8'
       - name: One bounded request, no retries
-        run: python scripts/stage3/acquire_osm.py --output acquisition
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        run: |
+          if test -f data/stage3/osm-haifa-20261010/raw.json.gz; then
+            echo 'Frozen pilot already exists; no external request or refresh.'
+          else
+            python scripts/stage3/acquire_osm.py --output acquisition
+          fi
+      - if: ${{ hashFiles('acquisition/manifest.json') != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: osm-pilot-raw
           path: acquisition/

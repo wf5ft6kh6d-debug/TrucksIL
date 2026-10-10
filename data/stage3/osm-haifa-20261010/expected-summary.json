@@ -1,0 +1,56 @@
+{
+  "normalizer_version": "stage3-v1",
+  "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+  "bbox_wgs84": [
+    34.99,
+    32.811,
+    35.004,
+    32.821
+  ],
+  "source_snapshot_at": "2026-10-10T09:31:18Z",
+  "retrieved_at": "2026-10-10T09:33:16.343613Z",
+  "source_elements": {
+    "node": 2831,
+    "relation": 113,
+    "way": 719
+  },
+  "eligible_road_ways": 514,
+  "excluded_way_classes": {
+    "construction": 8,
+    "footway": 142,
+    "path": 12,
+    "pedestrian": 10,
+    "steps": 31,
+    "track": 2
+  },
+  "graph_nodes": 1995,
+  "graph_segments": 2168,
+  "boundary_pairs_excluded": 339,
+  "degenerate_pairs_excluded": 0,
+  "relation_member_references_missing": 6,
+  "restriction_tag_observations": {
+    "maxheight": 0,
+    "maxwidth": 0,
+    "maxlength": 0,
+    "maxweight": 0,
+    "maxaxleload": 0,
+    "hgv": 0,
+    "hazmat": 0
+  },
+  "all_access_direction_turn_observations": 504,
+  "turn_relations_quarantined": 113,
+  "verified_restrictions": 0,
+  "restriction_records_emitted": 0,
+  "road_length_m_spherical": 36289.224,
+  "window_area_km2_spherical": 1.454766,
+  "infrastructure_way_tags": {
+    "bridge": 1,
+    "tunnel": 3
+  },
+  "geometry_completeness": null,
+  "national_coverage": null,
+  "restriction_coverage": "unknown",
+  "route_safety_certified": false,
+  "route_suitability": "unknown",
+  "normalized_sha256": "989b016dd4c305c9e16ebf34c32d60f8bd396d7ac2cee3f6f7828473b496f370"
+}
