@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Discovery candidates only; not a restrictions dataset or approved source registry.",
+  "checked_at": "2026-10-09T08:59:32Z",
+  "sources": [
+    {
+      "source_id": "data-gov-il-license",
+      "authority": "National Digital Agency",
+      "url": "https://data.gov.il/he/terms-of-use",
+      "source_kind": "license_policy",
+      "review_status": "candidate",
+      "checked_at": "2026-10-09T08:59:32Z",
+      "checked_by": "ai-agent-official-sources",
+      "access_result": "full_text_retrieved",
+      "evidence_summary": "Portal database license read; updated 2025-08-30. Dataset-specific licenses override this default.",
+      "license_status": "policy_reviewed_dataset_scope_pending",
+      "license_url": "https://data.gov.il/he/terms-of-use",
+      "dataset_acquired": false,
+      "approved_for_import": false,
+      "may_support_route_safety": false,
+      "limitations": [
+        "Not a dataset; no road coverage, geometry or restrictions acquired."
+      ],
+      "next_action": "Obtain concrete dataset and metadata; verify owner, spatial/temporal scope and applicable license before ingestion."
+    },
+    {
+      "source_id": "mot-road-number-maps",
+      "authority": "Ministry of Transport and Road Safety",
+      "url": "https://www.gov.il/he/pages/national-road-number-maps",
+      "source_kind": "map_publication_index",
+      "review_status": "candidate",
+      "checked_at": "2026-10-09T08:59:32Z",
+      "checked_by": "ai-agent-official-sources",
+      "access_result": "search_index_only_direct_403",
+      "evidence_summary": "Official indexed page describes national road numbering and links Hatzav.",
+      "license_status": "unresolved",
+      "license_url": null,
+      "dataset_acquired": false,
+      "approved_for_import": false,
+      "may_support_route_safety": false,
+      "limitations": [
+        "Road numbering does not establish truck suitability; map layers may have separate rights."
+      ],
+      "next_action": "Obtain concrete dataset and metadata; verify owner, spatial/temporal scope and applicable license before ingestion."
+    },
+    {
+      "source_id": "mot-road-map-sheet-04-20260311",
+      "authority": "Ministry of Transport and Road Safety",
+      "url": "https://www.gov.il/BlobFolder/generalpage/national-road-number-maps/he/Roadnumbers_04_20260311.pdf",
+      "source_kind": "pdf_map_candidate",
+      "review_status": "candidate",
+      "checked_at": "2026-10-09T08:59:32Z",
+      "checked_by": "ai-agent-official-sources",
+      "access_result": "search_index_only_direct_403",
+      "evidence_summary": "Search index identifies Emek Yizrael national road number map; date-like filename is not independently verified publication date.",
+      "license_status": "unresolved",
+      "license_url": null,
+      "dataset_acquired": false,
+      "approved_for_import": false,
+      "may_support_route_safety": false,
+      "limitations": [
+        "PDF bytes not downloaded or inspected; no extracted network or restriction; one sheet is not national coverage."
+      ],
+      "next_action": "Obtain concrete dataset and metadata; verify owner, spatial/temporal scope and applicable license before ingestion."
+    },
+    {
+      "source_id": "mot-hatzav",
+      "authority": "Ministry of Transport and Road Safety",
+      "url": "https://geo.mot.gov.il/",
+      "source_kind": "map_portal",
+      "review_status": "candidate",
+      "checked_at": "2026-10-09T08:59:32Z",
+      "checked_by": "ai-agent-official-sources",
+      "access_result": "direct_timeout",
+      "evidence_summary": "Linked as Hatzav by indexed official road-number publication.",
+      "license_status": "unresolved",
+      "license_url": null,
+      "dataset_acquired": false,
+      "approved_for_import": false,
+      "may_support_route_safety": false,
+      "limitations": [
+        "Layer inventory, road graph exports, completeness, update dates and truck restriction fields unverified."
+      ],
+      "next_action": "Obtain concrete dataset and metadata; verify owner, spatial/temporal scope and applicable license before ingestion."
+    },
+    {
+      "source_id": "govmap",
+      "authority": "Govmap / Survey of Israel attribution to be verified per layer",
+      "url": "https://www.govmap.gov.il/",
+      "source_kind": "map_portal",
+      "review_status": "candidate",
+      "checked_at": "2026-10-09T08:59:32Z",
+      "checked_by": "ai-agent-official-sources",
+      "access_result": "page_returned_no_extractable_text",
+      "evidence_summary": "Official map portal identified in search index; direct result has no extractable content.",
+      "license_status": "unresolved",
+      "license_url": null,
+      "dataset_acquired": false,
+      "approved_for_import": false,
+      "may_support_route_safety": false,
+      "limitations": [
+        "Viewing a layer does not establish bulk extraction or redistribution permission; no layer license approved."
+      ],
+      "next_action": "Obtain concrete dataset and metadata; verify owner, spatial/temporal scope and applicable license before ingestion."
+    },
+    {
+      "source_id": "govmap-api-docs",
+      "authority": "Govmap",
+      "url": "https://api.govmap.gov.il/docs/javascript-functions/filter-layers",
+      "source_kind": "api_documentation",
+      "review_status": "candidate",
+      "checked_at": "2026-10-09T08:59:32Z",
+      "checked_by": "ai-agent-official-sources",
+      "access_result": "search_index_only",
+      "evidence_summary": "Official API documentation indexed; describes filtering map layers. Documentation root direct read returned 403.",
+      "license_status": "unresolved",
+      "license_url": null,
+      "dataset_acquired": false,
+      "approved_for_import": false,
+      "may_support_route_safety": false,
+      "limitations": [
+        "API capability is not permission to reuse data; token terms, quotas, dataset rights, export and commercial use remain unverified."
+      ],
+      "next_action": "Obtain concrete dataset and metadata; verify owner, spatial/temporal scope and applicable license before ingestion."
+    },
+    {
+      "source_id": "israel-police",
+      "authority": "Israel Police",
+      "url": "https://www.gov.il/he/departments/israel_police",
+      "source_kind": "official_agency_portal",
+      "review_status": "candidate",
+      "checked_at": "2026-10-09T08:59:32Z",
+      "checked_by": "ai-agent-official-sources",
+      "access_result": "search_index_only_direct_403",
+      "evidence_summary": "Official agency page identified in search index.",
+      "license_status": "unresolved",
+      "license_url": null,
+      "dataset_acquired": false,
+      "approved_for_import": false,
+      "may_support_route_safety": false,
+      "limitations": [
+        "No authenticated machine-readable closures feed or specific current closure acquired; social channel names alone are insufficient authentication."
+      ],
+      "next_action": "Obtain concrete dataset and metadata; verify owner, spatial/temporal scope and applicable license before ingestion."
+    },
+    {
+      "source_id": "netivei-israel",
+      "authority": "Netivei Israel",
+      "url": "https://www.iroads.co.il/",
+      "source_kind": "road_operator_portal",
+      "review_status": "candidate",
+      "checked_at": "2026-10-09T08:59:32Z",
+      "checked_by": "ai-agent-official-sources",
+      "access_result": "search_index_only_direct_403",
+      "evidence_summary": "Indexed operator homepage refers to traffic control and road assistance.",
+      "license_status": "unresolved",
+      "license_url": null,
+      "dataset_acquired": false,
+      "approved_for_import": false,
+      "may_support_route_safety": false,
+      "limitations": [
+        "Bridge inventory, clearance data, statutory restrictions, publication API and reuse license not acquired."
+      ],
+      "next_action": "Obtain concrete dataset and metadata; verify owner, spatial/temporal scope and applicable license before ingestion."
+    }
+  ]
+}

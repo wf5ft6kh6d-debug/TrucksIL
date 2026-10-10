@@ -1,0 +1,37 @@
+{
+  "record_kind": "discovery_and_rights_review_not_restrictions",
+  "review_checkpoint_utc": "2026-10-09T09:22:33Z",
+  "reviewer": "AI restriction specialist; independent approval pending",
+  "routing_eligible": false,
+  "verified_restriction_count": 0,
+  "records": [
+    {
+      "id": "restriction-lead-carmel-001",
+      "publisher_type": "road_operator_not_government",
+      "source_url": "https://www.carmeltunnels.co.il/about-page/בטיחות-במנהרות-הכרמל/",
+      "terms_url": "https://www.carmeltunnels.co.il/תנאי-שימושתנאי-שימוש-באתר-מנהרות-הכרמ/",
+      "terms_observation": "Terms opened; clause 7 requires prior written consent for copying/publication/commercial use and limits use to private purposes.",
+      "rights_decision": "blocked_pending_written_permission",
+      "acquisition_action": "No operational restriction extraction, source snapshot or geometry import",
+      "status": "unverified",
+      "current_applicability": "unknown",
+      "geometry": null,
+      "segment_id": null,
+      "blockers": ["reuse_permission", "current_authority_confirmation", "exact_segment_and_direction", "independent_review"]
+    },
+    {
+      "id": "restriction-lead-route1-001",
+      "publisher_type": "government_ministry",
+      "source_url": "https://www.gov.il/he/pages/nativ-plus-harel",
+      "terms_url_attempted": "https://www.gov.il/he/general/terms_of_use",
+      "access_observation": "Source and terms direct fetch returned HTTP 403; search-discovery only",
+      "rights_decision": "unresolved_no_import",
+      "acquisition_action": "No operational restriction extraction or source snapshot",
+      "status": "unverified",
+      "current_applicability": "unknown",
+      "geometry": null,
+      "segment_id": null,
+      "blockers": ["readable_primary_document", "reuse_permission", "current_force", "exact_scope_and_calendar", "independent_review"]
+    }
+  ]
+}
