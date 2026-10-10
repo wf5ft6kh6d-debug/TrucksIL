@@ -1,0 +1,29 @@
+{
+  "turn_relation_issues": {
+    "via_way": 1345,
+    "missing_from": 320,
+    "missing_via": 117,
+    "missing_to": 324,
+    "multiple_role_members": 592,
+    "conditional": 2,
+    "missing_source_refs": 1
+  },
+  "infrastructure": {
+    "bridge_highway_ways": 4902,
+    "bridge_without_layer": 429,
+    "tunnel_highway_ways": 1891,
+    "tunnel_without_layer": 475
+  },
+  "source_polygon_midpoints_outside": 14407,
+  "segments_checked": 4708889,
+  "nodes_with_edges": 4414569,
+  "components": 1112,
+  "candidate_records_schema_checked": 26188,
+  "unknown_direction_segments": 3957312,
+  "all_geometry_rows_valid": true,
+  "networkx_components_agree": true,
+  "foreign_keys_ok": true,
+  "elapsed_seconds": 191.98872335800115,
+  "pairwise_national_intersections": "NOT EXHAUSTIVELY TESTED",
+  "verified_restrictions": 0
+}
