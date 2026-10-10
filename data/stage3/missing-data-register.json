@@ -1,0 +1,141 @@
+{
+  "as_of": "2026-10-10",
+  "counting_unit": "gap categories, not road objects; C01/C02 previously closed evidence questions; C03 limited technical screen",
+  "counts": {
+    "open": 10,
+    "closed_evidence": 3,
+    "new_operational_closures": 0
+  },
+  "items": [
+    {
+      "id": "G01",
+      "priority": "P0",
+      "title": "Действующие дорожные приказы Natanzon/HaNeviim/Bialik",
+      "source": "Муниципалитет Хайфы; TIL-HAIFA-001",
+      "license": "unknown",
+      "evidence": "document-requests-20261010.json",
+      "status": "open",
+      "closure_condition": "Получить действующий документ, участок, направление, сроки и заменённые редакции"
+    },
+    {
+      "id": "G02",
+      "priority": "P0",
+      "title": "Права повторного использования каждого официального набора",
+      "source": "Правообладатель каждого документа",
+      "license": "unknown",
+      "evidence": "official-documents-20261010.json",
+      "status": "open",
+      "closure_condition": "Явные условия конкретного документа и разрешённая переработка; лицензия портала недостаточна"
+    },
+    {
+      "id": "G03",
+      "priority": "P0",
+      "title": "Грузовые значения и применимость",
+      "source": "Компетентный дорожный орган",
+      "license": "unknown",
+      "evidence": "gap-research-summary.json",
+      "status": "open",
+      "closure_condition": "Подтвердить класс ТС, высоту/массу/ось/ширину/длину/HGV/опасные грузы и единицы; отсутствие тега не разрешение"
+    },
+    {
+      "id": "G04",
+      "priority": "P0",
+      "title": "Независимая приёмка официальных свидетельств",
+      "source": "Издатель и независимый проверяющий",
+      "license": "unknown",
+      "evidence": "docs/stage3/OFFICIAL_DOCUMENT_INTAKE_RU.md",
+      "status": "open",
+      "closure_condition": "Пройти все ворота приёмки отдельно для каждого источника"
+    },
+    {
+      "id": "G05",
+      "priority": "P1",
+      "title": "575 направлений / 158 OSM ways",
+      "source": "Замороженный OSM-срез",
+      "license": "ODbL-1.0",
+      "evidence": "gap-research-summary.json",
+      "status": "open",
+      "closure_condition": "Проверяемые актуальные направленные теги/геометрия; для юридической применимости официальные документы"
+    },
+    {
+      "id": "G06",
+      "priority": "P1",
+      "title": "113 отношений поворотов в карантине",
+      "source": "OSM + компетентный орган",
+      "license": "OSM ODbL-1.0; official unknown",
+      "evidence": "osm-members-20261010/expected-audit.json",
+      "status": "open",
+      "closure_condition": "Полные from/via/to, связность, направления, условия и truck applicability; ручная приёмка каждого отношения"
+    },
+    {
+      "id": "G07",
+      "priority": "P1",
+      "title": "43 физических причины конечных узлов",
+      "source": "OSM + дорожный орган",
+      "license": "OSM ODbL-1.0; official unknown",
+      "evidence": "endpoint-review-20261010.json",
+      "status": "open",
+      "closure_condition": "Подтвердить физический конец/ворота/проход или дефект; теги парковки не подтверждают грузовой доступ"
+    },
+    {
+      "id": "G08",
+      "priority": "P1",
+      "title": "Вертикальная топология и габариты инфраструктуры",
+      "source": "OSM + владелец инфраструктуры",
+      "license": "OSM ODbL-1.0; official unknown",
+      "evidence": "gap-research-summary.json",
+      "status": "open",
+      "closure_condition": "Подтвердить уровни/порталы/габариты; отдельно исследовать касания и наложения, не охваченные strict crossing"
+    },
+    {
+      "id": "G09",
+      "priority": "P1",
+      "title": "Получение и регистрация TIL-HAIFA-001",
+      "source": "Муниципалитет Хайфы",
+      "license": "not_applicable",
+      "evidence": "document-requests-20261010.json",
+      "status": "open",
+      "closure_condition": "Получить подтверждение адресата/регистрационный номер; сообщение отправителя не доказательство получения"
+    },
+    {
+      "id": "G10",
+      "priority": "P2",
+      "title": "Полнота и актуализация покрытия",
+      "source": "OSM и официальные каталоги",
+      "license": "per_dataset_review",
+      "evidence": "docs/stage3/DATA_ACQUISITION_PLAN_RU.md",
+      "status": "open",
+      "closure_condition": "Определить знаменатель полноты, сроки проверки и обновления внутри прежнего bbox; не заявлять национальное покрытие"
+    },
+    {
+      "id": "C01",
+      "priority": "P1",
+      "title": "Шесть отсутствующих ссылок участников",
+      "source": "OSM historical supplement",
+      "license": "ODbL-1.0",
+      "evidence": "osm-members-20261010/manifest.json",
+      "status": "closed_evidence",
+      "closure_condition": "Уже закрыта техническая зависимость: 6 ссылок / 5 ways; не проверка законности поворотов"
+    },
+    {
+      "id": "C02",
+      "priority": "P1",
+      "title": "Причина отсутствия from в двух relations",
+      "source": "OSM XML history",
+      "license": "ODbL-1.0",
+      "evidence": "osm-history-20261010/manifest.json",
+      "status": "closed_evidence",
+      "closure_condition": "Уже установлено удаление from в истории; текущее from не восстановлено"
+    },
+    {
+      "id": "C03",
+      "priority": "P2",
+      "title": "Строгие внутренние 2D-пересечения без общего узла",
+      "source": "Замороженный OSM-срез",
+      "license": "ODbL-1.0",
+      "evidence": "gap-research-summary.json",
+      "status": "closed_evidence",
+      "closure_condition": "Новый ограниченный скрининг: 0; независимое ST_Crosses выполняется CI, физическая топология не сертифицирована"
+    }
+  ]
+}

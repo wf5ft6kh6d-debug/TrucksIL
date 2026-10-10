@@ -48,6 +48,7 @@ jobs:
           python scripts/stage3/review_relations.py evidence/pilot/relation-review.json | tee evidence/relation-review.log
           python scripts/stage3/compare_review_engine.py evidence/pilot/relation-review.json | tee evidence/review-independent.log
           python scripts/stage3/audit_graph.py evidence/pilot/graph-audit.json | tee evidence/graph-audit.log
+          python scripts/stage3/research_gaps.py evidence/pilot/gap-research.json evidence/pilot/graph-audit.sql | tee evidence/gap-research.log
           python scripts/stage3/compare_graph_engine.py evidence/pilot/normalized.json evidence/pilot/graph-audit.json | tee evidence/graph-independent.log
           python scripts/stage3/compare_geometry_engine.py evidence/pilot/normalized.json | tee evidence/pilot-geometry-engine.log
           python src/ingest_restrictions.py evidence/pilot/restrictions.json --as-of 2026-10-10T10:00:00Z --output evidence/pilot/validated-empty-batch.json
@@ -99,7 +100,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -v ON_ERROR_STOP=1 < evidence/pilot/graph-audit.sql 2>&1 | tee evidence/pilot-postgis.log
+          psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -v ON_ERROR_STOP=1 < evidence/pilot/gap-research.sql 2>&1 | tee evidence/pilot-postgis.log
           test "$(psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -Atc 'SELECT (SELECT count(*) FROM trucksil_stage2.sources)+(SELECT count(*) FROM trucksil_stage2.road_nodes)+(SELECT count(*) FROM trucksil_stage2.road_segments)+(SELECT count(*) FROM trucksil_stage2.audit_events)')" = 0
       - name: Refuse checksum mismatch and unversioned schema; prove failure rollback
         shell: bash

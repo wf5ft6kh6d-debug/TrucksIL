@@ -251,3 +251,50 @@ v3 19.02.2025. 10115408 менял members и restriction; 10115411 имеет �
 CI ветки проверяется после коммита, результат/финальный SHA — в PR №2 и отчёте.
 Самоссылочный SHA в коммит не записывается. Main/PR №1 не изменяются;
 никаких merge/deploy или отправки обращений.
+
+## Продолжение после сообщения об отправке — 10.10.2026
+
+Исходный HEAD 391f6ae52ec2a640e81786b55ad06abef37d2d72, удалённая ветка и
+Draft PR №2 подтверждены. TIL-HAIFA-001: sent_user_confirmed, Outlook,
+10.10.2026, Rasha@haifa.muni.il. Факт отправки и копии владельцу сообщён
+пользователем; получение муниципалитетом, исходное письмо и регистрационный
+номер независимо не подтверждены. Личные данные владельца не публикуются.
+Ассистент ничего не отправлял. TIL-HAIFA-002 остаётся резервным черновиком.
+
+Повторно исследованы 43 узла: incident ways/tags включены в воспроизводимый
+CI-артефакт gap-research.json; 5 parking_entrance, 1 gate, 37 без тегов.
+Физические причины всех 43 остаются unknown. 575 unknown сегментов принадлежат
+158 ways без oneway: residential 229, tertiary 181, service 144,
+living_street 11, unclassified 10. Направления не назначены.
+113 отношений: only_straight_on 35, no_u_turn 27, no_left_turn 26,
+no_right_turn 19, only_right_turn 6. Карантин сохранён для всех; прежние причины
+42 structurally_resolved_unverified / 48 unknown_direction / 19 outside /
+2 direction candidates / 2 incomplete не означают разрешение движения.
+История двух удалённых from сохранена, from не восстановлены.
+
+Инфраструктура: 9 исходных ways с bridge/tunnel/layer; retained roads имеют
+14 сегментов layer=1 и 1 tunnel=yes/layer=-1 (Natanzon 731754156).
+Пешеходные bridge/tunnel не входят в автомобильный граф по прежним правилам.
+Строгий 2D-скрининг: 0 внутренних пересечений без общего node ID и 0 групп
+разных ID с совпадающими координатами. Касания и наложения им не проверены;
+вертикальная топология и габариты не подтверждены. Независимое ST_Crosses
+добавлено в прежнюю SQL-транзакцию с сохранением всех проверок и ROLLBACK.
+Граф неизменен: 1995 узлов, 2168 сегментов, 5 компонент, 100 degree-one.
+Прежняя классификация: 36 boundary-cut, 21 excluded-class, 43 unknown.
+Малая компонента из 2 узлов соединяется с основной вне bbox по сохранённым
+исходным ways; расширения графа нет. Остальные компоненты не объявляются дефектами.
+
+Созданы MISSING_DATA_REGISTER_RU.md, missing-data-register.json,
+DATA_ACQUISITION_PLAN_RU.md, OFFICIAL_DOCUMENT_INTAKE_RU.md. Реестр содержит
+10 открытых / 3 closed_evidence категории (2 прежние и новый ограниченный
+скрининг), новых эксплуатационных закрытий 0. OSM ODbL подтверждена прежним
+manifest; новых официальных лицензий нет, verified=0, новых загрузок=0.
+
+Фактически локально: `python -m unittest discover -s tests -v` — 60/60 OK
+(56 прежних + 4 регрессии strict crossing/precision/сохранения SQL rollback).
+`python scripts/stage3/audit_graph.py /tmp/trucksil-audit.json` и
+`python scripts/stage3/research_gaps.py /tmp/trucksil-gaps.json /tmp/trucksil-audit.sql`
+выполнены успешно. Workflow дополнен research_gaps и независимым SQL crossing
+check; NetworkX, JSON Schema, миграции, PostGIS и старые проверки сохранены.
+Результат удалённого CI и итоговый SHA фиксируются после публикации в Draft PR №2
+и финальном отчёте; до получения результата удалённый PASS не заявляется.

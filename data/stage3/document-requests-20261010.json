@@ -11,20 +11,20 @@
       "priority": 1,
       "verified_on": "2026-10-10",
       "verification": "Published official contact, mailbox delivery not tested",
-      "status": "draft_not_sent",
+      "status": "sent_user_confirmed",
       "languages": [
         "he",
         "ru"
       ],
-      "user_send_approval": false,
       "sent_at": null,
       "request_number": null,
-      "requires_before_send": [
-        "User approval",
-        "Sender identity/contact",
-        "Recheck recipient",
-        "Confirm any formal fee/submission requirements"
-      ]
+      "sent_on": "2026-10-10",
+      "channel": "Outlook",
+      "evidence": "User statement; original transmitted message not independently inspected",
+      "owner_copy": "sent_user_confirmed; personal address withheld",
+      "receipt_status": "unconfirmed",
+      "registration_status": "unconfirmed",
+      "next_action": "Await response; no resend authorized"
     },
     {
       "id": "TIL-HAIFA-002",
@@ -55,5 +55,5 @@
     }
   ],
   "online_form_observation": "Link from municipal FOI page returned 404; do not assume successful submission",
-  "no_messages_sent": true
+  "assistant_messages_sent_this_task": 0
 }
