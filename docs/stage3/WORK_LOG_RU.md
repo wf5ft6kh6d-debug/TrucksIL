@@ -197,3 +197,27 @@ Manifest, raw gzip, checksum и ODbL сохранены; старые два н�
 Новый `compare_review_engine.py` включён в CI рядом с прежними NetworkX,
 JSON Schema и PostGIS проверками. Фактический новый CI пока PENDING.
 SHA итогового коммита фиксируется в PR/финальном отчёте; самоссылка не используется.
+
+### Фактический CI независимого разбора — PASS
+
+Код `fca5ecdea972c0459538a1c23c81b6971dce6894`:
+[PR run 38044105128](https://github.com/wf5ft6kh6d-debug/TrucksIL/actions/runs/38044105128),
+job 114190039655 — success, проверены API статуса/шагов и фактический job log.
+56 unittest PASS; 54 JSON Schema comparisons /0 mismatches; 4163 geometry
+comparisons PASS. Новый NetworkX raw-source review подтвердил четыре отношения,
+100 endpoints, 5 clipped/4 context компоненты и 575 отсутствующих oneway.
+Прежний NetworkX подтвердил 5 weak/1564 strong компоненты и 1626 дуг.
+PostgreSQL 16.4/PostGIS 3.4.3: прежние baseline/hardening SQL, миграции/повтор,
+checksum rejection, unversioned rejection, failure rollback и реальный pilot
+replay PASS. Geometry/provenance/4164 audit rows/unknown safety/SQL degree и
+направления проверены; ROLLBACK, затем отдельное соединение подтвердило 0 строк.
+
+Точные новые команды:
+`python scripts/stage3/review_relations.py evidence/pilot/relation-review.json`
+и `python scripts/stage3/compare_review_engine.py evidence/pilot/relation-review.json`.
+Все остальные команды, закреплённые версии и SQL gates — в существующем
+`.github/workflows/stage2-acceptance.yml`; permissions contents:read.
+`git fsck --full` PASS, прежние 47 тестов/схема/миграции/нормализатор/оба raw
+набора не изменены. Итоговый документационный SHA и его CI фиксируются в PR №2.
+Технический PASS не снимает блокеры лицензий/актуальности/доказательств и не
+выпускает ни одно из 113 отношений из карантина. Graph delta = 0, verified = 0.
