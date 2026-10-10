@@ -1,0 +1,27 @@
+{
+  "file": "TrucksIL-stage4-automotive-audit-20261010.zip",
+  "size_bytes": 413388720,
+  "sha256": "0ae875344248650ba86c41e8f9134d91a28d58d8c16167e6859dc1863a646b5f",
+  "code_commit": "f68209d5849c0a8c0c79a73be4986425cb9d3c4a",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "source_pbf_sha256": "dff1ce395df33b8df901b85f7fd822bacd7a10985ceb2d893144251455646670",
+  "contains": [
+    "derived automotive SQLite with disjoint views",
+    "boundary registry and SQL",
+    "geometry anomalies and SQL",
+    "all indexed way intersections and SQL",
+    "turn registry",
+    "truck evidence queue",
+    "independent local acceptance",
+    "manifest and NOTICE"
+  ],
+  "excludes": [
+    "original PBF already preserved separately",
+    "private OSM contributor history metadata",
+    "secrets",
+    "production data"
+  ],
+  "navigation_approved": false,
+  "revision": "PostGIS boundary extension bootstrap fixed; data records unchanged"
+}

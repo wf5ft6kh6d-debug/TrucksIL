@@ -1,0 +1,106 @@
+{
+  "checked_at": "2026-10-10",
+  "code_commit": "f68209d5849c0a8c0c79a73be4986425cb9d3c4a",
+  "local_unit_tests": {
+    "discovered": 147,
+    "passed": 147,
+    "skipped": 0,
+    "elapsed_seconds": 3.731,
+    "preserved_baseline": 91
+  },
+  "json_schema_comparison": {
+    "comparisons": 54,
+    "mismatches": 0,
+    "full_conformance_claim": false
+  },
+  "initial_ci": {
+    "run_id": 38068195959,
+    "commit": "35081efa8abdf4b8339821c6d6fef40a03b40c16",
+    "result": "FAIL",
+    "unit_passed": 146,
+    "full_pbf_reconciliation": "PASS",
+    "five_layer_byte_replay": "PASS",
+    "source_and_derived_full_row_postgis": "PASS",
+    "source_rollback": "PASS",
+    "boundary_sql": "FAIL",
+    "exact_error": "ERROR:  type \"geometry\" does not exist",
+    "cause": "standalone boundary SQL omitted CREATE EXTENSION after prior transaction correctly rolled extension back"
+  },
+  "regression": {
+    "name": "test_standalone_sql_provisions_postgis_after_guard_before_geometry",
+    "before_fix": {
+      "discovered": 9,
+      "failures": 1
+    },
+    "after_fix": {
+      "discovered": 9,
+      "passed": 9
+    },
+    "fix": "CREATE EXTENSION IF NOT EXISTS postgis inside guarded disposable transaction before geometry type"
+  },
+  "inherited_ci": {
+    "run_id": 38071580273,
+    "job_id": 114269892982,
+    "result": "PASS",
+    "unit_discovered": 147,
+    "unit_passed": 146,
+    "unit_skipped": 1,
+    "skip_reason": "osmium absent in inherited environment; included in national environment",
+    "postgresql": "16.4",
+    "postgis": "3.4.3",
+    "migrations_checksums_audit_rollback_and_haifa": "PASS"
+  },
+  "national_repeat": {
+    "run_id": 38071577347,
+    "job_id": 114269884405,
+    "result": "PASS",
+    "unit_discovered": 147,
+    "unit_passed": 147,
+    "unit_skipped": 0,
+    "unit_elapsed_seconds": 5.316,
+    "full_pbf_reconciliation": "PASS",
+    "five_layer_byte_replay": "PASS",
+    "postgresql": "16.4",
+    "postgis": "3.4.3",
+    "full_row_source_and_derived": "PASS",
+    "boundary_cases": 14407,
+    "boundary_comparison": "PASS",
+    "geometry_anomalies": "PASS",
+    "full_indexed_pair_ids_and_de9im": "PASS",
+    "pair_predicate_counts": {
+      "intersects": 948914,
+      "touches": 885627,
+      "crosses": 62614,
+      "overlaps": 600,
+      "equals": 5
+    },
+    "rollback_all_transactions": "PASS",
+    "git_fsck": "PASS",
+    "step_elapsed_seconds": {
+      "source_rebuild_and_verification": 522,
+      "derived_independent_and_byte_replay": 714,
+      "isolated_postgis": 195
+    },
+    "first_producer_seconds": {
+      "automotive": 44.66,
+      "boundary": 12.48,
+      "geometry": 30.44,
+      "infrastructure": 143.09,
+      "truck_evidence": 6.73
+    },
+    "source_sqlite_sha256_before_and_after": "b85473b3fa65030172579f19e8791a780dc558b6db3841a87ddc8daefc7472c1",
+    "artifact": {
+      "id": 11678385127,
+      "size_bytes": 1367891384,
+      "digest": "sha256:dc0b5ed77b6a9117da2aad297ccd4820daf253291e37348ef850177469b156c3",
+      "expires_at": "2027-01-08T17:24:05Z"
+    }
+  },
+  "claims_excluded": [
+    "truck navigation safety",
+    "national completeness against independent reference",
+    "officially verified restrictions",
+    "confirmed physical levels and portals"
+  ],
+  "verified_restrictions": 0
+}
