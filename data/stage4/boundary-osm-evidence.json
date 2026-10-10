@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "relation_id": 12411556,
+  "status": "QUARANTINE",
+  "reconstruction": "NOT PERFORMED",
+  "history_evidence": [
+    {
+      "url": "https://api.openstreetmap.org/api/0.6/way/914423926/history",
+      "retrieved_at": "2026-10-10T16:26:50.436747+00:00",
+      "sha256": "1b4cd3222cc0d327781eea891a2da60f9d0b0f3d8195f6f22dbfe8b6fa6d1522",
+      "size_bytes": 787,
+      "license": "ODbL-1.0",
+      "attribution": "© OpenStreetMap contributors",
+      "raw_storage": "private research only; contributor metadata not published",
+      "versions": [
+        {
+          "id": "914423926",
+          "version": "1",
+          "timestamp": "2021-03-07T16:25:20Z",
+          "visible": "true",
+          "tags": {
+            "highway": "primary"
+          },
+          "nodes": [
+            "2977094650",
+            "2977092679",
+            "330815713"
+          ],
+          "members": []
+        },
+        {
+          "id": "914423926",
+          "version": "2",
+          "timestamp": "2021-04-21T05:31:02Z",
+          "visible": "true",
+          "tags": {
+            "highway": "trunk"
+          },
+          "nodes": [
+            "2977094650",
+            "2977092679",
+            "330815713"
+          ],
+          "members": []
+        }
+      ]
+    },
+    {
+      "url": "https://api.openstreetmap.org/api/0.6/relation/12411556/history",
+      "retrieved_at": "2026-10-10T16:26:56.406655+00:00",
+      "sha256": "32af1ce368c24f1c0488e950615ba8e6afe739411aeb4709a04f744dda9d281b",
+      "size_bytes": 677,
+      "license": "ODbL-1.0",
+      "attribution": "© OpenStreetMap contributors",
+      "raw_storage": "private research only; contributor metadata not published",
+      "versions": [
+        {
+          "id": "12411556",
+          "version": "1",
+          "timestamp": "2021-03-07T16:25:20Z",
+          "visible": "true",
+          "tags": {
+            "restriction": "only_right_turn",
+            "type": "restriction"
+          },
+          "nodes": [],
+          "members": [
+            {
+              "type": "way",
+              "ref": "914423928",
+              "role": "from"
+            },
+            {
+              "type": "node",
+              "ref": "330815713",
+              "role": "via"
+            },
+            {
+              "type": "way",
+              "ref": "914423926",
+              "role": "to"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "current_geometry_evidence": {
+    "url": "https://api.openstreetmap.org/api/0.6/way/914423926/full",
+    "retrieved_at": "2026-10-10T16:27:26.199420+00:00",
+    "sha256": "93c69487b69a24a63e4c675b33b34bfb96c0edee8fef2320c09583db9484ed86",
+    "size_bytes": 1093,
+    "license": "ODbL-1.0",
+    "attribution": "© OpenStreetMap contributors",
+    "osm_way_id": 914423926,
+    "version": 2,
+    "timestamp": "2021-04-21T05:31:02Z",
+    "nodes": {
+      "330815713": [
+        34.2536324,
+        31.2457673
+      ],
+      "2977092679": [
+        34.2534431,
+        31.2455889
+      ],
+      "2977094650": [
+        34.2533985,
+        31.2455566
+      ]
+    },
+    "coordinates_wgs84": [
+      [
+        34.2533985,
+        31.2455566
+      ],
+      [
+        34.2534431,
+        31.2455889
+      ],
+      [
+        34.2536324,
+        31.2457673
+      ]
+    ],
+    "way_intersects_source_polygon": false,
+    "nodes_covered_by_source_polygon": {
+      "330815713": false,
+      "2977092679": false,
+      "2977094650": false
+    },
+    "line_polygon_de9im": "FF1FF0212",
+    "raw_storage": "private research only; contributor metadata not published"
+  },
+  "pbf_scan": {
+    "way_914423926_present": false,
+    "way_914423928_present": true,
+    "method": "pyosmium complete ways scan"
+  },
+  "cause": "Missing source member is still visible in current OSM; current complete geometry is outside source polygon. Boundary-related incompleteness supported; extractor internal reason and snapshot node-history not independently proven."
+}

@@ -1,0 +1,40 @@
+{
+  "source_sha256": "dff1ce395df33b8df901b85f7fd822bacd7a10985ceb2d893144251455646670",
+  "source_snapshot_at": "2026-10-08T20:21:06Z",
+  "counts": {
+    "candidates": 26188,
+    "node": 212,
+    "context_only": 10196,
+    "relation": 14463,
+    "way": 11513
+  },
+  "categories": {
+    "maxheight": 881,
+    "conditional": 355,
+    "hgv": 28,
+    "bridge_context": 5435,
+    "tunnel_context": 5101,
+    "maxwidth": 41,
+    "maxweight": 242,
+    "turn_restriction": 14737,
+    "maxlength": 1
+  },
+  "measurement_parse_status": {
+    "UNKNOWN": 1175,
+    "PARSED_EXPLICIT_UNIT": 2
+  },
+  "verified_restrictions": 0,
+  "navigation_eligible": 0,
+  "all_candidates_quarantined": true,
+  "independent_schema_engine": "jsonschema Draft202012Validator",
+  "schema_validated_records": 26188,
+  "source_payload_preserved": true,
+  "output_sha256": "3dc97a2286b5256f2aa55ab9e8c48932a9d74e708519ffb51fbb6f5b953917f0",
+  "output_bytes": 61949646,
+  "limitations": [
+    "OSM tags are not independent evidence",
+    "No automatic interpretation of implicit units, directions or conditions",
+    "Bridge/tunnel context alone is not a truck restriction",
+    "Relation geometries remain original unassembled member references"
+  ]
+}

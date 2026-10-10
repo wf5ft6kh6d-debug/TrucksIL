@@ -38,6 +38,11 @@ jobs:
           python scripts/stage4/acquire_national.py source | tee evidence/acquisition.log
           python scripts/stage4/national_graph.py source/israel-and-palestine-261008.osm.pbf national > evidence/build.log
           python scripts/stage4/verify_national.py national | tee evidence/independent.log
+      - name: Five national research layers, independent source reconciliation and exact replay
+        run: |
+          set -euo pipefail
+          python scripts/stage4/run_derived_audits.py national/graph.sqlite source/israel-and-palestine-261008.osm.pbf derived --repeat | tee evidence/derived-audit.log
+          python scripts/stage4/extend_postgis_acceptance.py national/national-test.sql derived national/derived-test.sql
       - name: Isolated full-row PostGIS import, spatial index, repeat and rollback
         run: |
           set -euo pipefail
@@ -48,7 +53,11 @@ jobs:
             sleep 1
           done
           docker exec --user postgres national-postgis createdb -h /var/run/postgresql trucksil_stage4_test_national
-          docker exec -i --user postgres national-postgis psql -X -h /var/run/postgresql -d trucksil_stage4_test_national -v ON_ERROR_STOP=1 < national/national-test.sql 2>&1 | tee evidence/postgis.log
+          docker exec -i --user postgres national-postgis psql -X -h /var/run/postgresql -d trucksil_stage4_test_national -v ON_ERROR_STOP=1 < national/derived-test.sql 2>&1 | tee evidence/postgis.log
+          for sql in derived/boundary/boundary-postgis.sql derived/geometry/geometry-postgis.sql derived/infrastructure/infrastructure-check.sql; do
+            docker exec -i --user postgres national-postgis psql -X -h /var/run/postgresql -d trucksil_stage4_test_national -v ON_ERROR_STOP=1 < "$sql" 2>&1 | tee "evidence/$(basename "$sql").log"
+          done
+          git fsck --full
       - name: Preserve source and reproducible research output
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -57,6 +66,7 @@ jobs:
           path: |
             source/
             national/
+            derived/
             evidence/
           retention-days: 90
           if-no-files-found: error

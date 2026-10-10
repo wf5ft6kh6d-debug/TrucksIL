@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "source_sha256": "dff1ce395df33b8df901b85f7fd822bacd7a10985ceb2d893144251455646670",
+  "source_boundary_sha256": "b431b29d18d256a8394def2964d3dc296bef556d46091f2dae74b57cc46dd5a7",
+  "boundary_semantics": "Geofabrik extract polygon; not an official national border",
+  "segments_scanned": 4708889,
+  "outside_midpoint_segments": 14407,
+  "affected_ways": 542,
+  "classifications": {
+    "OUTSIDE_SEGMENT_OF_INTERSECTING_WAY": 14085,
+    "SEGMENT_CROSSES_SOURCE_BOUNDARY": 322
+  },
+  "registry_sha256": "b32a847a2b9e69f530601a0d5d35d18cd177c481f94e04b72c580788d238669c",
+  "registry_file": "outside-segments.jsonl",
+  "missing_relation": {
+    "osm_relation_id": 12411556,
+    "version": 1,
+    "timestamp": "2021-03-07 16:25:20+00:00",
+    "tags": {
+      "restriction": "only_right_turn",
+      "type": "restriction"
+    },
+    "members": [
+      {
+        "type": "w",
+        "id": 914423928,
+        "role": "from"
+      },
+      {
+        "type": "n",
+        "id": 330815713,
+        "role": "via"
+      },
+      {
+        "type": "w",
+        "id": 914423926,
+        "role": "to"
+      }
+    ],
+    "missing_refs": [
+      {
+        "type": "w",
+        "id": 914423926,
+        "role": "to"
+      }
+    ],
+    "status": "QUARANTINE",
+    "missing_way_in_highway_table": true,
+    "via_node_wgs84": [
+      34.2536324,
+      31.2457673
+    ],
+    "reconstruction": "NOT PERFORMED",
+    "cause": "UNKNOWN; absence alone does not distinguish clipping, deletion or incomplete membership"
+  },
+  "graph_modified": false,
+  "elapsed_seconds": 15.244937268995272
+}

@@ -1,0 +1,199 @@
+{
+  "policy": "automotive-research-v1",
+  "source_sqlite_sha256": "fd4d29f0424f9d24b861c00b8ae0f954afb90c2d8af87cc9ff8f575a6aa1440a",
+  "source_pbf_sha256": "dff1ce395df33b8df901b85f7fd822bacd7a10985ceb2d893144251455646670",
+  "snapshot_at": "2026-10-08T20:21:06Z",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "way_counts": {
+    "INCLUDED": 317522,
+    "EXCLUDED": 110710,
+    "QUARANTINE": 105074
+  },
+  "segment_counts": {
+    "EXCLUDED": 625486,
+    "INCLUDED": 2488844,
+    "QUARANTINE": 1594559
+  },
+  "automotive_nodes": 2363504,
+  "automotive_directions": {
+    "both": 80972,
+    "forward": 591789,
+    "reverse": 1065,
+    "unknown": 1815018
+  },
+  "highway_class_decisions": {
+    "bridleway": {
+      "EXCLUDED": 6
+    },
+    "bus_guideway": {
+      "QUARANTINE": 5
+    },
+    "busway": {
+      "QUARANTINE": 48
+    },
+    "construction": {
+      "EXCLUDED": 4832
+    },
+    "contruction": {
+      "QUARANTINE": 1
+    },
+    "corridor": {
+      "EXCLUDED": 149
+    },
+    "cycleway": {
+      "EXCLUDED": 3268,
+      "QUARANTINE": 5
+    },
+    "elevator": {
+      "QUARANTINE": 2
+    },
+    "escape": {
+      "QUARANTINE": 2
+    },
+    "footway": {
+      "EXCLUDED": 82880,
+      "QUARANTINE": 22
+    },
+    "living_street": {
+      "INCLUDED": 4464,
+      "QUARANTINE": 21,
+      "EXCLUDED": 32
+    },
+    "motorway": {
+      "INCLUDED": 1297,
+      "QUARANTINE": 5
+    },
+    "motorway_link": {
+      "INCLUDED": 1746,
+      "EXCLUDED": 16
+    },
+    "path": {
+      "QUARANTINE": 31621
+    },
+    "pedestrian": {
+      "EXCLUDED": 2724,
+      "QUARANTINE": 11
+    },
+    "planned": {
+      "QUARANTINE": 77
+    },
+    "platform": {
+      "EXCLUDED": 33
+    },
+    "primary": {
+      "INCLUDED": 6293,
+      "EXCLUDED": 8,
+      "QUARANTINE": 18
+    },
+    "primary_link": {
+      "INCLUDED": 1365,
+      "QUARANTINE": 2,
+      "EXCLUDED": 3
+    },
+    "proposed": {
+      "EXCLUDED": 2154
+    },
+    "raceway": {
+      "QUARANTINE": 40,
+      "EXCLUDED": 7
+    },
+    "residential": {
+      "INCLUDED": 129802,
+      "EXCLUDED": 245,
+      "QUARANTINE": 74
+    },
+    "rest_area": {
+      "QUARANTINE": 8
+    },
+    "road": {
+      "QUARANTINE": 159
+    },
+    "secondary": {
+      "INCLUDED": 17917,
+      "EXCLUDED": 9,
+      "QUARANTINE": 29
+    },
+    "secondary_link": {
+      "INCLUDED": 2131,
+      "EXCLUDED": 1
+    },
+    "service": {
+      "INCLUDED": 86094,
+      "EXCLUDED": 4253,
+      "QUARANTINE": 223
+    },
+    "services": {
+      "EXCLUDED": 14,
+      "QUARANTINE": 2
+    },
+    "steps": {
+      "EXCLUDED": 9412
+    },
+    "tertiary": {
+      "INCLUDED": 41631,
+      "QUARANTINE": 137,
+      "EXCLUDED": 23
+    },
+    "tertiary_link": {
+      "INCLUDED": 1603,
+      "QUARANTINE": 2,
+      "EXCLUDED": 5
+    },
+    "track": {
+      "QUARANTINE": 72383,
+      "EXCLUDED": 2
+    },
+    "trunk": {
+      "INCLUDED": 6867,
+      "QUARANTINE": 39,
+      "EXCLUDED": 7
+    },
+    "trunk_link": {
+      "INCLUDED": 3220,
+      "QUARANTINE": 6,
+      "EXCLUDED": 2
+    },
+    "unclassified": {
+      "QUARANTINE": 130,
+      "INCLUDED": 13092,
+      "EXCLUDED": 625
+    },
+    "via_ferrata": {
+      "QUARANTINE": 2
+    }
+  },
+  "reason_way_counts": {
+    "road_class_candidate_access_unknown": 316856,
+    "non_motor_class": 97427,
+    "road_class_tagged_car_access": 666,
+    "explicit_car_access_denied": 5218,
+    "not_current_road_class": 6986,
+    "unclassified_highway": 104344,
+    "blanket_designated_has_no_transport_mode": 19,
+    "restricted_or_unrecognized_car_access": 406,
+    "conditional_or_scoped_access": 75,
+    "scoped_or_unrecognized_direction": 146,
+    "area_geometry_not_centerline": 1079,
+    "lifecycle_tags_need_review": 50,
+    "non_motor_class_with_vehicle_evidence": 34
+  },
+  "full_row_source_comparison_mismatches": {
+    "segments": 0,
+    "nodes": 0,
+    "ways": 0
+  },
+  "foreign_key_errors": 0,
+  "sqlite_quick_check": "ok",
+  "verified_restrictions": 0,
+  "navigation_approved": false,
+  "source_graph_unchanged": true,
+  "processing_seconds": 37.19913268399978,
+  "output_sqlite_sha256": "08058c25905c17cd94a95b2fa5a91c40e0d00d95f3f77ac8d4f79c824cbaf580",
+  "full_repeat_check": {
+    "first_output_sha256": "08058c25905c17cd94a95b2fa5a91c40e0d00d95f3f77ac8d4f79c824cbaf580",
+    "repeat_output_sha256": "08058c25905c17cd94a95b2fa5a91c40e0d00d95f3f77ac8d4f79c824cbaf580",
+    "byte_identical": true,
+    "repeat_processing_seconds": 50.93973700400238
+  }
+}

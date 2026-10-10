@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "scope": "all highway ways; all indexed intersecting way pairs; 2D only",
+  "license": "ODbL-1.0",
+  "attribution": "\u00a9 OpenStreetMap contributors",
+  "source_graph_name": "graph.sqlite",
+  "source_osm_sha256": "dff1ce395df33b8df901b85f7fd822bacd7a10985ceb2d893144251455646670",
+  "highway_ways": 533306,
+  "geometry_ways": 533306,
+  "infrastructure_ways": 6793,
+  "infrastructure_counts": {
+    "bridge_ways": 4902,
+    "bridge_missing_layer": 429,
+    "infra_direction_forward": 2482,
+    "infra_direction_unknown": 4182,
+    "tunnel_ways": 1891,
+    "tunnel_missing_layer": 475,
+    "infra_direction_both": 129
+  },
+  "intersecting_pairs": 948914,
+  "predicates": {
+    "intersects": 948914,
+    "touches": 885627,
+    "overlaps": 600,
+    "crosses": 62614,
+    "equals": 5
+  },
+  "classifications": {
+    "shared_osm_node_candidate": 935840,
+    "no_shared_osm_node_unknown": 12819,
+    "different_explicit_layer_candidate": 255
+  },
+  "turn_relations": 14463,
+  "turn_issues_overlapping": {
+    "from_explicit_direction_conflict": 71,
+    "to_explicit_direction_conflict": 90,
+    "except_requires_vehicle_interpretation": 12,
+    "via_way_requires_path_analysis": 1345,
+    "vehicle_specific_restriction": 2,
+    "missing_from": 320,
+    "missing_via": 117,
+    "missing_to": 324,
+    "multiple_via": 563,
+    "conditional_requires_interpretation": 2,
+    "multiple_from": 20,
+    "multiple_to": 18,
+    "from_via_node_not_on_way": 14,
+    "to_via_node_not_on_way": 14,
+    "to_not_in_highway_graph": 1
+  },
+  "turn_direction_incidence": {
+    "explicit_direction_allows_incidence": 14662,
+    "unknown": 10394,
+    "explicit_direction_conflict": 161,
+    "disconnected": 28
+  },
+  "verified_physical_connections": 0,
+  "verified_portals": 0,
+  "verified_truck_restrictions": 0,
+  "limitations": [
+    "Shared node anywhere on same ways is only an incidence candidate; not proof every intersection has that node.",
+    "No traffic permission from missing tags.",
+    "Layer comparison is raw tagged evidence only, not surveyed height.",
+    "Complex via-way, conditional and vehicle exceptions retained in quarantine."
+  ],
+  "elapsed_seconds": 190.54811714300013,
+  "artifact_sha256": {
+    "infrastructure-ways.jsonl": "5bf4855a50097bbf42891f7f9220967e83d7314261bd94e9261fdd5ffdad320f",
+    "infrastructure-intersections.jsonl": "1f2298cc4a6e306867c0001676e162aed241478f1794c6a763aad0789bb5c198",
+    "turn-relations.jsonl": "4e8da159350953d06a36ac787a1e385bb756b751e29c63a95ac685665d77be8b"
+  }
+}
