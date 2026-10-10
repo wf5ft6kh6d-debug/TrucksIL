@@ -85,3 +85,26 @@ protect evidence retention from privileged tampering, detect schema drift,
 validate cross-source spatial reconciliation and actual source/reviewer trust.
 No claim of completed SQL invariant protection is made without execution.
 Overall stage 2 remains INCOMPLETE; PR must remain Draft; DO NOT MERGE/DEPLOY.
+
+## 2026-10-10 — CI evidence for the two execution blockers
+
+[PR run 38036525043](https://github.com/wf5ft6kh6d-debug/TrucksIL/actions/runs/38036525043)
+on head `0a2e077efa8625a8a0cedf44f36874d698abdc41` completed successfully.
+The independent-engine availability and synthetic PostgreSQL/PostGIS execution
+blockers are **CLOSED for this corpus**: 23 unit tests, 54 engine comparisons
+without mismatch, baseline/hardening SQL, repeat/checksummed migrations and
+transaction rollback all passed. See QA.md for exact commands and scope.
+
+SQL tests exercised denied direct restriction writes and audit mutations, source
+before/after values and session/transaction identity, coverage composite-key
+delete auditing, endpoint/source-revision constraints, node immutability and
+unconditional unknown route state. They ran as the disposable database owner;
+this does not establish an application-role security model or administrator-proof
+audit storage, nor concurrency correctness. Migration digest verification checks
+the migration ledger, not arbitrary drift of the installed schema.
+
+No full JSON Schema conformance claim. No controlled restriction ingest adapter,
+real source authentication/licence decisions, licensed national graph, measured
+coverage or driver guidance acceptance follows from synthetic tests. Stage 2
+remains incomplete. Workflow has contents:read only, no deployment/merge job,
+no persisted checkout credentials, and tests PR head without modifying main.

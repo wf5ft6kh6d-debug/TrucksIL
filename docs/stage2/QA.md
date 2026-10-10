@@ -67,3 +67,42 @@ Pending executable SQL corpus: db/test_stage2_hardening.sql checks closed direct
 restriction writes, audit mutation denial, endpoint/revision mismatch rejection,
 source before/after audit, full coverage key/deletion audit and unknown safety.
 It is NOT RUN; offline runner tests do not substitute for SQL integration.
+
+## 2026-10-10 — executed GitHub Actions acceptance
+
+Supersedes the environment blockers above for the tested corpus only.
+Tested head: `0a2e077efa8625a8a0cedf44f36874d698abdc41`.
+[Successful PR run](https://github.com/wf5ft6kh6d-debug/TrucksIL/actions/runs/38036525043).
+
+- `python -m unittest discover -s tests -v`: **23 PASS**.
+- `python scripts/compare_schema_engine.py`: **54 comparisons, 0 mismatches**,
+  jsonschema 4.23.0, Draft202012Validator with FormatChecker. This is a limited
+  corpus, not full Draft 2020-12 conformance or equivalence of business rules.
+- PostgreSQL **16.4**, PostGIS **3.4.3**, GEOS 3.9.0, PROJ 7.2.1 executed.
+- `psql -X -h /var/run/postgresql -d trucksil_stage2_test_baseline -v ON_ERROR_STOP=1 < db/stage2.sql` then the same command with `db/test_stage2.sql`: **PASS**.
+- `python scripts/migrate_stage2.py --database trucksil_stage2_test_hardening --apply`,
+  run twice: **PASS**; sorted version/sha256/applied_at ledger is byte-identical.
+- `psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -v ON_ERROR_STOP=1 < db/test_stage2_hardening.sql`: **PASS**.
+- Both fixture transactions rolled back; a new connection found zero audit rows.
+- Deliberately changed checksum: migration rejected with the expected message.
+  Existing unversioned baseline: upgrade refused with the expected message.
+- Injected `SELECT 1/0` immediately before migration COMMIT in a third clean DB:
+  expected failure; a new connection confirmed the entire schema was absent.
+
+Complete commands are versioned in `.github/workflows/stage2-acceptance.yml`.
+The psql wrapper forwards arguments/stdin to `docker exec --user postgres`;
+psql connects through the container's Unix socket, not TCP. The original
+name/socket guards remain intact. Container uses `--network none`, no published
+ports, disposable volumes removed after every run. No production connection.
+
+Python 3.12.8 and all installed Python dependencies are version-pinned; actions
+use full commit SHAs. PostGIS image is pinned to
+`sha256:44126d872ac91993766c341e369c539e8196614321765d36a6f1bab0419a5fa5`.
+GitHub-hosted ubuntu-24.04 runner OS/tooling is managed by GitHub (not immutable);
+actual image/runner versions are recorded in job logs. Evidence artifacts retain
+command outputs, versions, checksums and container logs for 14 days.
+
+First CI run 38036449855 reproduced a harness startup race: pg_isready accepted
+the temporary initialization server before its shutdown. Fixed by requiring
+PID 1 to be postgres as well as socket readiness. The subsequent full run passed.
+No validator discrepancy or SQL implementation defect was observed in this corpus.
