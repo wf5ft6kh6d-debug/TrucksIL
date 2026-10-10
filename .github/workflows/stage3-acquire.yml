@@ -2,7 +2,7 @@ name: Stage 3 one-time OSM pilot acquisition
 on:
   push:
     branches: [stage3/israel-road-data-foundation]
-    paths: [scripts/stage3/acquire_osm.py, scripts/stage3/acquire_members.py, .github/workflows/stage3-acquire.yml]
+    paths: [scripts/stage3/acquire_osm.py, scripts/stage3/acquire_members.py, scripts/stage3/acquire_review.py, .github/workflows/stage3-acquire.yml]
 permissions:
   contents: read
 jobs:
@@ -42,5 +42,19 @@ jobs:
         with:
           name: osm-members-raw
           path: acquisition-members/
+          retention-days: 90
+          if-no-files-found: error
+      - name: Current versions of four reviewed relations only
+        run: |
+          if test -f data/stage3/osm-review-20261010/raw.json.gz; then
+            echo 'Review snapshot exists; no refresh.'
+          else
+            python scripts/stage3/acquire_review.py --output acquisition-review
+          fi
+      - if: ${{ hashFiles('acquisition-review/manifest.json') != '' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: osm-review-raw
+          path: acquisition-review/
           retention-days: 90
           if-no-files-found: error
