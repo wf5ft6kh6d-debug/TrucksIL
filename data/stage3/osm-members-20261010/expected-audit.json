@@ -1,0 +1,567 @@
+{
+  "summary": {
+    "missing_references_before": 6,
+    "resolved_references": 6,
+    "unique_dependency_ways": 5,
+    "missing_references_after": 0,
+    "graph_nodes": 1995,
+    "graph_segments": 2168,
+    "weak_components": 5,
+    "weak_component_sizes": [
+      1976,
+      9,
+      5,
+      3,
+      2
+    ],
+    "degree_one_nodes": 100,
+    "explicit_direction_arcs": 1626,
+    "direction_counts": {
+      "both": 33,
+      "forward": 1560,
+      "unknown": 575
+    },
+    "strong_components_explicit_directions_only": 1564,
+    "largest_strong_component": 281,
+    "turn_reasons": {
+      "direction_conflict_candidate": 2,
+      "outside_clipped_graph": 19,
+      "structurally_resolved_unverified": 42,
+      "unknown_direction": 48,
+      "unsupported_member_structure": 2
+    },
+    "turn_conflict_candidates": 0,
+    "verified_restrictions": 0,
+    "route_safety_certified": false,
+    "scope_bbox": [
+      34.99,
+      32.811,
+      35.004,
+      32.821
+    ],
+    "graph_changed": false
+  },
+  "missing_reference_report": [
+    {
+      "relation_id": 2356703,
+      "role": "from",
+      "type": "way",
+      "id": 204093044,
+      "resolved": true,
+      "version": 9,
+      "all_nodes_outside_bbox": true,
+      "cause": "outside_bbox_dependency_not_recursed",
+      "added_to_graph": false
+    },
+    {
+      "relation_id": 3134160,
+      "role": "to",
+      "type": "way",
+      "id": 232804277,
+      "resolved": true,
+      "version": 10,
+      "all_nodes_outside_bbox": true,
+      "cause": "outside_bbox_dependency_not_recursed",
+      "added_to_graph": false
+    },
+    {
+      "relation_id": 13395545,
+      "role": "to",
+      "type": "way",
+      "id": 995957809,
+      "resolved": true,
+      "version": 5,
+      "all_nodes_outside_bbox": true,
+      "cause": "outside_bbox_dependency_not_recursed",
+      "added_to_graph": false
+    },
+    {
+      "relation_id": 13395548,
+      "role": "to",
+      "type": "way",
+      "id": 925960108,
+      "resolved": true,
+      "version": 5,
+      "all_nodes_outside_bbox": true,
+      "cause": "outside_bbox_dependency_not_recursed",
+      "added_to_graph": false
+    },
+    {
+      "relation_id": 15586468,
+      "role": "to",
+      "type": "way",
+      "id": 908708298,
+      "resolved": true,
+      "version": 8,
+      "all_nodes_outside_bbox": true,
+      "cause": "outside_bbox_dependency_not_recursed",
+      "added_to_graph": false
+    },
+    {
+      "relation_id": 21179188,
+      "role": "to",
+      "type": "way",
+      "id": 204093044,
+      "resolved": true,
+      "version": 9,
+      "all_nodes_outside_bbox": true,
+      "cause": "outside_bbox_dependency_not_recursed",
+      "added_to_graph": false
+    }
+  ],
+  "conflicts": [],
+  "turn_classification": [
+    {
+      "id": 2356703,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 2777486,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 2842943,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 2877350,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 3000836,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 3119830,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 3126339,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 3126340,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 3126341,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 3134160,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 5985339,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 10115408,
+      "reason": "direction_conflict_candidate"
+    },
+    {
+      "id": 10115409,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 10115410,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 10115411,
+      "reason": "direction_conflict_candidate"
+    },
+    {
+      "id": 10115412,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 10115413,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 10925811,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 12303230,
+      "reason": "unsupported_member_structure"
+    },
+    {
+      "id": 12303231,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 12303232,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 12303233,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 12303234,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 13050811,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 13050812,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 13268223,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 13395544,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 13395545,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 13395546,
+      "reason": "unsupported_member_structure"
+    },
+    {
+      "id": 13395548,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 13395555,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 13395556,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 13395560,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 13395561,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14056685,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 14056686,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058338,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 14058740,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058741,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 14058742,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058743,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058744,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 14058745,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 14058746,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 14058747,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 14058748,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 14058749,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058750,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 14058751,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 14058752,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 14058753,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 14058754,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058755,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058756,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058757,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058758,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058759,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058760,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 14058761,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058762,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 14058763,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058764,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058765,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058766,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14058767,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 14689141,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14689142,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14689143,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 14689144,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 14689147,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 14689148,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15018485,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 15022855,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 15022856,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 15022857,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 15022858,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15022859,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15022860,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 15022861,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 15022862,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15022863,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15022864,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15022865,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586460,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586461,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586462,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586463,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586464,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586468,
+      "reason": "outside_clipped_graph"
+    },
+    {
+      "id": 15586471,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586472,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586473,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586475,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586488,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586489,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586490,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586501,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586502,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586503,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586504,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15586505,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 15858575,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 15858576,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 16213529,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 16213530,
+      "reason": "unknown_direction"
+    },
+    {
+      "id": 16213531,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 16213532,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 16213533,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 16213534,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 16213535,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 16213536,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 16213537,
+      "reason": "structurally_resolved_unverified"
+    },
+    {
+      "id": 21179188,
+      "reason": "outside_clipped_graph"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "dataset_id": "osm-haifa-relation-dependencies",
+  "source_url": "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A45%5D%5Bmaxsize%3A16777216%5D%5Bdate%3A%222026-10-10T09%3A31%3A18Z%22%5D%3B%0Away%28id%3A204093044%2C232804277%2C908708298%2C925960108%2C995957809%29%3B%28._%3Bnode%28w%29%3B%29%3Bout+meta%3B%0A",
+  "endpoint": "https://overpass-api.de/api/interpreter",
+  "query": "[out:json][timeout:45][maxsize:16777216][date:\"2026-10-10T09:31:18Z\"];\nway(id:204093044,232804277,908708298,925960108,995957809);(._;node(w););out meta;\n",
+  "bbox_wgs84": [
+    34.99,
+    32.811,
+    35.004,
+    32.821
+  ],
+  "retrieved_at": "2026-10-10T09:51:34.700793Z",
+  "http_headers": {
+    "Content-Type": "application/json",
+    "Date": "Sat, 10 Oct 2026 09:51:33 GMT",
+    "Last-Modified": null,
+    "ETag": null
+  },
+  "source_snapshot_at": "2026-10-10T09:31:18Z",
+  "server_osm_base_at": "2026-10-10T09:49:36Z",
+  "requested_way_ids": [
+    204093044,
+    232804277,
+    908708298,
+    925960108,
+    995957809
+  ],
+  "scope": "relation context only; never added to pilot graph",
+  "publication_date": null,
+  "format": "Overpass JSON",
+  "crs": "EPSG:4326",
+  "sha256": "2f6fd236cd367baccffdbc5312b283196065f0c263a3011420f1a278a98a551c",
+  "bytes": 6705,
+  "raw_file": "raw.json",
+  "license": {
+    "identifier": "ODbL-1.0",
+    "decision": "permitted",
+    "reference": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "evidence_url": "https://www.openstreetmap.org/copyright",
+    "checked_on": "2026-10-10",
+    "reviewer": "TrucksIL source review",
+    "scope": "OSM pilot and its separate derived database only",
+    "attribution": "© OpenStreetMap contributors",
+    "obligations": [
+      "attribution",
+      "ODbL share-alike and access to derived database",
+      "no government endorsement; no navigation certification"
+    ]
+  },
+  "owner": "OpenStreetMap contributors; database licensed by OSM Foundation",
+  "distributor": "Overpass API",
+  "authenticated_official": false,
+  "route_safety_certified": false,
+  "coverage_status": "unknown",
+  "notes": [
+    "OSM edit timestamps are not field observation dates",
+    "Five specific dependencies of six missing member references; no bbox expansion",
+    "Related restriction relations may have members outside this snapshot"
+  ]
+}

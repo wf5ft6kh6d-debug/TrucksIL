@@ -31,7 +31,7 @@ jobs:
           mkdir -p evidence
           git rev-parse HEAD | tee evidence/checkout-sha.txt
           python -m pip install pip==24.3.1
-          python -m pip install jsonschema==4.23.0 attrs==24.2.0 jsonschema-specifications==2024.10.1 referencing==0.35.1 rpds-py==0.20.0 rfc3339-validator==0.1.4 six==1.16.0 typing_extensions==4.12.2
+          python -m pip install jsonschema==4.23.0 attrs==24.2.0 jsonschema-specifications==2024.10.1 referencing==0.35.1 rpds-py==0.20.0 rfc3339-validator==0.1.4 six==1.16.0 typing_extensions==4.12.2 networkx==3.4.2
           python -m pip freeze | tee evidence/python-packages.txt
           python --version | tee evidence/python-version.txt
       - name: Unit tests and independent Draft 2020-12 comparison
@@ -45,6 +45,8 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/stage3/build_pilot.py --output evidence/pilot
+          python scripts/stage3/audit_graph.py evidence/pilot/graph-audit.json | tee evidence/graph-audit.log
+          python scripts/stage3/compare_graph_engine.py evidence/pilot/normalized.json evidence/pilot/graph-audit.json | tee evidence/graph-independent.log
           python scripts/stage3/compare_geometry_engine.py evidence/pilot/normalized.json | tee evidence/pilot-geometry-engine.log
           python src/ingest_restrictions.py evidence/pilot/restrictions.json --as-of 2026-10-10T10:00:00Z --output evidence/pilot/validated-empty-batch.json
       - name: Start disposable PostGIS without network or exposed ports
@@ -95,7 +97,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -v ON_ERROR_STOP=1 < evidence/pilot/pilot-replay.sql 2>&1 | tee evidence/pilot-postgis.log
+          psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -v ON_ERROR_STOP=1 < evidence/pilot/graph-audit.sql 2>&1 | tee evidence/pilot-postgis.log
           test "$(psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -Atc 'SELECT (SELECT count(*) FROM trucksil_stage2.sources)+(SELECT count(*) FROM trucksil_stage2.road_nodes)+(SELECT count(*) FROM trucksil_stage2.road_segments)+(SELECT count(*) FROM trucksil_stage2.audit_events)')" = 0
       - name: Refuse checksum mismatch and unversioned schema; prove failure rollback
         shell: bash
