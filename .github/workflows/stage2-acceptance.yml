@@ -1,0 +1,119 @@
+name: Stage 2 technical acceptance
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [stage2/data-foundation-20261009]
+permissions:
+  contents: read
+concurrency:
+  group: stage2-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  acceptance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.12.8'
+      - name: Install independent engine and record versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git rev-parse HEAD | tee evidence/checkout-sha.txt
+          python -m pip install pip==24.3.1
+          python -m pip install jsonschema==4.23.0 attrs==24.2.0 jsonschema-specifications==2024.10.1 referencing==0.35.1 rpds-py==0.20.0 rfc3339-validator==0.1.4 six==1.16.0 typing_extensions==4.12.2
+          python -m pip freeze | tee evidence/python-packages.txt
+          python --version | tee evidence/python-version.txt
+      - name: Unit tests and independent Draft 2020-12 comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -v 2>&1 | tee evidence/unit-tests.log
+          python scripts/compare_schema_engine.py 2>&1 | tee evidence/schema-comparison.log
+      - name: Start disposable PostGIS without network or exposed ports
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Bootstrap version tag. Record immutable digest; pin it after first successful pull.
+          docker pull postgis/postgis:16-3.4
+          docker image inspect postgis/postgis:16-3.4 --format '{{json .RepoDigests}}' | tee evidence/postgis-image-digest.json
+          image_id=$(docker image inspect postgis/postgis:16-3.4 --format '{{.Id}}')
+          docker run -d --name trucksil-postgis --network none -e POSTGRES_PASSWORD=disposable_ci_only "$image_id"
+          for attempt in $(seq 1 60); do
+            if docker exec --user postgres trucksil-postgis pg_isready -h /var/run/postgresql -U postgres; then break; fi
+            sleep 1
+          done
+          docker exec --user postgres trucksil-postgis pg_isready -h /var/run/postgresql -U postgres
+          mkdir -p "$RUNNER_TEMP/trucksil-bin"
+          cat > "$RUNNER_TEMP/trucksil-bin/psql" <<'SH'
+          #!/bin/sh
+          exec docker exec -i --user postgres trucksil-postgis psql "$@"
+          SH
+          chmod +x "$RUNNER_TEMP/trucksil-bin/psql"
+          echo "$RUNNER_TEMP/trucksil-bin" >> "$GITHUB_PATH"
+          docker exec --user postgres trucksil-postgis createdb -h /var/run/postgresql trucksil_stage2_test_baseline
+          docker exec --user postgres trucksil-postgis createdb -h /var/run/postgresql trucksil_stage2_test_hardening
+          docker exec --user postgres trucksil-postgis createdb -h /var/run/postgresql trucksil_stage2_test_failure
+      - name: Baseline constraints, triggers and fixture rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          psql -X -h /var/run/postgresql -d trucksil_stage2_test_baseline -v ON_ERROR_STOP=1 < db/stage2.sql 2>&1 | tee evidence/baseline-migration.log
+          psql -X -h /var/run/postgresql -d trucksil_stage2_test_baseline -v ON_ERROR_STOP=1 -c 'SELECT version(), postgis_full_version(), inet_server_addr();' | tee evidence/database-versions.log
+          psql -X -h /var/run/postgresql -d trucksil_stage2_test_baseline -v ON_ERROR_STOP=1 < db/test_stage2.sql 2>&1 | tee evidence/baseline-tests.log
+          test "$(psql -X -h /var/run/postgresql -d trucksil_stage2_test_baseline -Atc 'SELECT count(*) FROM trucksil_stage2.audit_events')" = 0
+      - name: Versioned migration, repeat application and hardening tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/migrate_stage2.py --database trucksil_stage2_test_hardening --apply 2>&1 | tee evidence/migration-first.log
+          psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -Atc 'SELECT version,sha256,applied_at FROM trucksil_stage2.schema_migrations ORDER BY version' > evidence/ledger-before.txt
+          python scripts/migrate_stage2.py --database trucksil_stage2_test_hardening --apply 2>&1 | tee evidence/migration-repeat.log
+          psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -Atc 'SELECT version,sha256,applied_at FROM trucksil_stage2.schema_migrations ORDER BY version' > evidence/ledger-after.txt
+          cmp evidence/ledger-before.txt evidence/ledger-after.txt
+          psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -v ON_ERROR_STOP=1 < db/test_stage2_hardening.sql 2>&1 | tee evidence/hardening-tests.log
+          test "$(psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -Atc 'SELECT count(*) FROM trucksil_stage2.audit_events')" = 0
+      - name: Refuse checksum mismatch and unversioned schema; prove failure rollback
+        shell: bash
+        run: |
+          set -euo pipefail
+          psql -X -h /var/run/postgresql -d trucksil_stage2_test_hardening -v ON_ERROR_STOP=1 -c "UPDATE trucksil_stage2.schema_migrations SET sha256='deliberate-test-mismatch' WHERE version=2"
+          if python scripts/migrate_stage2.py --database trucksil_stage2_test_hardening --apply > evidence/checksum-rejection.log 2>&1; then exit 1; fi
+          grep -F 'Migration version/checksum mismatch' evidence/checksum-rejection.log
+          if python scripts/migrate_stage2.py --database trucksil_stage2_test_baseline --apply > evidence/unversioned-rejection.log 2>&1; then exit 1; fi
+          grep -F 'Existing unversioned schema' evidence/unversioned-rejection.log
+          python scripts/migrate_stage2.py --database trucksil_stage2_test_failure > "$RUNNER_TEMP/failing-migration.sql"
+          python - "$RUNNER_TEMP/failing-migration.sql" <<'PY'
+          from pathlib import Path
+          import sys
+          p=Path(sys.argv[1]); s=p.read_text()
+          assert s.endswith('COMMIT;\n\n') or s.endswith('COMMIT;\n')
+          s=s.rstrip(); s=s[:-len('COMMIT;')]+'SELECT 1/0;\nCOMMIT;\n'
+          p.write_text(s)
+          PY
+          if psql -X -h /var/run/postgresql -d trucksil_stage2_test_failure -v ON_ERROR_STOP=1 < "$RUNNER_TEMP/failing-migration.sql" > evidence/migration-failure.log 2>&1; then exit 1; fi
+          grep -F 'division by zero' evidence/migration-failure.log
+          test "$(psql -X -h /var/run/postgresql -d trucksil_stage2_test_failure -Atc "SELECT to_regnamespace('trucksil_stage2') IS NULL")" = t
+      - name: Save container logs and destroy disposable database
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p evidence
+          docker logs trucksil-postgis > evidence/postgres-container.log 2>&1 || true
+          docker rm -fv trucksil-postgis || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: stage2-acceptance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          retention-days: 14
+          if-no-files-found: error
