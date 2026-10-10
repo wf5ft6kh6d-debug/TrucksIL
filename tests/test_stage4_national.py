@@ -29,3 +29,26 @@ class NationalTests(unittest.TestCase):
   for i in range(100000):d.join(i,i+1)
   self.assertEqual(d.sizes(),[100001])
  def test_unknown_oneway_value(self):self.assertEqual(direction({'oneway':'reversible'}),'unknown')
+ def test_unlicensed_manifest_refused(self):
+  from scripts.stage4.national_graph import validate_manifest
+  with self.assertRaises(ValueError):validate_manifest({'license':'unknown'})
+ def test_invalid_checksum_refused(self):
+  from scripts.stage4.national_graph import validate_manifest
+  with self.assertRaises(ValueError):validate_manifest({'license':'ODbL-1.0','sha256':'bad'})
+ def test_manifest_attribution_required(self):
+  from scripts.stage4.national_graph import validate_manifest
+  with self.assertRaises(ValueError):validate_manifest({'license':'ODbL-1.0','sha256':'0'*64})
+ def test_incomplete_way_quarantined_without_gap_connection(self):
+  import importlib.util
+  if importlib.util.find_spec('osmium') is None:self.skipTest('full fixture executed in national CI with osmium')
+  import tempfile,json,sqlite3,io,contextlib
+  from pathlib import Path
+  from scripts.stage4.national_graph import build,sha
+  with tempfile.TemporaryDirectory() as d:
+   p=Path(d);source=p/'fixture.osm'
+   source.write_text('<osm version="0.6"><node id="1" lat="32" lon="35" version="1"/><node id="3" lat="32.01" lon="35.01" version="1"/><way id="7" version="1"><nd ref="1"/><nd ref="2"/><nd ref="3"/><tag k="highway" v="residential"/><tag k="maxheight" v="3.1"/></way></osm>')
+   m={'license':'ODbL-1.0','attribution':'synthetic unit fixture, not real evidence','sha256':sha(source),'snapshot_at':'2026-10-10T00:00:00Z'};(p/'manifest.json').write_text(json.dumps(m))
+   with contextlib.redirect_stdout(io.StringIO()):build(source,p/'out',p/'manifest.json')
+   with sqlite3.connect(p/'out/graph.sqlite') as db:
+    self.assertEqual(db.execute('SELECT count(*) FROM segments').fetchone()[0],0)
+    self.assertEqual(db.execute('SELECT geometry,status FROM candidates').fetchone(),('null','QUARANTINE'))

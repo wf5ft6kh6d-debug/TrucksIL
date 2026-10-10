@@ -42,6 +42,14 @@ def sha(path):
         for b in iter(lambda:f.read(1024*1024),b''):h.update(b)
     return h.hexdigest()
 
+def validate_manifest(m):
+    import re
+    from datetime import datetime
+    if m.get('license')!='ODbL-1.0':raise ValueError('unapproved licence')
+    if not re.fullmatch('[0-9a-f]{64}',m.get('sha256','')):raise ValueError('invalid source SHA256')
+    if not m.get('attribution'):raise ValueError('missing attribution')
+    datetime.fromisoformat(m['snapshot_at'].replace('Z','+00:00'))
+
 def build(pbf,out,manifest):
     import osmium
     from shapely.geometry import shape,Point
@@ -50,7 +58,8 @@ def build(pbf,out,manifest):
     from pyproj import Geod
     start=time.monotonic();out=Path(out);out.mkdir(parents=True,exist_ok=True)
     if (out/'graph.sqlite').exists():raise ValueError('Refuse overwrite; use a new output directory')
-    expected=json.loads(Path(manifest).read_text());assert sha(pbf)==expected['sha256'],'source checksum'
+    expected=json.loads(Path(manifest).read_text());validate_manifest(expected)
+    if sha(pbf)!=expected['sha256']:raise ValueError('source checksum')
     db=sqlite3.connect(out/'graph.sqlite');db.executescript('''
     PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;
     CREATE TABLE ways(id INTEGER PRIMARY KEY,version INTEGER,timestamp TEXT,tags TEXT,nodes TEXT);

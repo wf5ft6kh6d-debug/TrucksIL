@@ -49,6 +49,22 @@
     }
   },
   "source_file": "israel-and-palestine-261008.osm.pbf",
-  "storage": "outside Git; preserved source archive and CI artifacts",
+  "storage": {
+    "location": "private project file storage; not Git",
+    "archives": [
+      {
+        "filename": "TrucksIL-national-research-261008.zip",
+        "size_bytes": 412097524,
+        "sha256": "958859a8292c77744013a7a028ae1acf4c1366f1b621f8bb1ddfdbe262f0669a"
+      },
+      {
+        "filename": "TrucksIL-Geofabrik-261008-source.zip",
+        "size_bytes": 120216068,
+        "sha256": "7d60b87c8edb9018292d1c2cb107e99753676195fa5a8e9a6d75dc8f541fe7b2"
+      }
+    ],
+    "ci_retention_days": 90,
+    "ci_artifacts_are_not_permanent_archive": true
+  },
   "verified_restrictions": 0
 }

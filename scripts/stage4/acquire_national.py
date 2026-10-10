@@ -14,3 +14,5 @@ with target.open('rb') as f:
  for b in iter(lambda:f.read(1024*1024),b''):h.update(b)
 assert target.stat().st_size==m['size_bytes'] and h.hexdigest()==m['sha256'],'Pinned source mismatch; do not replace manifest automatically'
 print('PINNED SOURCE SHA256 PASS',h.hexdigest())
+(p/'manifest.json').write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n')
+(p/'NOTICE.txt').write_text('© OpenStreetMap contributors. ODbL-1.0. https://www.openstreetmap.org/copyright\nDerived research database: same ODbL obligations. NOT verified for navigation.\nSource boundaries are not an official country boundary.\n')

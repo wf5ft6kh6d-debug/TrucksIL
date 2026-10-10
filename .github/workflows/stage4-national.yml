@@ -2,10 +2,7 @@ name: Stage 4 full national extract research acceptance
 on:
   push:
     branches: [stage4/israel-national-road-graph]
-    paths: ['scripts/stage4/**', 'tests/test_stage4*', 'data/stage4/national-source-manifest.json', '.github/workflows/stage4-national.yml']
-  pull_request:
-    branches: [main]
-    paths: ['scripts/stage4/**', 'tests/test_stage4*', 'data/stage4/national-source-manifest.json', '.github/workflows/stage4-national.yml']
+    paths: ['scripts/stage4/**', 'tests/test_stage4*', 'data/stage4/**', '.github/workflows/stage4-national.yml']
 permissions:
   contents: read
 concurrency:
