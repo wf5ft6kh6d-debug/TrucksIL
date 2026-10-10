@@ -386,3 +386,25 @@ NetworkX/Shapely/PostGIS/JSON Schema/migration/audit/rollback pipeline сохр�
 финальном отчёте после выполнения, без преждевременного PASS. Main/merge/deploy
 не затронуты. Следующий шаг: приёмка муниципального ответа; TIL-HAIFA-003 только
 после отдельного разрешения, не автоматическая повторная отправка.
+
+
+## 2026-10-10 — шесть агентов: поставщики грузовых ограничений
+
+Фактический исходный HEAD bc40773b71f0f89a87f4fbcad6d8b151050c0582, PR2 Draft.
+Созданы TRUCK_DATA_PROVIDERS_RU.md, PROVIDER_LICENSE_COMPARISON_RU.md,
+PROVIDER_CONTACT_REQUESTS_RU.md и data/stage3/truck-data-providers.json.
+Пять исследователей + независимый аудитор; 8 коммерческих и 5 официальных групп.
+HERE/Trimble документируют Israel truck data; MapFactor документирует Truck maps
+Israel на TomTom. Haifa sample для всех NOT TESTED; права собственной коммерческой
+БД не подтверждены. Исправлена stale-index ошибка TomTom Traffic, проверены SVG
+Trimble. PTV/Mapbox/evaluationTrimble/Govmap требуют отдельных прав.
+ODbL CleanAir подтверждена только для границы, не HGV rules.
+0 наборов получено, 0 импортов, 0 новых verified restrictions; граф/OSM неизменны.
+13 адресных проектов (8 коммерческих EN, 5 официальных EN/HE с общим текстом и
+индивидуальными вопросами), все draft_not_sent; TIL-HAIFA-001 не дублировался.
+Локально python -m unittest discover -s tests -v:72/72 OK. Код/тесты не менялись.
+Новые unit tests не требуются: подтверждённых исправлений кода нет.
+Итоговый SHA и фактический CI фиксируются в существующем Draft PR2/финальном
+отчёте после публикации. Коммит можно определить git log -- data/stage3/truck-data-providers.json.
+Дальше: разрешённый бесплатный образец HERE/Trimble и письменные права, затем
+TomTom/PTV; независимая приёмка каждой записи. Main/merge/deploy не затронуты.
