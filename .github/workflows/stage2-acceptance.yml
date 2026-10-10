@@ -45,6 +45,7 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/stage3/build_pilot.py --output evidence/pilot
+          python scripts/stage3/compare_geometry_engine.py evidence/pilot/normalized.json | tee evidence/pilot-geometry-engine.log
           python src/ingest_restrictions.py evidence/pilot/restrictions.json --as-of 2026-10-10T10:00:00Z --output evidence/pilot/validated-empty-batch.json
       - name: Start disposable PostGIS without network or exposed ports
         shell: bash

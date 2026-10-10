@@ -32,6 +32,7 @@ URL, точный запрос, HTTP-заголовки, время получе
 python -m unittest discover -s tests -v
 python scripts/compare_schema_engine.py
 python scripts/stage3/build_pilot.py --output /tmp/trucksil-pilot-new
+python scripts/stage3/compare_geometry_engine.py /tmp/trucksil-pilot-new/normalized.json
 python src/ingest_restrictions.py /tmp/trucksil-pilot-new/restrictions.json --as-of 2026-10-10T10:00:00Z
 ```
 
@@ -91,3 +92,8 @@ CI сохраняет все проверки этапа 2 и выполняет
 Это проверка совместимости, не миграция реальных существующих данных.
 30-дневный срок повторной проверки лицензии — внутренняя политика пилота,
 не срок действия ODbL. Миграции этапа 2 и production не меняются.
+
+Запрос включает highway ways, их узлы и связанные turn restrictions. Отдельные
+дорожные знаки вне этих узлов, зоны, все временные события и полная сеть
+отношений не запрашивались. Нулевое число грузовых тегов относится только
+к этому запросу, а не ко всем существующим объектам OSM в районе.
