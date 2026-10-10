@@ -1,0 +1,54 @@
+{
+  "url": "https://download.geofabrik.de/asia/israel-and-palestine-261008.osm.pbf",
+  "retrieved_at": "2026-10-10T11:54:49.880224+00:00",
+  "size_bytes": 120210109,
+  "sha256": "dff1ce395df33b8df901b85f7fd822bacd7a10985ceb2d893144251455646670",
+  "headers": {
+    "Date": "Thu, 08 Oct 2026 23:39:06 GMT",
+    "Server": "Apache",
+    "Last-Modified": "Thu, 08 Oct 2026 22:51:54 GMT",
+    "ETag": "\"72a42bd-65d5c14030ee6\"",
+    "Accept-Ranges": "bytes",
+    "Content-Length": "120210109",
+    "Cache-Control": "max-age=63072000, public",
+    "Content-Type": "application/octet-stream",
+    "Age": "126705",
+    "Cache-Status": "download-proxy9;hit;detail=match",
+    "Via": "1.1 download-proxy9 (squid/6.14)",
+    "Connection": "close"
+  },
+  "schema_version": 1,
+  "source_id": "geofabrik-israel-and-palestine-261008",
+  "snapshot_at": "2026-10-08T20:21:06Z",
+  "source_scope": "Israel and Palestine Geofabrik extract; NOT an official Israel boundary",
+  "license": "ODbL-1.0",
+  "license_url": "https://www.openstreetmap.org/copyright",
+  "attribution": "© OpenStreetMap contributors",
+  "license_obligations": [
+    "attribution",
+    "ODbL share-alike/access obligations for public derived databases",
+    "no official verification implied"
+  ],
+  "boundary": {
+    "url": "https://download.geofabrik.de/asia/israel-and-palestine.poly",
+    "retrieved_at": "2026-10-10T11:55:03.653047+00:00",
+    "size_bytes": 1379,
+    "sha256": "b431b29d18d256a8394def2964d3dc296bef556d46091f2dae74b57cc46dd5a7",
+    "headers": {
+      "Date": "Thu, 08 Oct 2026 20:09:29 GMT",
+      "Server": "Apache",
+      "Last-Modified": "Thu, 08 Oct 2026 15:25:33 GMT",
+      "ETag": "\"563-65d55d7c1f103\"",
+      "Accept-Ranges": "bytes",
+      "Content-Length": "1379",
+      "Cache-Control": "max-age=604800, public",
+      "Age": "143134",
+      "Cache-Status": "download-proxy13;hit;detail=match",
+      "Via": "1.1 download-proxy13 (squid/6.14)",
+      "Connection": "close"
+    }
+  },
+  "source_file": "israel-and-palestine-261008.osm.pbf",
+  "storage": "outside Git; preserved source archive and CI artifacts",
+  "verified_restrictions": 0
+}
