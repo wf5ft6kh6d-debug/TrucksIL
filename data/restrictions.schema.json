@@ -1,19 +1,548 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "TrucksIL road restriction (draft)",
+  "title": "TrucksIL road restriction — stage 2 staging",
   "type": "object",
-  "required": ["id", "roadSegmentId", "restrictionType", "value", "unit", "status", "source", "observedAt"],
+  "required": [
+    "id",
+    "restrictionType",
+    "value",
+    "unit",
+    "status",
+    "source",
+    "observedAt",
+    "checkedAt",
+    "reviewDueAt",
+    "verifier",
+    "evidence"
+  ],
   "properties": {
-    "id": {"type": "string"},
-    "roadSegmentId": {"type": "string"},
-    "restrictionType": {"enum": ["max_height", "max_width", "max_length", "max_gross_weight", "max_axle_weight", "truck_prohibited", "hazmat_restriction"]},
-    "value": {"type": "number", "minimum": 0},
-    "unit": {"enum": ["m", "t", "boolean"]},
-    "status": {"enum": ["unverified", "verified", "disputed", "expired"]},
-    "source": {"type": "object", "required": ["name", "reference"], "properties": {"name": {"type": "string"}, "reference": {"type": "string"}}},
-    "observedAt": {"type": "string", "format": "date-time"},
-    "verifiedAt": {"type": ["string", "null"], "format": "date-time"},
-    "reviewDueAt": {"type": ["string", "null"], "format": "date-time"}
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "roadSegmentId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "verifier": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "notes": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "checkedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reviewDueAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "effectiveFrom": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "effectiveTo": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "verifiedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "restrictionType": {
+      "enum": [
+        "max_height",
+        "max_width",
+        "max_length",
+        "max_gross_weight",
+        "max_axle_weight",
+        "truck_prohibited",
+        "hazmat_restriction"
+      ]
+    },
+    "value": {
+      "type": "number",
+      "minimum": 0
+    },
+    "unit": {
+      "enum": [
+        "m",
+        "t",
+        "boolean"
+      ]
+    },
+    "status": {
+      "enum": [
+        "unverified",
+        "verified",
+        "disputed",
+        "expired"
+      ]
+    },
+    "direction": {
+      "enum": [
+        "both",
+        "forward",
+        "reverse",
+        "unknown"
+      ]
+    },
+    "geometry": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "coordinates"
+          ],
+          "properties": {
+            "type": {
+              "const": "Point"
+            },
+            "coordinates": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                },
+                {
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "coordinates"
+          ],
+          "properties": {
+            "type": {
+              "const": "LineString"
+            },
+            "coordinates": {
+              "type": "array",
+              "items": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": -180,
+                    "maximum": 180
+                  },
+                  {
+                    "type": "number",
+                    "minimum": -90,
+                    "maximum": 90
+                  }
+                ],
+                "minItems": 2,
+                "maxItems": 2
+              },
+              "minItems": 2
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "reference",
+          "retrievedAt",
+          "summary"
+        ],
+        "properties": {
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "retrievedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "name",
+        "reference",
+        "kind",
+        "authenticatedOfficial",
+        "license"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "kind": {
+          "enum": [
+            "official",
+            "open_mapping",
+            "field_survey",
+            "user_report",
+            "other"
+          ]
+        },
+        "authenticatedOfficial": {
+          "type": "boolean"
+        },
+        "license": {
+          "type": "object",
+          "required": [
+            "identifier",
+            "reference",
+            "decision",
+            "checkedAt",
+            "reviewDueAt",
+            "reviewer"
+          ],
+          "properties": {
+            "identifier": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "reference": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "decision": {
+              "enum": [
+                "permitted",
+                "pending",
+                "denied"
+              ]
+            },
+            "checkedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "reviewDueAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "reviewer": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "obligations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "conditions": {
+      "type": "object",
+      "required": [
+        "text",
+        "interpretationStatus"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "interpretationStatus": {
+          "enum": [
+            "unresolved",
+            "reviewed"
+          ]
+        },
+        "hazmatClasses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "independentReview": {
+      "type": "object",
+      "required": [
+        "reviewer",
+        "reviewedAt",
+        "decision",
+        "reference"
+      ],
+      "properties": {
+        "reviewer": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "reviewedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "decision": {
+          "enum": [
+            "approved",
+            "rejected",
+            "pending"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "additionalProperties": false
+    }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "anyOf": [
+    {
+      "required": [
+        "roadSegmentId"
+      ]
+    },
+    {
+      "required": [
+        "geometry"
+      ]
+    }
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "restrictionType": {
+            "enum": [
+              "max_height",
+              "max_width",
+              "max_length"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "m"
+          },
+          "value": {
+            "exclusiveMinimum": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "restrictionType": {
+            "enum": [
+              "max_gross_weight",
+              "max_axle_weight"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "t"
+          },
+          "value": {
+            "exclusiveMinimum": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "restrictionType": {
+            "enum": [
+              "truck_prohibited",
+              "hazmat_restriction"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "unit": {
+            "const": "boolean"
+          },
+          "value": {
+            "const": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "restrictionType": {
+            "const": "hazmat_restriction"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "conditions"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "verified"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "verifiedAt",
+          "direction",
+          "independentReview"
+        ],
+        "properties": {
+          "verifiedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "direction": {
+            "enum": [
+              "both",
+              "forward",
+              "reverse"
+            ]
+          },
+          "source": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "official",
+                  "open_mapping",
+                  "field_survey",
+                  "other"
+                ]
+              },
+              "license": {
+                "properties": {
+                  "decision": {
+                    "const": "permitted"
+                  }
+                }
+              }
+            }
+          },
+          "conditions": {
+            "properties": {
+              "interpretationStatus": {
+                "const": "reviewed"
+              }
+            }
+          },
+          "independentReview": {
+            "properties": {
+              "decision": {
+                "const": "approved"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "kind": {
+                "const": "official"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "authenticatedOfficial": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "source": {
+            "properties": {
+              "authenticatedOfficial": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

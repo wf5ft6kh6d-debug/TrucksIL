@@ -1,0 +1,253 @@
+[
+  {
+    "id": 12303230,
+    "versions": [
+      {
+        "version": 1,
+        "timestamp": "2021-02-11T15:21:49Z",
+        "changeset": 99116447,
+        "members": [
+          {
+            "type": "way",
+            "ref": "62078604",
+            "role": "from"
+          },
+          {
+            "type": "node",
+            "ref": "2085638047",
+            "role": "via"
+          },
+          {
+            "type": "way",
+            "ref": "232804279",
+            "role": "to"
+          }
+        ],
+        "tags": {
+          "restriction": "only_right_turn",
+          "type": "restriction"
+        }
+      },
+      {
+        "version": 2,
+        "timestamp": "2026-08-23T00:12:27Z",
+        "changeset": 187865136,
+        "members": [
+          {
+            "type": "node",
+            "ref": "2085638047",
+            "role": "via"
+          },
+          {
+            "type": "way",
+            "ref": "232804279",
+            "role": "to"
+          }
+        ],
+        "tags": {
+          "restriction": "only_right_turn",
+          "type": "restriction"
+        }
+      }
+    ],
+    "source_sha256": "1630226acdbe220a70fe9ca9038c0c1897334aa39337b2d1ffc492a6ede03894",
+    "status": "quarantine",
+    "restoration_authorized": false
+  },
+  {
+    "id": 13395546,
+    "versions": [
+      {
+        "version": 1,
+        "timestamp": "2021-11-01T22:17:25Z",
+        "changeset": 113257488,
+        "members": [
+          {
+            "type": "way",
+            "ref": "53440971",
+            "role": "from"
+          },
+          {
+            "type": "node",
+            "ref": "2407219505",
+            "role": "via"
+          },
+          {
+            "type": "way",
+            "ref": "816920937",
+            "role": "to"
+          }
+        ],
+        "tags": {
+          "restriction": "only_straight_on",
+          "type": "restriction"
+        }
+      },
+      {
+        "version": 2,
+        "timestamp": "2022-04-19T10:07:35Z",
+        "changeset": 119898650,
+        "members": [
+          {
+            "type": "way",
+            "ref": "53440971",
+            "role": "from"
+          },
+          {
+            "type": "node",
+            "ref": "2407219505",
+            "role": "via"
+          },
+          {
+            "type": "way",
+            "ref": "1052978893",
+            "role": "to"
+          }
+        ],
+        "tags": {
+          "restriction": "only_straight_on",
+          "type": "restriction"
+        }
+      },
+      {
+        "version": 3,
+        "timestamp": "2025-02-19T15:46:44Z",
+        "changeset": 162706702,
+        "members": [
+          {
+            "type": "node",
+            "ref": "2407219505",
+            "role": "via"
+          },
+          {
+            "type": "way",
+            "ref": "1052978893",
+            "role": "to"
+          }
+        ],
+        "tags": {
+          "restriction": "only_straight_on",
+          "type": "restriction"
+        }
+      }
+    ],
+    "source_sha256": "6741ae686f830cbda09e71c30afcb52ce931abce887f97869bbfcf33a6c9390f",
+    "status": "quarantine",
+    "restoration_authorized": false
+  },
+  {
+    "id": 10115408,
+    "versions": [
+      {
+        "version": 1,
+        "timestamp": "2019-10-04T18:54:35Z",
+        "changeset": 75300439,
+        "members": [
+          {
+            "type": "way",
+            "ref": "731754150",
+            "role": "from"
+          },
+          {
+            "type": "node",
+            "ref": "6852518463",
+            "role": "via"
+          },
+          {
+            "type": "way",
+            "ref": "731754154",
+            "role": "to"
+          }
+        ],
+        "tags": {
+          "restriction": "only_right_turn",
+          "type": "restriction"
+        }
+      },
+      {
+        "version": 2,
+        "timestamp": "2020-12-12T22:30:36Z",
+        "changeset": 95739020,
+        "members": [
+          {
+            "type": "way",
+            "ref": "731754150",
+            "role": "from"
+          },
+          {
+            "type": "node",
+            "ref": "6852518463",
+            "role": "via"
+          }
+        ],
+        "tags": {
+          "restriction": "only_right_turn",
+          "type": "restriction"
+        }
+      },
+      {
+        "version": 3,
+        "timestamp": "2021-09-15T22:17:13Z",
+        "changeset": 111264035,
+        "members": [
+          {
+            "type": "way",
+            "ref": "983720407",
+            "role": "to"
+          },
+          {
+            "type": "node",
+            "ref": "8223132276",
+            "role": "via"
+          },
+          {
+            "type": "way",
+            "ref": "731754150",
+            "role": "from"
+          }
+        ],
+        "tags": {
+          "restriction": "no_left_turn",
+          "type": "restriction"
+        }
+      }
+    ],
+    "source_sha256": "b0c55de987e6ee90bd69ebdd5fa71cee077a38f7feeea41824ab8db0c2c667c6",
+    "status": "quarantine",
+    "restoration_authorized": false
+  },
+  {
+    "id": 10115411,
+    "versions": [
+      {
+        "version": 1,
+        "timestamp": "2019-10-04T18:54:35Z",
+        "changeset": 75300439,
+        "members": [
+          {
+            "type": "way",
+            "ref": "731754155",
+            "role": "from"
+          },
+          {
+            "type": "node",
+            "ref": "779187086",
+            "role": "via"
+          },
+          {
+            "type": "way",
+            "ref": "731754155",
+            "role": "to"
+          }
+        ],
+        "tags": {
+          "restriction": "no_u_turn",
+          "type": "restriction"
+        }
+      }
+    ],
+    "source_sha256": "d8d85599acad8062bd8729fb45f43d3c2c5dd2b7b4e0035b6189c98bbf742a69",
+    "status": "quarantine",
+    "restoration_authorized": false
+  }
+]

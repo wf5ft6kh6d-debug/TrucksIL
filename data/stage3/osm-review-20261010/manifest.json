@@ -1,0 +1,36 @@
+{
+  "query": "[out:json][timeout:45][maxsize:1048576];rel(id:10115408,10115411,12303230,13395546);(._;>>;);out meta;",
+  "source_url": "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A45%5D%5Bmaxsize%3A1048576%5D%3Brel%28id%3A10115408%2C10115411%2C12303230%2C13395546%29%3B%28._%3B%3E%3E%3B%29%3Bout+meta%3B",
+  "retrieved_at": "2026-10-10T10:06:58.591661+00:00",
+  "source_snapshot_at": "2026-10-10T10:05:06Z",
+  "sha256": "a1da94be7a056211e638b771b0e11829deb5bd675038897938fbc31ed8d67243",
+  "bytes": 8149,
+  "license": {
+    "identifier": "ODbL-1.0",
+    "decision": "permitted",
+    "reference": "https://opendatacommons.org/licenses/odbl/1-0/",
+    "evidence_url": "https://www.openstreetmap.org/copyright",
+    "checked_on": "2026-10-10",
+    "reviewer": "TrucksIL source review",
+    "scope": "OSM pilot and its separate derived database only",
+    "attribution": "© OpenStreetMap contributors",
+    "obligations": [
+      "attribution",
+      "ODbL share-alike and access to derived database",
+      "no government endorsement; no navigation certification"
+    ]
+  },
+  "bbox_wgs84": [
+    34.99,
+    32.811,
+    35.004,
+    32.821
+  ],
+  "scope": "four relation version comparisons only; never merge into pilot",
+  "http_headers": {
+    "Content-Type": "application/json",
+    "Date": "Sat, 10 Oct 2026 10:06:56 GMT",
+    "ETag": null,
+    "Last-Modified": null
+  }
+}

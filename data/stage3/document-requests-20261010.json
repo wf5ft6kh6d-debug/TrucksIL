@@ -1,0 +1,75 @@
+{
+  "requests": [
+    {
+      "id": "TIL-HAIFA-001",
+      "recipient": "Haifa Municipality, Traffic Planning Department; Rasha Nicola Awad",
+      "email": "Rasha@haifa.muni.il",
+      "phone": "04-8356180",
+      "source_url": "https://www.haifa.muni.il/development-and-construction/roads-and-traffic/traffic-planning/",
+      "purpose": "Current orders, approved plans, installed signs, heavy-vehicle limits and dataset reuse rights; route GIS/control questions internally",
+      "draft": "docs/stage3/requests/TRAFFIC_REQUEST_HE_RU.md",
+      "priority": 1,
+      "verified_on": "2026-10-10",
+      "verification": "Published official contact, mailbox delivery not tested",
+      "status": "sent_user_confirmed",
+      "languages": [
+        "he",
+        "ru"
+      ],
+      "sent_at": null,
+      "request_number": null,
+      "sent_on": "2026-10-10",
+      "channel": "Outlook",
+      "evidence": "Connected Outlook search found outgoing request and owner copy; no matching municipal response. No receipt/registration confirmation.",
+      "owner_copy": "sent_user_confirmed; personal address withheld",
+      "receipt_status": "unconfirmed",
+      "registration_status": "unconfirmed",
+      "next_action": "Await municipal response; supplemental draft TIL-HAIFA-003 requires separate approval",
+      "response_status": "awaiting_response",
+      "mailbox_checked_at": "2026-10-10T11:27:09Z"
+    },
+    {
+      "id": "TIL-HAIFA-002",
+      "recipient": "Haifa Municipality, Freedom of Information officer; Shani Rosen",
+      "email": "shanir@haifa.muni.il",
+      "phone": "04-8356820",
+      "source_url": "https://www.haifa.muni.il/city-and-muni/freedom-of-information/",
+      "alternative_email_in_2023_procedure": "hofesh_meida@haifa.muni.il",
+      "purpose": "Fallback request for existing official documents and explicit reuse terms",
+      "draft": "docs/stage3/requests/FOI_REQUEST_HE_RU.md",
+      "priority": 2,
+      "verified_on": "2026-10-10",
+      "verification": "Published official contact, mailbox delivery not tested",
+      "status": "draft_not_sent",
+      "languages": [
+        "he",
+        "ru"
+      ],
+      "user_send_approval": false,
+      "sent_at": null,
+      "request_number": null,
+      "requires_before_send": [
+        "User approval",
+        "Sender identity/contact",
+        "Recheck recipient",
+        "Confirm any formal fee/submission requirements"
+      ]
+    },
+    {
+      "id": "TIL-HAIFA-003",
+      "recipient": "Haifa Municipality Traffic Planning; forward to competent engineering/GIS/asset owner",
+      "email": "Rasha@haifa.muni.il",
+      "source_url": "https://www.haifa.muni.il/development-and-construction/roads-and-traffic/traffic-planning/",
+      "status": "draft_not_sent",
+      "draft": "docs/stage3/requests/INFRASTRUCTURE_SUPPLEMENT_HE_RU.md",
+      "languages": [
+        "he",
+        "ru"
+      ],
+      "user_send_approval": false,
+      "purpose": "8 exact crossings, 3 tunnel ways, current as-built plans, levels, portals, HGV limits and per-document reuse rights"
+    }
+  ],
+  "online_form_observation": "Link from municipal FOI page returned 404; do not assume successful submission",
+  "assistant_messages_sent_this_task": 0
+}

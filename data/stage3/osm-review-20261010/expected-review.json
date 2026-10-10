@@ -1,0 +1,61 @@
+{
+  "relations": [
+    {
+      "id": 10115408,
+      "finding": "prohibited_manoeuvre_already_unreachable",
+      "role_counts": {
+        "from": 1,
+        "via": 1,
+        "to": 1
+      }
+    },
+    {
+      "id": 10115411,
+      "finding": "prohibited_manoeuvre_already_unreachable",
+      "role_counts": {
+        "from": 1,
+        "via": 1,
+        "to": 1
+      }
+    },
+    {
+      "id": 12303230,
+      "finding": "missing_from_member",
+      "role_counts": {
+        "from": 0,
+        "via": 1,
+        "to": 1
+      }
+    },
+    {
+      "id": 13395546,
+      "finding": "missing_from_member",
+      "role_counts": {
+        "from": 0,
+        "via": 1,
+        "to": 1
+      }
+    }
+  ],
+  "topology": {
+    "leaf_findings": {
+      "bbox_cut": 36,
+      "filtered_class_adjacency": 21,
+      "source_endpoint_unresolved": 43
+    },
+    "unknown_direction_reasons": {
+      "missing_oneway": 575
+    },
+    "unknown_direction_ways": 158,
+    "clipped_components": 5,
+    "full_raw_components_touching_pilot": 4,
+    "verified_restrictions": 0,
+    "graph_changed": false
+  },
+  "current_comparison": {
+    "snapshot_at": "2026-10-10T10:05:06Z",
+    "sha256": "a1da94be7a056211e638b771b0e11829deb5bd675038897938fbc31ed8d67243",
+    "changed_objects": [],
+    "objects_compared": 25
+  }
+}

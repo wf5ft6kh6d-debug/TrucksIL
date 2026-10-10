@@ -1,0 +1,32 @@
+{
+  "assessmentDate": "2026-10-09",
+  "scope": "Israel nationwide, as requested; operational boundary not yet validated",
+  "acquiredRoadDatasets": 0,
+  "acquiredRoadFeatures": 0,
+  "verifiedRestrictions": 0,
+  "geographicallyVerifiedAreas": [],
+  "coverageStatus": "unknown",
+  "routeSafetyCertified": false,
+  "restrictionDimensions": [
+    "height",
+    "width",
+    "length",
+    "gross_weight",
+    "axle_weight",
+    "truck_access",
+    "hazmat",
+    "temporary_closures"
+  ],
+  "limitations": [
+    "No road graph or restriction dataset has been acquired.",
+    "No geographic area has verified restriction coverage.",
+    "Source discovery and synthetic tests are not geographic verification.",
+    "No denominator exists for a percentage of nationwide coverage."
+  ],
+  "dataAcquisitionBlockers": [
+    "Bulk download hosts outside current execution network allowlist.",
+    "Two source acquisition agents stopped on usage limit.",
+    "Government resource-specific licensing and authenticated exports unresolved."
+  ],
+  "sourceRegistry": "data/source-candidates.json"
+}

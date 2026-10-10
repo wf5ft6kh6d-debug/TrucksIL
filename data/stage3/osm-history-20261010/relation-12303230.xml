@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.1.0 (1298 spike-08.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <relation id="12303230" visible="true" version="1" changeset="99116447" timestamp="2021-02-11T15:21:49Z" user="Car162" uid="12223802">
+  <member type="way" ref="62078604" role="from"/>
+  <member type="node" ref="2085638047" role="via"/>
+  <member type="way" ref="232804279" role="to"/>
+  <tag k="restriction" v="only_right_turn"/>
+  <tag k="type" v="restriction"/>
+ </relation>
+ <relation id="12303230" visible="true" version="2" changeset="187865136" timestamp="2026-08-23T00:12:27Z" user="Ornits" uid="24450071">
+  <member type="node" ref="2085638047" role="via"/>
+  <member type="way" ref="232804279" role="to"/>
+  <tag k="restriction" v="only_right_turn"/>
+  <tag k="type" v="restriction"/>
+ </relation>
+</osm>

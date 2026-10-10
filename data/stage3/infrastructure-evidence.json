@@ -1,0 +1,1724 @@
+{
+  "checkpoint": "4fa8498bd5debe2e89d3a5ab6a791e842696a82c",
+  "checked_at": "2026-10-10T11:27:09Z",
+  "bbox_wgs84": [
+    34.99,
+    32.811,
+    35.004,
+    32.821
+  ],
+  "provenance": {
+    "raw_sha256": "ea8f94139f2f7c48372b7c53c30ada916dcfebaf5d6207315a76f0fde51e3b31",
+    "source_snapshot_at": "2026-10-10T09:31:18Z",
+    "retrieved_at": "2026-10-10T09:33:16.343613Z",
+    "source_url": "https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%5Btimeout%3A45%5D%5Bmaxsize%3A16777216%5D%3B%0Away%5B%22highway%22%5D%2832.811%2C34.990%2C32.821%2C35.004%29-%3E.roads%3B%0A%28.roads%3Bnode%28w.roads%29%3Brel%28bw.roads%29%5B%22type%22%3D%22restriction%22%5D%3B%29%3B%0Aout+meta%3B%0A",
+    "license": {
+      "identifier": "ODbL-1.0",
+      "decision": "permitted",
+      "reference": "https://opendatacommons.org/licenses/odbl/1-0/",
+      "evidence_url": "https://www.openstreetmap.org/copyright",
+      "checked_on": "2026-10-10",
+      "reviewer": "TrucksIL source review",
+      "scope": "OSM pilot and its separate derived database only",
+      "attribution": "© OpenStreetMap contributors",
+      "obligations": [
+        "attribution",
+        "ODbL share-alike and access to derived database",
+        "no government endorsement; no navigation certification"
+      ]
+    },
+    "topology_audit_sha256": "aedb5a099fbe24a001accc2041934bef2ead3da23e5cb47cd987e49adc59d187",
+    "official_sources_register": "data/stage3/infrastructure-sources.json"
+  },
+  "crossings": [
+    {
+      "id": "CONTEXT-200730597-1053293268",
+      "ways": [
+        {
+          "way": 200730597,
+          "version": 23,
+          "osm_timestamp": "2023-10-14T00:56:57Z",
+          "osm_url": "https://www.openstreetmap.org/way/200730597/history",
+          "nodes": [
+            {
+              "id": 8284409020,
+              "coordinates_wgs84": [
+                35.0029341,
+                32.8144272
+              ]
+            },
+            {
+              "id": 9162703849,
+              "coordinates_wgs84": [
+                35.0028758,
+                32.8143998
+              ]
+            },
+            {
+              "id": 8890952036,
+              "coordinates_wgs84": [
+                35.0028267,
+                32.8143858
+              ]
+            },
+            {
+              "id": 9679759522,
+              "coordinates_wgs84": [
+                35.0027741,
+                32.8143749
+              ]
+            },
+            {
+              "id": 8223132258,
+              "coordinates_wgs84": [
+                35.002732,
+                32.8143774
+              ]
+            },
+            {
+              "id": 2106948773,
+              "coordinates_wgs84": [
+                35.0026796,
+                32.8143893
+              ]
+            },
+            {
+              "id": 8890952038,
+              "coordinates_wgs84": [
+                35.0026141,
+                32.8144317
+              ]
+            },
+            {
+              "id": 8890952037,
+              "coordinates_wgs84": [
+                35.0025353,
+                32.8145143
+              ]
+            },
+            {
+              "id": 9835971676,
+              "coordinates_wgs84": [
+                35.0018003,
+                32.8153389
+              ]
+            },
+            {
+              "id": 9679759617,
+              "coordinates_wgs84": [
+                35.0017343,
+                32.8154133
+              ]
+            },
+            {
+              "id": 8890952032,
+              "coordinates_wgs84": [
+                35.0016308,
+                32.8155297
+              ]
+            }
+          ],
+          "tags": {
+            "highway": "tertiary",
+            "lanes": "2",
+            "name": "שדרות פלי\"ם",
+            "name:en": "Sderot PalYam",
+            "name:he": "שדרות פלי\"ם",
+            "name:ru": "Пальям",
+            "oneway": "yes",
+            "surface": "asphalt"
+          },
+          "physical_function": "unknown",
+          "osm_function": "tertiary",
+          "legal_vehicle_access": "unknown"
+        },
+        {
+          "way": 1053293268,
+          "version": 2,
+          "osm_timestamp": "2026-04-06T15:37:00Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293268/history",
+          "nodes": [
+            {
+              "id": 1999155667,
+              "coordinates_wgs84": [
+                35.001328,
+                32.8152526
+              ]
+            },
+            {
+              "id": 9679759622,
+              "coordinates_wgs84": [
+                35.0018358,
+                32.8154822
+              ]
+            },
+            {
+              "id": 9679759623,
+              "coordinates_wgs84": [
+                35.0018182,
+                32.815514
+              ]
+            }
+          ],
+          "tags": {
+            "bridge": "yes",
+            "highway": "footway",
+            "layer": "1",
+            "surface": "paving_stones"
+          },
+          "physical_function": "unknown",
+          "osm_function": "footway",
+          "legal_vehicle_access": "unknown"
+        }
+      ],
+      "supporting_segments": [
+        {
+          "way_a_nodes": [
+            9679759617,
+            8890952032
+          ],
+          "way_b_nodes": [
+            1999155667,
+            9679759622
+          ]
+        }
+      ],
+      "coordinates_wgs84": [
+        35.0017197088284,
+        32.815429709781405
+      ],
+      "geometry_relation": "interior_crossing",
+      "de9im": "0F1FF0102",
+      "shared_node_ids": [],
+      "crossing_osm_node_id": null,
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "current_level_evidence": null,
+      "candidate_source_ids": [
+        "HAIFA-BRIDGE-AUDIT-2016",
+        "HAIFA-GIS-35"
+      ],
+      "candidate_match": "Historical bridge description/location only; exact/current asset match unverified"
+    },
+    {
+      "id": "CONTEXT-355094019-731754156",
+      "ways": [
+        {
+          "way": 355094019,
+          "version": 4,
+          "osm_timestamp": "2026-04-06T15:37:00Z",
+          "osm_url": "https://www.openstreetmap.org/way/355094019/history",
+          "nodes": [
+            {
+              "id": 3606996326,
+              "coordinates_wgs84": [
+                35.0018646,
+                32.81535
+              ]
+            },
+            {
+              "id": 9679759627,
+              "coordinates_wgs84": [
+                35.0019837,
+                32.8154421
+              ]
+            },
+            {
+              "id": 9835971652,
+              "coordinates_wgs84": [
+                35.002591,
+                32.8159496
+              ]
+            }
+          ],
+          "tags": {
+            "highway": "footway",
+            "surface": "paving_stones"
+          },
+          "physical_function": "unknown",
+          "osm_function": "footway",
+          "legal_vehicle_access": "unknown"
+        },
+        {
+          "way": 731754156,
+          "version": 5,
+          "osm_timestamp": "2023-10-14T00:53:14Z",
+          "osm_url": "https://www.openstreetmap.org/way/731754156/history",
+          "nodes": [
+            {
+              "id": 6852518467,
+              "coordinates_wgs84": [
+                35.0027133,
+                32.815682
+              ]
+            },
+            {
+              "id": 9835971651,
+              "coordinates_wgs84": [
+                35.0024206,
+                32.8159945
+              ]
+            }
+          ],
+          "tags": {
+            "covered": "yes",
+            "haifa-ref": "444",
+            "highway": "residential",
+            "lanes": "2",
+            "layer": "-1",
+            "name": "נתנזון",
+            "name:ar": "نَتنزون",
+            "name:en": "Natanzon",
+            "name:he": "נתנזון",
+            "name:ru": "Натанзон",
+            "surface": "asphalt",
+            "tunnel": "yes"
+          },
+          "physical_function": "unknown",
+          "osm_function": "residential",
+          "legal_vehicle_access": "unknown"
+        }
+      ],
+      "supporting_segments": [
+        {
+          "way_a_nodes": [
+            9679759627,
+            9835971652
+          ],
+          "way_b_nodes": [
+            6852518467,
+            9835971651
+          ]
+        }
+      ],
+      "coordinates_wgs84": [
+        35.002519006086665,
+        32.81588943712989
+      ],
+      "geometry_relation": "interior_crossing",
+      "de9im": "0F1FF0102",
+      "shared_node_ids": [],
+      "crossing_osm_node_id": null,
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "current_level_evidence": null,
+      "candidate_source_ids": [
+        "HAIFA-GIS-35",
+        "HAIFA-TRAFFIC"
+      ],
+      "candidate_match": "No site-specific official drawing obtained"
+    },
+    {
+      "id": "CONTEXT-1053293255-1053293268",
+      "ways": [
+        {
+          "way": 1053293255,
+          "version": 3,
+          "osm_timestamp": "2023-10-14T00:49:31Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293255/history",
+          "nodes": [
+            {
+              "id": 9679759561,
+              "coordinates_wgs84": [
+                35.000574,
+                32.8164505
+              ]
+            },
+            {
+              "id": 9679759544,
+              "coordinates_wgs84": [
+                35.0006925,
+                32.8163479
+              ]
+            },
+            {
+              "id": 9095411649,
+              "coordinates_wgs84": [
+                35.0007995,
+                32.8162399
+              ]
+            },
+            {
+              "id": 9679759576,
+              "coordinates_wgs84": [
+                35.0011291,
+                32.8158864
+              ]
+            },
+            {
+              "id": 9679759577,
+              "coordinates_wgs84": [
+                35.0012885,
+                32.8156991
+              ]
+            },
+            {
+              "id": 9679759591,
+              "coordinates_wgs84": [
+                35.0014454,
+                32.8154984
+              ]
+            },
+            {
+              "id": 1343200970,
+              "coordinates_wgs84": [
+                35.0014878,
+                32.8154441
+              ]
+            },
+            {
+              "id": 2106948806,
+              "coordinates_wgs84": [
+                35.0015686,
+                32.8153408
+              ]
+            }
+          ],
+          "tags": {
+            "highway": "tertiary",
+            "lanes": "2",
+            "name": "שדרות פלי\"ם",
+            "name:en": "Sderot PalYam",
+            "name:he": "שדרות פלי\"ם",
+            "name:ru": "Пальям",
+            "oneway": "yes"
+          },
+          "physical_function": "unknown",
+          "osm_function": "tertiary",
+          "legal_vehicle_access": "unknown"
+        },
+        {
+          "way": 1053293268,
+          "version": 2,
+          "osm_timestamp": "2026-04-06T15:37:00Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293268/history",
+          "nodes": [
+            {
+              "id": 1999155667,
+              "coordinates_wgs84": [
+                35.001328,
+                32.8152526
+              ]
+            },
+            {
+              "id": 9679759622,
+              "coordinates_wgs84": [
+                35.0018358,
+                32.8154822
+              ]
+            },
+            {
+              "id": 9679759623,
+              "coordinates_wgs84": [
+                35.0018182,
+                32.815514
+              ]
+            }
+          ],
+          "tags": {
+            "bridge": "yes",
+            "highway": "footway",
+            "layer": "1",
+            "surface": "paving_stones"
+          },
+          "physical_function": "unknown",
+          "osm_function": "footway",
+          "legal_vehicle_access": "unknown"
+        }
+      ],
+      "supporting_segments": [
+        {
+          "way_a_nodes": [
+            1343200970,
+            2106948806
+          ],
+          "way_b_nodes": [
+            1999155667,
+            9679759622
+          ]
+        }
+      ],
+      "coordinates_wgs84": [
+        35.00155670452429,
+        32.815356007953476
+      ],
+      "geometry_relation": "interior_crossing",
+      "de9im": "0F1FF0102",
+      "shared_node_ids": [],
+      "crossing_osm_node_id": null,
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "current_level_evidence": null,
+      "candidate_source_ids": [
+        "HAIFA-BRIDGE-AUDIT-2016",
+        "HAIFA-GIS-35"
+      ],
+      "candidate_match": "Historical bridge description/location only; exact/current asset match unverified"
+    },
+    {
+      "id": "CONTEXT-1053293259-1053293268",
+      "ways": [
+        {
+          "way": 1053293259,
+          "version": 1,
+          "osm_timestamp": "2022-04-20T10:33:10Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293259/history",
+          "nodes": [
+            {
+              "id": 9679759591,
+              "coordinates_wgs84": [
+                35.0014454,
+                32.8154984
+              ]
+            },
+            {
+              "id": 9679759592,
+              "coordinates_wgs84": [
+                35.0014539,
+                32.8154555
+              ]
+            },
+            {
+              "id": 9679759593,
+              "coordinates_wgs84": [
+                35.001456,
+                32.8154212
+              ]
+            },
+            {
+              "id": 9679759594,
+              "coordinates_wgs84": [
+                35.0014508,
+                32.8153762
+              ]
+            },
+            {
+              "id": 9679759595,
+              "coordinates_wgs84": [
+                35.0014384,
+                32.8153189
+              ]
+            },
+            {
+              "id": 9679759596,
+              "coordinates_wgs84": [
+                35.0014219,
+                32.8152633
+              ]
+            },
+            {
+              "id": 9679759597,
+              "coordinates_wgs84": [
+                35.0014042,
+                32.815214
+              ]
+            }
+          ],
+          "tags": {
+            "highway": "service",
+            "oneway": "yes"
+          },
+          "physical_function": "unknown",
+          "osm_function": "service",
+          "legal_vehicle_access": "unknown"
+        },
+        {
+          "way": 1053293268,
+          "version": 2,
+          "osm_timestamp": "2026-04-06T15:37:00Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293268/history",
+          "nodes": [
+            {
+              "id": 1999155667,
+              "coordinates_wgs84": [
+                35.001328,
+                32.8152526
+              ]
+            },
+            {
+              "id": 9679759622,
+              "coordinates_wgs84": [
+                35.0018358,
+                32.8154822
+              ]
+            },
+            {
+              "id": 9679759623,
+              "coordinates_wgs84": [
+                35.0018182,
+                32.815514
+              ]
+            }
+          ],
+          "tags": {
+            "bridge": "yes",
+            "highway": "footway",
+            "layer": "1",
+            "surface": "paving_stones"
+          },
+          "physical_function": "unknown",
+          "osm_function": "footway",
+          "legal_vehicle_access": "unknown"
+        }
+      ],
+      "supporting_segments": [
+        {
+          "way_a_nodes": [
+            9679759595,
+            9679759596
+          ],
+          "way_b_nodes": [
+            1999155667,
+            9679759622
+          ]
+        }
+      ],
+      "coordinates_wgs84": [
+        35.00143278466444,
+        32.81529997802079
+      ],
+      "geometry_relation": "interior_crossing",
+      "de9im": "0F1FF0102",
+      "shared_node_ids": [],
+      "crossing_osm_node_id": null,
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "current_level_evidence": null,
+      "candidate_source_ids": [
+        "HAIFA-BRIDGE-AUDIT-2016",
+        "HAIFA-GIS-35"
+      ],
+      "candidate_match": "Historical bridge description/location only; exact/current asset match unverified"
+    },
+    {
+      "id": "CONTEXT-1053293264-1053293268",
+      "ways": [
+        {
+          "way": 1053293264,
+          "version": 1,
+          "osm_timestamp": "2022-04-20T10:33:10Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293264/history",
+          "nodes": [
+            {
+              "id": 9679759600,
+              "coordinates_wgs84": [
+                35.0015521,
+                32.8152378
+              ]
+            },
+            {
+              "id": 9679759613,
+              "coordinates_wgs84": [
+                35.00155,
+                32.8152644
+              ]
+            },
+            {
+              "id": 9679759612,
+              "coordinates_wgs84": [
+                35.0015231,
+                32.8153038
+              ]
+            },
+            {
+              "id": 9679759611,
+              "coordinates_wgs84": [
+                35.0014763,
+                32.8153733
+              ]
+            },
+            {
+              "id": 9679759594,
+              "coordinates_wgs84": [
+                35.0014508,
+                32.8153762
+              ]
+            }
+          ],
+          "tags": {
+            "crossing": "marked",
+            "footway": "crossing",
+            "highway": "footway"
+          },
+          "physical_function": "unknown",
+          "osm_function": "footway",
+          "legal_vehicle_access": "unknown"
+        },
+        {
+          "way": 1053293268,
+          "version": 2,
+          "osm_timestamp": "2026-04-06T15:37:00Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293268/history",
+          "nodes": [
+            {
+              "id": 1999155667,
+              "coordinates_wgs84": [
+                35.001328,
+                32.8152526
+              ]
+            },
+            {
+              "id": 9679759622,
+              "coordinates_wgs84": [
+                35.0018358,
+                32.8154822
+              ]
+            },
+            {
+              "id": 9679759623,
+              "coordinates_wgs84": [
+                35.0018182,
+                32.815514
+              ]
+            }
+          ],
+          "tags": {
+            "bridge": "yes",
+            "highway": "footway",
+            "layer": "1",
+            "surface": "paving_stones"
+          },
+          "physical_function": "unknown",
+          "osm_function": "footway",
+          "legal_vehicle_access": "unknown"
+        }
+      ],
+      "supporting_segments": [
+        {
+          "way_a_nodes": [
+            9679759612,
+            9679759611
+          ],
+          "way_b_nodes": [
+            1999155667,
+            9679759622
+          ]
+        }
+      ],
+      "coordinates_wgs84": [
+        35.00150399304648,
+        32.81533217464252
+      ],
+      "geometry_relation": "interior_crossing",
+      "de9im": "0F1FF0102",
+      "shared_node_ids": [],
+      "crossing_osm_node_id": null,
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "current_level_evidence": null,
+      "candidate_source_ids": [
+        "HAIFA-BRIDGE-AUDIT-2016",
+        "HAIFA-GIS-35"
+      ],
+      "candidate_match": "Historical bridge description/location only; exact/current asset match unverified"
+    },
+    {
+      "id": "CONTEXT-1053293265-1053293268",
+      "ways": [
+        {
+          "way": 1053293265,
+          "version": 1,
+          "osm_timestamp": "2022-04-20T10:33:10Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293265/history",
+          "nodes": [
+            {
+              "id": 2106948806,
+              "coordinates_wgs84": [
+                35.0015686,
+                32.8153408
+              ]
+            },
+            {
+              "id": 9679759588,
+              "coordinates_wgs84": [
+                35.001596,
+                32.8153773
+              ]
+            },
+            {
+              "id": 2106948797,
+              "coordinates_wgs84": [
+                35.0016076,
+                32.8153994
+              ]
+            }
+          ],
+          "tags": {
+            "highway": "service",
+            "oneway": "yes"
+          },
+          "physical_function": "unknown",
+          "osm_function": "service",
+          "legal_vehicle_access": "unknown"
+        },
+        {
+          "way": 1053293268,
+          "version": 2,
+          "osm_timestamp": "2026-04-06T15:37:00Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293268/history",
+          "nodes": [
+            {
+              "id": 1999155667,
+              "coordinates_wgs84": [
+                35.001328,
+                32.8152526
+              ]
+            },
+            {
+              "id": 9679759622,
+              "coordinates_wgs84": [
+                35.0018358,
+                32.8154822
+              ]
+            },
+            {
+              "id": 9679759623,
+              "coordinates_wgs84": [
+                35.0018182,
+                32.815514
+              ]
+            }
+          ],
+          "tags": {
+            "bridge": "yes",
+            "highway": "footway",
+            "layer": "1",
+            "surface": "paving_stones"
+          },
+          "physical_function": "unknown",
+          "osm_function": "footway",
+          "legal_vehicle_access": "unknown"
+        }
+      ],
+      "supporting_segments": [
+        {
+          "way_a_nodes": [
+            2106948806,
+            9679759588
+          ],
+          "way_b_nodes": [
+            1999155667,
+            9679759622
+          ]
+        }
+      ],
+      "coordinates_wgs84": [
+        35.001591994484976,
+        32.8153719641862
+      ],
+      "geometry_relation": "interior_crossing",
+      "de9im": "0F1FF0102",
+      "shared_node_ids": [],
+      "crossing_osm_node_id": null,
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "current_level_evidence": null,
+      "candidate_source_ids": [
+        "HAIFA-BRIDGE-AUDIT-2016",
+        "HAIFA-GIS-35"
+      ],
+      "candidate_match": "Historical bridge description/location only; exact/current asset match unverified"
+    },
+    {
+      "id": "CONTEXT-1053293268-1053293275",
+      "ways": [
+        {
+          "way": 1053293268,
+          "version": 2,
+          "osm_timestamp": "2026-04-06T15:37:00Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293268/history",
+          "nodes": [
+            {
+              "id": 1999155667,
+              "coordinates_wgs84": [
+                35.001328,
+                32.8152526
+              ]
+            },
+            {
+              "id": 9679759622,
+              "coordinates_wgs84": [
+                35.0018358,
+                32.8154822
+              ]
+            },
+            {
+              "id": 9679759623,
+              "coordinates_wgs84": [
+                35.0018182,
+                32.815514
+              ]
+            }
+          ],
+          "tags": {
+            "bridge": "yes",
+            "highway": "footway",
+            "layer": "1",
+            "surface": "paving_stones"
+          },
+          "physical_function": "unknown",
+          "osm_function": "footway",
+          "legal_vehicle_access": "unknown"
+        },
+        {
+          "way": 1053293275,
+          "version": 5,
+          "osm_timestamp": "2025-07-28T13:50:21Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293275/history",
+          "nodes": [
+            {
+              "id": 2344645352,
+              "coordinates_wgs84": [
+                35.004446,
+                32.8120869
+              ]
+            },
+            {
+              "id": 9679759657,
+              "coordinates_wgs84": [
+                35.0044432,
+                32.8121392
+              ]
+            },
+            {
+              "id": 9679759652,
+              "coordinates_wgs84": [
+                35.0044362,
+                32.8121845
+              ]
+            },
+            {
+              "id": 2403673677,
+              "coordinates_wgs84": [
+                35.0044233,
+                32.8122168
+              ]
+            },
+            {
+              "id": 9679759520,
+              "coordinates_wgs84": [
+                35.0043993,
+                32.8122681
+              ]
+            },
+            {
+              "id": 2403673642,
+              "coordinates_wgs84": [
+                35.004326,
+                32.8123665
+              ]
+            },
+            {
+              "id": 2403673608,
+              "coordinates_wgs84": [
+                35.0040117,
+                32.8127861
+              ]
+            },
+            {
+              "id": 2403673638,
+              "coordinates_wgs84": [
+                35.0036932,
+                32.813196
+              ]
+            },
+            {
+              "id": 2403673651,
+              "coordinates_wgs84": [
+                35.0035307,
+                32.8133744
+              ]
+            },
+            {
+              "id": 9679759634,
+              "coordinates_wgs84": [
+                35.0029383,
+                32.8140131
+              ]
+            },
+            {
+              "id": 9679759524,
+              "coordinates_wgs84": [
+                35.0028267,
+                32.8141196
+              ]
+            },
+            {
+              "id": 2309215466,
+              "coordinates_wgs84": [
+                35.0027666,
+                32.8141704
+              ]
+            },
+            {
+              "id": 8308882697,
+              "coordinates_wgs84": [
+                35.0026661,
+                32.8142517
+              ]
+            },
+            {
+              "id": 2106948815,
+              "coordinates_wgs84": [
+                35.0025369,
+                32.8143531
+              ]
+            },
+            {
+              "id": 9679759632,
+              "coordinates_wgs84": [
+                35.0024537,
+                32.814433
+              ]
+            },
+            {
+              "id": 9679759584,
+              "coordinates_wgs84": [
+                35.0019625,
+                32.8149673
+              ]
+            },
+            {
+              "id": 3606996313,
+              "coordinates_wgs84": [
+                35.0018898,
+                32.8150514
+              ]
+            },
+            {
+              "id": 8308882715,
+              "coordinates_wgs84": [
+                35.0017904,
+                32.8151784
+              ]
+            },
+            {
+              "id": 9679759615,
+              "coordinates_wgs84": [
+                35.0016478,
+                32.8153508
+              ]
+            },
+            {
+              "id": 2106948797,
+              "coordinates_wgs84": [
+                35.0016076,
+                32.8153994
+              ]
+            }
+          ],
+          "tags": {
+            "access": "no",
+            "bus": "yes",
+            "highway": "service",
+            "name": "מטרונית",
+            "name:en": "Metronit",
+            "name:he": "מטרונית",
+            "name:ru": "Метронит",
+            "oneway": "yes",
+            "service": "bus"
+          },
+          "physical_function": "unknown",
+          "osm_function": "service",
+          "legal_vehicle_access": "unknown"
+        }
+      ],
+      "supporting_segments": [
+        {
+          "way_a_nodes": [
+            1999155667,
+            9679759622
+          ],
+          "way_b_nodes": [
+            9679759615,
+            2106948797
+          ]
+        }
+      ],
+      "coordinates_wgs84": [
+        35.001619868865966,
+        32.8153845674904
+      ],
+      "geometry_relation": "interior_crossing",
+      "de9im": "0F1FF0102",
+      "shared_node_ids": [],
+      "crossing_osm_node_id": null,
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "current_level_evidence": null,
+      "candidate_source_ids": [
+        "HAIFA-BRIDGE-AUDIT-2016",
+        "HAIFA-GIS-35"
+      ],
+      "candidate_match": "Historical bridge description/location only; exact/current asset match unverified"
+    },
+    {
+      "id": "CONTEXT-1053293268-1071935639",
+      "ways": [
+        {
+          "way": 1053293268,
+          "version": 2,
+          "osm_timestamp": "2026-04-06T15:37:00Z",
+          "osm_url": "https://www.openstreetmap.org/way/1053293268/history",
+          "nodes": [
+            {
+              "id": 1999155667,
+              "coordinates_wgs84": [
+                35.001328,
+                32.8152526
+              ]
+            },
+            {
+              "id": 9679759622,
+              "coordinates_wgs84": [
+                35.0018358,
+                32.8154822
+              ]
+            },
+            {
+              "id": 9679759623,
+              "coordinates_wgs84": [
+                35.0018182,
+                32.815514
+              ]
+            }
+          ],
+          "tags": {
+            "bridge": "yes",
+            "highway": "footway",
+            "layer": "1",
+            "surface": "paving_stones"
+          },
+          "physical_function": "unknown",
+          "osm_function": "footway",
+          "legal_vehicle_access": "unknown"
+        },
+        {
+          "way": 1071935639,
+          "version": 1,
+          "osm_timestamp": "2022-06-21T11:50:56Z",
+          "osm_url": "https://www.openstreetmap.org/way/1071935639/history",
+          "nodes": [
+            {
+              "id": 9835971665,
+              "coordinates_wgs84": [
+                35.0007434,
+                32.81651
+              ]
+            },
+            {
+              "id": 9835971666,
+              "coordinates_wgs84": [
+                35.0007934,
+                32.8164632
+              ]
+            },
+            {
+              "id": 9835971667,
+              "coordinates_wgs84": [
+                35.0009179,
+                32.8163467
+              ]
+            },
+            {
+              "id": 9835971668,
+              "coordinates_wgs84": [
+                35.001014,
+                32.8162568
+              ]
+            },
+            {
+              "id": 9835971669,
+              "coordinates_wgs84": [
+                35.0010944,
+                32.8161816
+              ]
+            },
+            {
+              "id": 9835971670,
+              "coordinates_wgs84": [
+                35.0012185,
+                32.8160655
+              ]
+            },
+            {
+              "id": 9835969204,
+              "coordinates_wgs84": [
+                35.0012683,
+                32.8160188
+              ]
+            },
+            {
+              "id": 9835971664,
+              "coordinates_wgs84": [
+                35.0013388,
+                32.8159408
+              ]
+            },
+            {
+              "id": 9835971671,
+              "coordinates_wgs84": [
+                35.0014116,
+                32.8158588
+              ]
+            },
+            {
+              "id": 9835971672,
+              "coordinates_wgs84": [
+                35.0014525,
+                32.8158127
+              ]
+            },
+            {
+              "id": 9835969209,
+              "coordinates_wgs84": [
+                35.0015399,
+                32.8157143
+              ]
+            },
+            {
+              "id": 9835971662,
+              "coordinates_wgs84": [
+                35.0015835,
+                32.8156652
+              ]
+            },
+            {
+              "id": 3606996326,
+              "coordinates_wgs84": [
+                35.0018646,
+                32.81535
+              ]
+            },
+            {
+              "id": 9835971751,
+              "coordinates_wgs84": [
+                35.0025638,
+                32.8145787
+              ]
+            },
+            {
+              "id": 8308882695,
+              "coordinates_wgs84": [
+                35.0027042,
+                32.8144389
+              ]
+            }
+          ],
+          "tags": {
+            "footway": "sidewalk",
+            "highway": "footway"
+          },
+          "physical_function": "unknown",
+          "osm_function": "footway",
+          "legal_vehicle_access": "unknown"
+        }
+      ],
+      "supporting_segments": [
+        {
+          "way_a_nodes": [
+            1999155667,
+            9679759622
+          ],
+          "way_b_nodes": [
+            9835971662,
+            3606996326
+          ]
+        }
+      ],
+      "coordinates_wgs84": [
+        35.001772305171755,
+        32.815453491034724
+      ],
+      "geometry_relation": "interior_crossing",
+      "de9im": "0F1FF0102",
+      "shared_node_ids": [],
+      "crossing_osm_node_id": null,
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "current_level_evidence": null,
+      "candidate_source_ids": [
+        "HAIFA-BRIDGE-AUDIT-2016",
+        "HAIFA-GIS-35"
+      ],
+      "candidate_match": "Historical bridge description/location only; exact/current asset match unverified"
+    }
+  ],
+  "tunnels": [
+    {
+      "id": "TUNNEL-445158792",
+      "way": {
+        "way": 445158792,
+        "version": 1,
+        "osm_timestamp": "2016-10-01T11:34:26Z",
+        "osm_url": "https://www.openstreetmap.org/way/445158792/history",
+        "nodes": [
+          {
+            "id": 4426306615,
+            "coordinates_wgs84": [
+              35.0005621,
+              32.8185815
+            ]
+          },
+          {
+            "id": 4426306616,
+            "coordinates_wgs84": [
+              35.0004504,
+              32.8184594
+            ]
+          }
+        ],
+        "tags": {
+          "highway": "footway",
+          "tunnel": "building_passage"
+        },
+        "physical_function": "unknown",
+        "osm_function": "footway",
+        "legal_vehicle_access": "unknown"
+      },
+      "endpoints": [
+        {
+          "osm_node": 4426306615,
+          "osm_way_endpoint_coordinates_wgs84": [
+            35.0005621,
+            32.8185815
+          ],
+          "scope_status": "IN_SCOPE",
+          "physical_portal_coordinates_wgs84": null,
+          "status": "UNKNOWN",
+          "physical_portal_confirmed": false,
+          "adjacent_osm_ways": [
+            {
+              "way": 258675142,
+              "version": 3,
+              "tags": {
+                "highway": "footway"
+              }
+            }
+          ]
+        },
+        {
+          "osm_node": 4426306616,
+          "osm_way_endpoint_coordinates_wgs84": [
+            35.0004504,
+            32.8184594
+          ],
+          "scope_status": "IN_SCOPE",
+          "physical_portal_coordinates_wgs84": null,
+          "status": "UNKNOWN",
+          "physical_portal_confirmed": false,
+          "adjacent_osm_ways": [
+            {
+              "way": 445158793,
+              "version": 1,
+              "tags": {
+                "highway": "footway"
+              }
+            }
+          ]
+        }
+      ],
+      "osm_geometry_continuous": true,
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "permitted_transport": "unknown",
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "source_ids": [
+        "HAIFA-GIS-35",
+        "HAIFA-TRAFFIC"
+      ],
+      "official_currentness": "unknown"
+    },
+    {
+      "id": "TUNNEL-557750809",
+      "way": {
+        "way": 557750809,
+        "version": 2,
+        "osm_timestamp": "2022-06-20T14:09:58Z",
+        "osm_url": "https://www.openstreetmap.org/way/557750809/history",
+        "nodes": [
+          {
+            "id": 9833622687,
+            "coordinates_wgs84": [
+              34.9964895,
+              32.8207548
+            ]
+          },
+          {
+            "id": 5379009752,
+            "coordinates_wgs84": [
+              34.9967691,
+              32.8210049
+            ]
+          }
+        ],
+        "tags": {
+          "highway": "footway",
+          "tunnel": "building_passage"
+        },
+        "physical_function": "unknown",
+        "osm_function": "footway",
+        "legal_vehicle_access": "unknown"
+      },
+      "endpoints": [
+        {
+          "osm_node": 9833622687,
+          "osm_way_endpoint_coordinates_wgs84": [
+            34.9964895,
+            32.8207548
+          ],
+          "scope_status": "IN_SCOPE",
+          "physical_portal_coordinates_wgs84": null,
+          "status": "UNKNOWN",
+          "physical_portal_confirmed": false,
+          "adjacent_osm_ways": [
+            {
+              "way": 1071629908,
+              "version": 1,
+              "tags": {
+                "highway": "service",
+                "service": "parking_aisle"
+              }
+            }
+          ]
+        },
+        {
+          "osm_node": 5379009752,
+          "osm_way_endpoint_coordinates_wgs84": [
+            34.9967691,
+            32.8210049
+          ],
+          "scope_status": "OUT_OF_SCOPE",
+          "physical_portal_coordinates_wgs84": null,
+          "status": "UNKNOWN",
+          "physical_portal_confirmed": false,
+          "adjacent_osm_ways": [
+            {
+              "way": 393562171,
+              "version": 12,
+              "tags": {
+                "alt_name:en": "Ha'Atzmaut;HaAtsmaut;Atsmaut",
+                "highway": "trunk",
+                "lanes": "2",
+                "maxspeed": "50",
+                "name": "העצמאות",
+                "name:en": "HaAtzmaut",
+                "name:he": "העצמאות",
+                "name:ro": "Independenței",
+                "name:ru": "Ха Ацмаут",
+                "oneway": "yes",
+                "ref": "4",
+                "sidewalk": "right",
+                "wikidata": "Q12405907"
+              }
+            }
+          ]
+        }
+      ],
+      "osm_geometry_continuous": true,
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "permitted_transport": "unknown",
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "source_ids": [
+        "HAIFA-GIS-35",
+        "HAIFA-TRAFFIC"
+      ],
+      "official_currentness": "unknown"
+    },
+    {
+      "id": "TUNNEL-731754156",
+      "way": {
+        "way": 731754156,
+        "version": 5,
+        "osm_timestamp": "2023-10-14T00:53:14Z",
+        "osm_url": "https://www.openstreetmap.org/way/731754156/history",
+        "nodes": [
+          {
+            "id": 6852518467,
+            "coordinates_wgs84": [
+              35.0027133,
+              32.815682
+            ]
+          },
+          {
+            "id": 9835971651,
+            "coordinates_wgs84": [
+              35.0024206,
+              32.8159945
+            ]
+          }
+        ],
+        "tags": {
+          "covered": "yes",
+          "haifa-ref": "444",
+          "highway": "residential",
+          "lanes": "2",
+          "layer": "-1",
+          "name": "נתנזון",
+          "name:ar": "نَتنزون",
+          "name:en": "Natanzon",
+          "name:he": "נתנזון",
+          "name:ru": "Натанзон",
+          "surface": "asphalt",
+          "tunnel": "yes"
+        },
+        "physical_function": "unknown",
+        "osm_function": "residential",
+        "legal_vehicle_access": "unknown"
+      },
+      "endpoints": [
+        {
+          "osm_node": 6852518467,
+          "osm_way_endpoint_coordinates_wgs84": [
+            35.0027133,
+            32.815682
+          ],
+          "scope_status": "IN_SCOPE",
+          "physical_portal_coordinates_wgs84": null,
+          "status": "UNKNOWN",
+          "physical_portal_confirmed": false,
+          "adjacent_osm_ways": [
+            {
+              "way": 1463901135,
+              "version": 1,
+              "tags": {
+                "haifa-ref": "444",
+                "highway": "residential",
+                "lanes": "2",
+                "name": "נתנזון",
+                "name:ar": "نَتنزون",
+                "name:en": "Natanzon",
+                "name:he": "נתנזון",
+                "name:ru": "Натанзон"
+              }
+            }
+          ]
+        },
+        {
+          "osm_node": 9835971651,
+          "osm_way_endpoint_coordinates_wgs84": [
+            35.0024206,
+            32.8159945
+          ],
+          "scope_status": "IN_SCOPE",
+          "physical_portal_coordinates_wgs84": null,
+          "status": "UNKNOWN",
+          "physical_portal_confirmed": false,
+          "adjacent_osm_ways": [
+            {
+              "way": 731754157,
+              "version": 5,
+              "tags": {
+                "haifa-ref": "444",
+                "highway": "residential",
+                "lanes": "2",
+                "name": "נתנזון",
+                "name:ar": "نَتنزون",
+                "name:en": "Natanzon",
+                "name:he": "נתנזון",
+                "name:ru": "Натанзон"
+              }
+            }
+          ]
+        }
+      ],
+      "osm_geometry_continuous": true,
+      "physical_connection": "unknown",
+      "official_plan": null,
+      "permitted_transport": "unknown",
+      "status": "UNKNOWN",
+      "navigation_status": "QUARANTINE",
+      "source_ids": [
+        "HAIFA-GIS-35",
+        "HAIFA-TRAFFIC"
+      ],
+      "official_currentness": "unknown"
+    }
+  ],
+  "natanzon_parameters": {
+    "maxheight": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": null,
+      "expected_unit_if_numeric": "m",
+      "official_source": null,
+      "document_number": null,
+      "effective_from": null,
+      "effective_to": null,
+      "geographic_scope": "OSM way 731754156 is a research locator, not an official extent",
+      "truck_applicability": "unknown",
+      "license": "unknown",
+      "independent_evidence": null
+    },
+    "maxwidth": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": null,
+      "expected_unit_if_numeric": "m",
+      "official_source": null,
+      "document_number": null,
+      "effective_from": null,
+      "effective_to": null,
+      "geographic_scope": "OSM way 731754156 is a research locator, not an official extent",
+      "truck_applicability": "unknown",
+      "license": "unknown",
+      "independent_evidence": null
+    },
+    "maxweight": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": null,
+      "expected_unit_if_numeric": "t",
+      "official_source": null,
+      "document_number": null,
+      "effective_from": null,
+      "effective_to": null,
+      "geographic_scope": "OSM way 731754156 is a research locator, not an official extent",
+      "truck_applicability": "unknown",
+      "license": "unknown",
+      "independent_evidence": null
+    },
+    "maxaxleload": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": null,
+      "expected_unit_if_numeric": "t",
+      "official_source": null,
+      "document_number": null,
+      "effective_from": null,
+      "effective_to": null,
+      "geographic_scope": "OSM way 731754156 is a research locator, not an official extent",
+      "truck_applicability": "unknown",
+      "license": "unknown",
+      "independent_evidence": null
+    },
+    "maxlength": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": null,
+      "expected_unit_if_numeric": "m",
+      "official_source": null,
+      "document_number": null,
+      "effective_from": null,
+      "effective_to": null,
+      "geographic_scope": "OSM way 731754156 is a research locator, not an official extent",
+      "truck_applicability": "unknown",
+      "license": "unknown",
+      "independent_evidence": null
+    },
+    "hgv_prohibition": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": null,
+      "expected_unit_if_numeric": null,
+      "official_source": null,
+      "document_number": null,
+      "effective_from": null,
+      "effective_to": null,
+      "geographic_scope": "OSM way 731754156 is a research locator, not an official extent",
+      "truck_applicability": "unknown",
+      "license": "unknown",
+      "independent_evidence": null
+    },
+    "hazmat": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": null,
+      "expected_unit_if_numeric": null,
+      "official_source": null,
+      "document_number": null,
+      "effective_from": null,
+      "effective_to": null,
+      "geographic_scope": "OSM way 731754156 is a research locator, not an official extent",
+      "truck_applicability": "unknown",
+      "license": "unknown",
+      "independent_evidence": null
+    },
+    "direction": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": null,
+      "expected_unit_if_numeric": null,
+      "official_source": null,
+      "document_number": null,
+      "effective_from": null,
+      "effective_to": null,
+      "geographic_scope": "OSM way 731754156 is a research locator, not an official extent",
+      "truck_applicability": "unknown",
+      "license": "unknown",
+      "independent_evidence": null
+    },
+    "time_restrictions": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": null,
+      "expected_unit_if_numeric": null,
+      "official_source": null,
+      "document_number": null,
+      "effective_from": null,
+      "effective_to": null,
+      "geographic_scope": "OSM way 731754156 is a research locator, not an official extent",
+      "truck_applicability": "unknown",
+      "license": "unknown",
+      "independent_evidence": null
+    },
+    "special_permits": {
+      "status": "UNKNOWN",
+      "value": null,
+      "unit": null,
+      "expected_unit_if_numeric": null,
+      "official_source": null,
+      "document_number": null,
+      "effective_from": null,
+      "effective_to": null,
+      "geographic_scope": "OSM way 731754156 is a research locator, not an official extent",
+      "truck_applicability": "unknown",
+      "license": "unknown",
+      "independent_evidence": null
+    }
+  },
+  "mailbox_review": {
+    "checked_at": "2026-10-10T11:27:09Z",
+    "queries": [
+      "from:Rasha@haifa.muni.il received>=2026-10-10",
+      "from:haifa.muni.il received>=2026-10-10",
+      "TrucksIL received>=2026-10-10",
+      "TIL-HAIFA-001 received>=2026-10-10"
+    ],
+    "status": "awaiting_response",
+    "municipal_replies_found": 0,
+    "outgoing_and_owner_copy_observed": true,
+    "receipt_confirmed": false,
+    "registration_number": null,
+    "private_message_ids_and_content_published": false,
+    "limitation": "No matching municipal response found at check time; not a guarantee against indexing delays or an unrelated subject/sender"
+  },
+  "summary": {
+    "crossings_reviewed": 8,
+    "tunnels_reviewed": 3,
+    "current_levels_verified": 0,
+    "physical_portals_verified": 0,
+    "truck_restrictions_verified": 0,
+    "official_documents_imported": 0,
+    "graph_changed": false
+  }
+}
