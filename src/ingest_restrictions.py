@@ -55,6 +55,23 @@ def _schema(value, spec, path='$'):
     return _validate_schema(value, spec, path)
 
 
+def json_equal(left, right):
+    """JSON equality: numbers compare mathematically; booleans are distinct."""
+    if isinstance(left, bool) or isinstance(right, bool):
+        return type(left) is bool and type(right) is bool and left == right
+    if left is None or right is None:
+        return left is None and right is None
+    if isinstance(left, (int, float)) and isinstance(right, (int, float)):
+        return left == right
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, list):
+        return len(left) == len(right) and all(json_equal(a, b) for a, b in zip(left, right))
+    if isinstance(left, dict):
+        return left.keys() == right.keys() and all(json_equal(left[k], right[k]) for k in left)
+    return left == right
+
+
 def _validate_schema(value, spec, path='$'):
     """Small validator for ONLY the keywords used in the checked-in schema.
 
@@ -71,9 +88,9 @@ def _validate_schema(value, spec, path='$'):
         matches = {'object': isinstance(value, dict), 'array': isinstance(value, list), 'string': isinstance(value, str), 'number': isinstance(value, (int,float)) and not isinstance(value,bool) and math.isfinite(value), 'boolean': isinstance(value,bool), 'null': value is None}
         if not any(matches.get(t, False) for t in types):
             fail(f'expected {types}')
-    if 'enum' in spec and value not in spec['enum']:
+    if 'enum' in spec and not any(json_equal(value, candidate) for candidate in spec['enum']):
         fail('not an allowed enum value')
-    if 'const' in spec and (value != spec['const'] or isinstance(value,bool) != isinstance(spec['const'],bool)):
+    if 'const' in spec and not json_equal(value, spec['const']):
         fail('unexpected constant')
     if isinstance(value, dict):
         for key in spec.get('required', []):
@@ -94,7 +111,7 @@ def _validate_schema(value, spec, path='$'):
             if 'items' in spec and i >= len(spec.get('prefixItems',[])):
                 _validate_schema(item,spec['items'],f'{path}[{i}]')
     if isinstance(value, str):
-        if len(value.strip()) < spec.get('minLength',0):
+        if len(value) < spec.get('minLength',0):
             fail('empty string')
         if 'pattern' in spec and not re.search(spec['pattern'],value):
             fail('invalid pattern')

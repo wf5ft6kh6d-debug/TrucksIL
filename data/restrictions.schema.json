@@ -18,19 +18,23 @@
   "properties": {
     "id": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "pattern": "\\S"
     },
     "roadSegmentId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "pattern": "\\S"
     },
     "verifier": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "pattern": "\\S"
     },
     "notes": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "pattern": "\\S"
     },
     "observedAt": {
       "type": "string",
@@ -178,7 +182,8 @@
         "properties": {
           "reference": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "retrievedAt": {
             "type": "string",
@@ -186,7 +191,8 @@
           },
           "summary": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "sha256": {
             "type": "string",
@@ -208,11 +214,13 @@
       "properties": {
         "name": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "\\S"
         },
         "reference": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "\\S"
         },
         "kind": {
           "enum": [
@@ -239,11 +247,13 @@
           "properties": {
             "identifier": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "pattern": "\\S"
             },
             "reference": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "pattern": "\\S"
             },
             "decision": {
               "enum": [
@@ -262,13 +272,15 @@
             },
             "reviewer": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "pattern": "\\S"
             },
             "obligations": {
               "type": "array",
               "items": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "pattern": "\\S"
               }
             }
           },
@@ -286,7 +298,8 @@
       "properties": {
         "text": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "\\S"
         },
         "interpretationStatus": {
           "enum": [
@@ -298,7 +311,8 @@
           "type": "array",
           "items": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "\\S"
           }
         }
       },
@@ -315,7 +329,8 @@
       "properties": {
         "reviewer": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "\\S"
         },
         "reviewedAt": {
           "type": "string",
@@ -330,7 +345,8 @@
         },
         "reference": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "\\S"
         }
       },
       "additionalProperties": false

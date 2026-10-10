@@ -41,3 +41,29 @@ Final executed command: `python -m unittest discover -s tests -v`. **16 tests pa
 ## Resumed tester verification
 
 On 2026-10-09 the tester independently reran `python -m unittest discover -s tests -v` at commit `3516469`: **16 tests passed**. This includes the invalid/unknown timezone-offset and unsupported-schema-keyword regressions corrected by the coordinator. Both the default Python and the provided primary-runtime Python were checked; neither has a separate `jsonschema` package installed. No external package installation was attempted. This rerun verifies the executed importer tests, not data correctness or completion of the entire stage.
+
+## 2026-10-10 validator fixes and candidate database guard
+
+Baseline: 779849598bc23716c603068f3b437ec76e3d9452. Working branch unchanged.
+Executed:
+- `python -m unittest discover -s tests -v`: **23 tests PASS**, consisting of
+  the original 16, five JSON-policy regressions and two offline migration-runner
+  tests. Subcases are not counted as separate tests.
+- The enum/const and minLength regression methods were also run against baseline
+  source loaded with `git show 7798495:src/ingest_restrictions.py`: expected
+  16 failed boolean/number subcases and one whitespace minLength error. This
+  confirms the new cases detect the original defects.
+- `python scripts/compare_schema_engine.py`: exit 2, **NOT RUN**, jsonschema absent.
+- `python scripts/migrate_stage2.py --database trucksil_stage2_test_local > /tmp/trucksil-migration-plan.sql`:
+  exit 0, SQL generated ONLY, no database connection.
+- `git diff --check`: exit 0.
+
+Environment: default and primary Python lacked jsonschema; previous Ajv lookup
+also found no engine. psql/postgres/initdb/docker/podman absent. Package-download
+hosts are outside the execution allowlist; no installation attempted. No full
+Draft 2020-12 compatibility, database correctness or migration acceptance claimed.
+
+Pending executable SQL corpus: db/test_stage2_hardening.sql checks closed direct
+restriction writes, audit mutation denial, endpoint/revision mismatch rejection,
+source before/after audit, full coverage key/deletion audit and unknown safety.
+It is NOT RUN; offline runner tests do not substitute for SQL integration.

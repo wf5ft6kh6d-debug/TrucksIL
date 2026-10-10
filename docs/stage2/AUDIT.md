@@ -64,3 +64,24 @@ Executed independently:
 | Blocking for driver guidance | No licensed national road graph, real verified restrictions, measured coverage, conflict adjudication, routing integration or field validation has been delivered by this change. | Complete the outstanding stage 2 acceptance criteria and subsequent routing/safety phases. |
 
 **Independent disposition:** the two reported implementation defects are fixed and verified. The change is suitable to remain a **draft, non-operational foundation for review**, with its limitations explicit. This audit does not approve merging, deployment, completion of stage 2, any real restriction, or any truck route. PostgreSQL/PostGIS execution and all road-data acceptance gates remain open.
+
+## 2026-10-10 remediation record — not independent database sign-off
+
+Closed by code change and executed regressions: JSON enum/const boolean-vs-number
+comparison (recursive objects/arrays); minLength now evaluates the original string.
+The nonblank policy is explicit in the checked-in schema via pattern `\S`.
+Original 16 tests plus seven new tests pass (23 total). Full independent-engine
+comparison remains blocked; compare_schema_engine.py reports NOT RUN, exit 2.
+
+Database remediation is a candidate, NOT accepted: direct restriction writes
+are completely closed pending a controlled adapter; audit includes before/after,
+full composite keys and transaction/session identity; endpoint source/revision
+checks and immutable node identity are proposed; fresh-only checksummed migration
+runner refuses unversioned existing schemas. No migrations applied.
+
+Remaining HIGH gates: execute PostGIS tests (including roles/concurrency/migration
+failure rollback), implement and review controlled ingest before opening writes,
+protect evidence retention from privileged tampering, detect schema drift,
+validate cross-source spatial reconciliation and actual source/reviewer trust.
+No claim of completed SQL invariant protection is made without execution.
+Overall stage 2 remains INCOMPLETE; PR must remain Draft; DO NOT MERGE/DEPLOY.

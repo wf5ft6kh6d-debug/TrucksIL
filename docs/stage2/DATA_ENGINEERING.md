@@ -136,3 +136,52 @@ reviewer's identity, so they cannot reconstruct a restriction's edit history.
 An immutable revision log with authenticated actors and evidence lineage is an
 open prerequisite before operational use; the current audit table is not a
 complete chain of custody.
+
+## 2026-10-10 candidate hardening (not database-accepted)
+
+JSON equality now recursively distinguishes booleans from numbers for enum/const.
+Numeric 1 and 1.0 remain equal; object key order does not matter. minLength counts
+original characters. All schema string fields previously carrying minLength=1
+now explicitly carry pattern `\S`: they must contain a non-whitespace character.
+Values are preserved, not stripped/normalized. Whitespace Unicode/regex behavior
+across engines is an open differential-test consideration.
+
+`db/migrations/0002_closed_ingest.sql` is an UNEXECUTED candidate. With no trusted
+adapter, it blocks ALL INSERT/UPDATE/DELETE/TRUNCATE on restriction_staging,
+including unverified records. It does not pretend to duplicate the JSON validator
+inside SQL. The CLI can still emit validated local JSON. A future adapter must
+validate schema, timestamps, license, provenance, and column/JSON consistency
+before a reviewed migration opens restricted write permissions. This gate must
+not be disabled to ingest real data.
+
+The candidate adds before/after row audit, transaction/session identity and full
+coverage composite keys. Audit UPDATE/DELETE/TRUNCATE are blocked. This is not an
+administrator-proof log: owner/superuser can alter triggers; grants to application
+roles, authenticated reviewer identity, external immutable retention, and auditing
+TRUNCATE on the remaining source/graph tables still require design and execution.
+Before/after JSON may only hold permitted metadata, never raw private evidence.
+
+Segment endpoints must match node geometries and source/revision. Node identity
+and geometry are immutable (new revision => new IDs). This is an intentionally
+strict same-source graph model, not cross-source reconciliation, jurisdiction,
+grade-separation, turn validation or national coverage verification.
+
+`scripts/migrate_stage2.py` defaults to SQL output only. Explicit --apply uses
+psql -X, ON_ERROR_STOP, a local Unix socket and a disposable database name. The
+transaction takes an advisory lock and records SHA-256 for versions 1/2. An
+existing unversioned schema or mismatched ledger is refused. An exact two-version
+ledger is a no-op; it does NOT prove tables have not subsequently drifted. No
+automatic upgrade of existing data is supported. Baseline stage2.sql is unchanged.
+
+Pending integration commands, ONLY in a new disposable local DB:
+```
+createdb --host=/var/run/postgresql trucksil_stage2_test_hardening
+python scripts/migrate_stage2.py --database trucksil_stage2_test_hardening --apply
+psql -X --host=/var/run/postgresql --dbname=trucksil_stage2_test_hardening --set=ON_ERROR_STOP=1 --file=db/test_stage2_hardening.sql
+python scripts/migrate_stage2.py --database trucksil_stage2_test_hardening --apply
+```
+Also exercise checksum mismatch, unversioned schema refusal, concurrent writes,
+least-privilege roles, and transaction rollback on migration failure. Run original
+`db/test_stage2.sql` only against baseline v1 in a SEPARATE disposable database:
+v2 intentionally prevents its positive restriction INSERT fixture. No SQL command
+above was run in Work. Do not apply this candidate to existing data/production.
