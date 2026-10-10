@@ -45,6 +45,8 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/stage3/build_pilot.py --output evidence/pilot
+          python scripts/stage3/review_relations.py evidence/pilot/relation-review.json | tee evidence/relation-review.log
+          python scripts/stage3/compare_review_engine.py evidence/pilot/relation-review.json | tee evidence/review-independent.log
           python scripts/stage3/audit_graph.py evidence/pilot/graph-audit.json | tee evidence/graph-audit.log
           python scripts/stage3/compare_graph_engine.py evidence/pilot/normalized.json evidence/pilot/graph-audit.json | tee evidence/graph-independent.log
           python scripts/stage3/compare_geometry_engine.py evidence/pilot/normalized.json | tee evidence/pilot-geometry-engine.log
