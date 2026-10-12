@@ -1,0 +1,1843 @@
+[
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "RESEARCH_PATH_FOUND",
+    "goal": 5,
+    "id": "plain_segments",
+    "rules": [],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "NO_ROUTE",
+    "goal": 5,
+    "id": "no_via_full_sequence",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "RESEARCH_PATH_FOUND",
+    "goal": 5,
+    "id": "only_via_correct",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "only",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "exit",
+        "to": 9,
+        "way_id": 40
+      }
+    ],
+    "expected": "NO_ROUTE",
+    "goal": 9,
+    "id": "only_wrong_exit",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "only",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 6,
+        "id": "other",
+        "to": 3,
+        "way_id": 40
+      }
+    ],
+    "expected": "RESEARCH_PATH_FOUND",
+    "goal": 5,
+    "id": "from_different_entrance",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 6,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "RESEARCH_PATH_FOUND",
+    "goal": 5,
+    "id": "via_start_without_from_history",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 3,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 8,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 8,
+        "id": "b",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "c",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "RESEARCH_PATH_FOUND",
+    "goal": 5,
+    "id": "different_connection_same_way_ids",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "NO_ROUTE",
+    "goal": 5,
+    "id": "no_and_only_intersection",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      },
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "only",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "RESEARCH_PATH_FOUND",
+    "goal": 5,
+    "id": "except_hgv",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "except": [
+          "hgv"
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "NO_ROUTE",
+    "goal": 5,
+    "id": "except_motorcar_not_hgv",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "except": [
+          "motorcar"
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      }
+    ],
+    "expected": "NO_ROUTE",
+    "goal": 3,
+    "id": "only_sameway_bypass_at_junction",
+    "rules": [
+      {
+        "connection_nodes": [
+          2
+        ],
+        "id": "synthetic-rule",
+        "kind": "only",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "bypass",
+        "to": 9,
+        "way_id": 20
+      }
+    ],
+    "expected": "NO_ROUTE",
+    "goal": 9,
+    "id": "only_via_sameway_bypass_end",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "only",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "cycle1",
+        "to": 8,
+        "way_id": 40
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 8,
+        "id": "cycle2",
+        "to": 2,
+        "way_id": 50
+      }
+    ],
+    "expected": "RESEARCH_PATH_FOUND",
+    "goal": 5,
+    "id": "cycle_alternative",
+    "oracle_depth": 10,
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T06:59:30",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "NO_ROUTE",
+    "goal": 5,
+    "id": "time_start_at_manoeuvre",
+    "rules": [
+      {
+        "conditional": {
+          "days": [
+            0
+          ],
+          "end_minute": 540,
+          "parse_status": "SUPPORTED",
+          "start_minute": 420,
+          "timezone": "Asia/Jerusalem"
+        },
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T08:59:30",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "RESEARCH_PATH_FOUND",
+    "goal": 5,
+    "id": "time_end_at_manoeuvre",
+    "rules": [
+      {
+        "conditional": {
+          "days": [
+            0
+          ],
+          "end_minute": 540,
+          "parse_status": "SUPPORTED",
+          "start_minute": 420,
+          "timezone": "Asia/Jerusalem"
+        },
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-13T00:59:30",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "NO_ROUTE",
+    "goal": 5,
+    "id": "overnight_prior_day",
+    "rules": [
+      {
+        "conditional": {
+          "days": [
+            0
+          ],
+          "end_minute": 120,
+          "parse_status": "SUPPORTED",
+          "start_minute": 1320,
+          "timezone": "Asia/Jerusalem"
+        },
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-25T01:29:30",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "ADMISSIBILITY_UNDETERMINED",
+    "goal": 5,
+    "id": "dst_repeated_manoeuvre",
+    "rules": [
+      {
+        "conditional": {
+          "days": [
+            6
+          ],
+          "end_minute": 240,
+          "parse_status": "SUPPORTED",
+          "start_minute": 0,
+          "timezone": "Asia/Jerusalem"
+        },
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-03-27T02:29:30",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "ADMISSIBILITY_UNDETERMINED",
+    "goal": 5,
+    "id": "dst_nonexistent_departure",
+    "rules": [
+      {
+        "conditional": {
+          "days": [
+            4
+          ],
+          "end_minute": 240,
+          "parse_status": "SUPPORTED",
+          "start_minute": 0,
+          "timezone": "Asia/Jerusalem"
+        },
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "ADMISSIBILITY_UNDETERMINED",
+    "goal": 5,
+    "id": "unsupported_holiday",
+    "rules": [
+      {
+        "conditional": {
+          "parse_status": "UNKNOWN",
+          "raw": "no @ (PH)"
+        },
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "ADMISSIBILITY_UNDETERMINED",
+    "goal": 5,
+    "id": "unsupported_rule_never_permission",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "UNKNOWN",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "UNKNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "ADMISSIBILITY_UNDETERMINED",
+    "goal": 5,
+    "id": "unknown_direction",
+    "rules": [],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "UNKNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "ADMISSIBILITY_UNDETERMINED",
+    "goal": 5,
+    "id": "unknown_admissibility",
+    "rules": [],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "DENIED",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "NO_ROUTE",
+    "goal": 5,
+    "id": "denied_admissibility",
+    "rules": [],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "INCOMPLETE",
+    "goal": 5,
+    "id": "resource_max_states",
+    "limits": {
+      "max_states": 1
+    },
+    "resource_exhaustion": true,
+    "rules": [],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "INCOMPLETE",
+    "goal": 5,
+    "id": "resource_max_expansions",
+    "limits": {
+      "max_expansions": 1
+    },
+    "resource_exhaustion": true,
+    "rules": [],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "INCOMPLETE",
+    "goal": 5,
+    "id": "resource_max_memory_bytes",
+    "limits": {
+      "max_memory_bytes": 1
+    },
+    "resource_exhaustion": true,
+    "rules": [],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "INCOMPLETE",
+    "goal": 5,
+    "id": "resource_max_input_edges",
+    "limits": {
+      "max_input_edges": 1
+    },
+    "resource_exhaustion": true,
+    "rules": [],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "ADMISSIBILITY_UNDETERMINED",
+    "goal": 5,
+    "id": "absent_admissibility",
+    "rules": [],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "ADMISSIBILITY_UNDETERMINED",
+    "goal": 5,
+    "id": "unsupported_except_hgv_not_exempt",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          4
+        ],
+        "except": [
+          "unknown",
+          "hgv"
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  },
+  {
+    "departure": "2026-10-12T12:00:00",
+    "edges": [
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 1,
+        "id": "a",
+        "to": 2,
+        "way_id": 10
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 2,
+        "id": "b",
+        "to": 3,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 3,
+        "id": "c",
+        "to": 4,
+        "way_id": 20
+      },
+      {
+        "admissibility": "KNOWN",
+        "direction_status": "KNOWN",
+        "duration_seconds": 10,
+        "from": 4,
+        "id": "d",
+        "to": 5,
+        "way_id": 30
+      }
+    ],
+    "expected": "ADMISSIBILITY_UNDETERMINED",
+    "goal": 5,
+    "id": "repeated_adjacent_way_ambiguous",
+    "rules": [
+      {
+        "connection_nodes": [
+          2,
+          3,
+          4
+        ],
+        "id": "synthetic-rule",
+        "kind": "no",
+        "parse_status": "SUPPORTED",
+        "sequence": [
+          10,
+          20,
+          20,
+          30
+        ]
+      }
+    ],
+    "start": 1,
+    "synthetic": true
+  }
+]
