@@ -1,7 +1,7 @@
 name: Stage 8 national evidence review acceptance
 on:
   push:
-    branches: [stage8/reference-evidence-review-20261012]
+    branches: [stage8/reference-evidence-review-20261012, stage9/bridge-evidence-acquisition-20261012]
 permissions:
   contents: read
 concurrency:
