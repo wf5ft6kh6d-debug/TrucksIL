@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_id",
+    "kind",
+    "source",
+    "raw",
+    "interpretation",
+    "reasons",
+    "status",
+    "geometry",
+    "synthetic",
+    "navigation_eligible"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "stage5.research.v1"
+    },
+    "record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "enum": [
+        "bridge",
+        "barrier",
+        "transport_rule",
+        "conditional",
+        "turn",
+        "scenario"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_type",
+        "locator",
+        "retrieved_at",
+        "sha256"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_type": {
+          "enum": [
+            "open_mapping",
+            "user_report",
+            "synthetic",
+            "historical_document",
+            "official"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retrieved_at": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "format": "date-time"
+            }
+          ]
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          ]
+        }
+      }
+    },
+    "raw": {
+      "type": "object"
+    },
+    "interpretation": {
+      "type": "object"
+    },
+    "reasons": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "status": {
+      "enum": [
+        "QUARANTINE",
+        "UNKNOWN"
+      ]
+    },
+    "geometry": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "coordinates"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "enum": [
+                "Point",
+                "LineString"
+              ]
+            },
+            "coordinates": {
+              "type": "array"
+            }
+          }
+        }
+      ]
+    },
+    "synthetic": {
+      "type": "boolean"
+    },
+    "navigation_eligible": {
+      "const": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "synthetic": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "source_type": {
+                "const": "synthetic"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "source_type": {
+                "const": "synthetic"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "synthetic": {
+            "const": true
+          }
+        }
+      }
+    }
+  ]
+}

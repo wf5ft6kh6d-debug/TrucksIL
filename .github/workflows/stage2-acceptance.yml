@@ -4,7 +4,7 @@ on:
     branches: [main]
     types: [opened, synchronize, reopened]
   push:
-    branches: [stage3/israel-road-data-foundation]
+    branches: [stage3/israel-road-data-foundation, stage5/truck-rules-research-20261012]
 permissions:
   contents: read
 concurrency:
@@ -31,7 +31,7 @@ jobs:
           mkdir -p evidence
           git rev-parse HEAD | tee evidence/checkout-sha.txt
           python -m pip install pip==24.3.1
-          python -m pip install jsonschema==4.23.0 attrs==24.2.0 jsonschema-specifications==2024.10.1 referencing==0.35.1 rpds-py==0.20.0 rfc3339-validator==0.1.4 six==1.16.0 typing_extensions==4.12.2 networkx==3.4.2 shapely==2.0.6 numpy==2.1.3 pyproj==3.7.0 certifi==2024.8.30
+          python -m pip install osmium==4.0.2 jsonschema==4.23.0 attrs==24.2.0 jsonschema-specifications==2024.10.1 referencing==0.35.1 rpds-py==0.20.0 rfc3339-validator==0.1.4 six==1.16.0 typing_extensions==4.12.2 networkx==3.4.2 shapely==2.0.6 numpy==2.1.3 pyproj==3.7.0 certifi==2024.8.30
           python -m pip freeze | tee evidence/python-packages.txt
           python --version | tee evidence/python-version.txt
       - name: Unit tests and independent Draft 2020-12 comparison
