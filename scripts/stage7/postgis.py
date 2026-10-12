@@ -45,9 +45,9 @@ def generate(records, sources, output):
 CORE_GATE = r"""
 CREATE TABLE stage7_source_registry(source_id text PRIMARY KEY,payload jsonb NOT NULL);
 DO $$ BEGIN
- IF EXISTS(SELECT item->>'source_id' FROM incoming, jsonb_array_elements(payload->'raw'->'sources') item GROUP BY item->>'source_id' HAVING count(DISTINCT item)>1) THEN RAISE EXCEPTION 'stage7 source identity conflict'; END IF;
+ IF EXISTS(SELECT evidence.value->>'source_id' FROM incoming AS src, jsonb_array_elements(src.payload->'raw'->'sources') AS evidence(value) GROUP BY evidence.value->>'source_id' HAVING count(DISTINCT evidence.value)>1) THEN RAISE EXCEPTION 'stage7 source identity conflict'; END IF;
 END $$;
-INSERT INTO stage7_source_registry SELECT DISTINCT item->>'source_id',item FROM incoming,jsonb_array_elements(payload->'raw'->'sources') item;
+INSERT INTO stage7_source_registry SELECT DISTINCT evidence.value->>'source_id',evidence.value FROM incoming AS src,jsonb_array_elements(src.payload->'raw'->'sources') AS evidence(value);
 CREATE TRIGGER stage7_source_immutable BEFORE UPDATE OR DELETE OR TRUNCATE ON stage7_source_registry FOR EACH STATEMENT EXECUTE FUNCTION immutable_source();
 CREATE FUNCTION guard_stage7_evidence() RETURNS trigger LANGUAGE plpgsql AS $$
 DECLARE r jsonb; item jsonb; linked jsonb; registered jsonb; BEGIN
@@ -62,11 +62,11 @@ DECLARE r jsonb; item jsonb; linked jsonb; registered jsonb; BEGIN
  jsonb_typeof(r->'unknown_reasons')='array') IS NOT TRUE THEN RAISE EXCEPTION 'invalid stage7 core' USING ERRCODE='23514'; END IF;
  IF (r->>'interpretation_status' IN ('UNKNOWN','UNSUPPORTED','CONFLICT') OR r->>'evidence_status'='UNKNOWN') AND valid_reasons(r->'unknown_reasons') IS NOT TRUE THEN RAISE EXCEPTION 'stage7 unknown reason missing' USING ERRCODE='23514'; END IF;
  FOR item IN SELECT jsonb_array_elements(NEW.payload->'raw'->'sources') LOOP
-  SELECT payload INTO registered FROM stage7_source_registry WHERE source_id=item->>'source_id';
+  SELECT registry.payload INTO registered FROM stage7_source_registry AS registry WHERE registry.source_id=item->>'source_id';
   IF item IS DISTINCT FROM registered THEN RAISE EXCEPTION 'stage7 source provenance mismatch' USING ERRCODE='23514'; END IF;
  END LOOP;
  FOR linked IN SELECT jsonb_array_elements(r->'sources') LOOP
-  IF NOT EXISTS(SELECT 1 FROM jsonb_array_elements(NEW.payload->'raw'->'sources') item WHERE item->>'source_id'=linked#>>'{}') THEN RAISE EXCEPTION 'stage7 source reference missing' USING ERRCODE='23503'; END IF;
+  IF NOT EXISTS(SELECT 1 FROM jsonb_array_elements(NEW.payload->'raw'->'sources') AS evidence(value) WHERE evidence.value->>'source_id'=linked#>>'{}') THEN RAISE EXCEPTION 'stage7 source reference missing' USING ERRCODE='23503'; END IF;
  END LOOP;
  RETURN NEW;
 END $$;
