@@ -1,0 +1,90 @@
+[
+  {
+    "document_id": "s9-tlv-550-schema",
+    "publisher": "Tel Aviv-Yafo municipality",
+    "url": "https://gisn.tel-aviv.gov.il/ArcGIS/rest/services/IView2/MapServer/550?f=pjson",
+    "checked_at": "2026-10-12",
+    "access_status": "READ_AND_DOWNLOADED",
+    "visual_status": "NOT_APPLICABLE_JSON",
+    "rights_status": "RESTRICTED_PRIVATE_ONLY",
+    "road_restriction_verified": false
+  },
+  {
+    "document_id": "s9-tlv-550-attributes",
+    "publisher": "Tel Aviv-Yafo municipality",
+    "url": "https://gisn.tel-aviv.gov.il/ArcGIS/rest/services/IView2/MapServer/550/query?where=1%3D1&outFields=id_gesher%2Cshem%2Ct_yeud%2Cshem_rechov%2Cdate_import&returnGeometry=false&f=pjson",
+    "checked_at": "2026-10-12",
+    "access_status": "READ_AND_DOWNLOADED",
+    "visual_status": "NOT_APPLICABLE_JSON",
+    "rights_status": "RESTRICTED_PRIVATE_ONLY",
+    "road_restriction_verified": false
+  },
+  {
+    "document_id": "s9-mot-bridge-gis-spec",
+    "title": "מפרט שכבות - גשרים",
+    "publisher": "Ministry of Transport, senior transport planning division",
+    "url": "https://www.gov.il/BlobFolder/generalpage/30-12-2025/he/מפרט להכנת שכבת GIS של גשרים.pdf",
+    "checked_at": "2026-10-12",
+    "access_status": "READ_AND_DOWNLOADED",
+    "visual_status": "LOCAL_PAGES_5_17_23_VERIFIED_ONLY",
+    "rights_status": "UNKNOWN_PRIVATE_ONLY",
+    "road_restriction_verified": false
+  },
+  {
+    "document_id": "s10-national-rail-road618",
+    "publisher": "Ministry of Transport",
+    "url": "https://data.gov.il/he/datasets/ministry_of_transport/levelseparation",
+    "checked_at": "2026-10-12",
+    "access_status": "READ_FROZEN_STAGE9_API_RECORDS",
+    "rights_status": "UNKNOWN_OPEN_LABEL_NOT_SUFFICIENT_FOR_DERIVED_PUBLICATION",
+    "road_restriction_verified": false
+  },
+  {
+    "document_id": "s10-iroads-documentation-2019",
+    "title": "מדריך לתיעוד גשרים מנהרות ומבני דרך",
+    "publisher": "Netivei Israel",
+    "url": "https://www.iroads.co.il/media/ipkgncew/מדריך-לתיעוד-גשרים-מנהרות-ומבני-דרך-מהדורה-_5-2019.pdf",
+    "checked_at": "2026-10-12",
+    "document_date": "2019-11-20",
+    "access_status": "SEARCH_INDEX_ONLY_HTTP403",
+    "visual_status": "NOT_RUN",
+    "rights_status": "UNKNOWN",
+    "road_restriction_verified": false,
+    "finding": "Possible identifier dictionary lead; full document inaccessible. No retroactive application to 2017 labels. No asset crosswalk obtained."
+  },
+  {
+    "document_id": "s10-jerusalem-road22",
+    "publisher": "Jerusalem municipality",
+    "url": "https://www.jerusalem.muni.il/he/residents/parking/traffic/road22_workes/",
+    "checked_at": "2026-10-12",
+    "document_date": "2024-06-03",
+    "access_status": "LOCAL_HTML_READ",
+    "rights_status": "UNKNOWN_PRIVATE_ONLY",
+    "road_restriction_verified": false,
+    "finding": "Municipal road22 namespace differs from national Haifa road22. Number equality alone is insufficient. No applicable truck limit extracted."
+  },
+  {
+    "document_id": "s10-tlv-protocol-20230215",
+    "title": "Decision protocol23-0003, section6 תא/תתל/132",
+    "publisher": "Tel Aviv-Yafo local planning subcommittee",
+    "url": "https://www.tel-aviv.gov.il/Residents/Development/DocLib/פרוטוקול החלטות לועדת המשנה לתכנון ולבניה מספר 23-0003 בתאריך 15-2-2023.pdf",
+    "checked_at": "2026-10-12",
+    "document_date": "2023-02-15",
+    "access_status": "WEB_PDF_TEXT_AND_ONE_PAGE_IMAGE_READ; LOCAL_FETCH473",
+    "visual_status": "ONLY_ZERO_BASED_PAGE187_VISUALLY_READ",
+    "rights_status": "UNKNOWN_PRIVATE_ONLY",
+    "road_restriction_verified": false,
+    "finding": "Planning context names Moses and Shiffman above Ayalon between Arlozorov and Hashalom railstations. No municipal or historical asset IDs, dated clearance survey or operative sign evidence. Proposed extensions not proof of completed works."
+  },
+  {
+    "document_id": "s10-carmel-safety-recheck",
+    "publisher": "Carmel Tunnels operator",
+    "url": "https://www.carmeltunnels.co.il/about-page/בטיחות-במנהרות-הכרמל/",
+    "checked_at": "2026-10-12",
+    "document_date": null,
+    "access_status": "LOCAL_HTML_AND_WEB_TEXT_READ",
+    "rights_status": "COPYRIGHT_RESERVED_PRIVATE_ONLY",
+    "road_restriction_verified": false,
+    "finding": "Recheck existing stage7 operator claims: height4.6m,width3m,hazardous-material entry prohibited. No daytime qualifier stated. No current sign observation, exact directional lane scope, effective/amendment date or legal order obtained. No new restriction created."
+  }
+]
