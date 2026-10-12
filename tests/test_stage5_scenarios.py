@@ -121,6 +121,17 @@ class ScenarioTests(unittest.TestCase):
         self.assertEqual(ways,[dict(id=3,decision='UNKNOWN',direction='both')])
         self.assertEqual(counts['inactive_no_overlay'],2)
 
+    def test_output_cannot_overwrite_original_or_symlink(self):
+        with tempfile.TemporaryDirectory() as temp:
+            source=Path(temp)/'original.sqlite'
+            source.write_bytes(b'unchanged original sentinel')
+            link=Path(temp)/'output-link.json';link.symlink_to(source)
+            hardlink=Path(temp)/'output-hardlink.json';hardlink.hardlink_to(source)
+            for output in (source,link,hardlink):
+                with self.assertRaisesRegex(ValueError,'must not overwrite'):
+                    analyze_connectivity(source,output)
+                self.assertEqual(source.read_bytes(),b'unchanged original sentinel')
+
     def test_all_fixtures_explicitly_synthetic(self):
         self.assertTrue(all(r['synthetic'] and not r['navigation_eligible'] for r in synthetic_scenarios()))
 

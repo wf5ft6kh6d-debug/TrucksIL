@@ -341,6 +341,9 @@ def conditional_overlay(records, instant):
 def analyze_connectivity(source_graph, output_path, *, node_rules=(), way_rules=(), temporal_records=()):
     """Full national original graph classification, no writes and no geometric joins."""
     source = Path(source_graph).resolve()
+    output = Path(output_path)
+    if output.resolve() == source or (output.exists() and output.samefile(source)):
+        raise ValueError('Output must not overwrite original graph')
     before_hash = _hash(source)
     nr, wr = _rule_map(node_rules), _rule_map(way_rules)
     db = sqlite3.connect(source.as_uri() + '?mode=ro', uri=True)
