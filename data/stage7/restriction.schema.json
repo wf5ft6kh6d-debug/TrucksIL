@@ -1,0 +1,237 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version",
+    "id",
+    "restriction_type",
+    "scope",
+    "geometry",
+    "location",
+    "vehicle_conditions",
+    "value",
+    "validity",
+    "sources",
+    "evidence_status",
+    "interpretation_status",
+    "unknown_reasons",
+    "explanation",
+    "independent_review",
+    "synthetic",
+    "navigation_eligible"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "stage7.restriction.v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "restriction_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "enum": [
+        "LOCAL",
+        "GENERAL_VEHICLE_NORM"
+      ]
+    },
+    "geometry": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "coordinates"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "Point",
+                "LineString"
+              ]
+            },
+            "coordinates": {
+              "type": "array"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "location": {
+      "type": "object",
+      "required": [
+        "description",
+        "road_refs",
+        "region",
+        "direction",
+        "lane"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "road_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "region": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "direction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lane": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "vehicle_conditions": {
+      "type": "object"
+    },
+    "value": {
+      "type": "object",
+      "required": [
+        "amount",
+        "unit",
+        "mass_basis"
+      ],
+      "properties": {
+        "amount": {
+          "type": [
+            "number",
+            "string",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "mass_basis": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "validity": {
+      "type": "object",
+      "required": [
+        "effective_from",
+        "effective_to",
+        "days",
+        "hours",
+        "exceptions",
+        "last_checked"
+      ],
+      "properties": {
+        "effective_from": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_to": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "days": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hours": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exceptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "last_checked": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence_status": {
+      "enum": [
+        "QUARANTINE",
+        "UNKNOWN",
+        "VERIFIED"
+      ]
+    },
+    "interpretation_status": {
+      "enum": [
+        "SUPPORTED",
+        "UNKNOWN",
+        "UNSUPPORTED",
+        "CONFLICT"
+      ]
+    },
+    "unknown_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "explanation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "independent_review": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "synthetic": {
+      "const": false
+    },
+    "navigation_eligible": {
+      "const": false
+    }
+  },
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
