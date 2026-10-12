@@ -1,0 +1,144 @@
+{
+  "sources": [
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "finding": "Operator structural passage guidance; extracted values retained privately; no dated measurement or individual lane linkage.",
+      "locator": "section חשוב לדעת; dimension bullet",
+      "public_content": "BIBLIOGRAPHIC_METADATA_AND_ORIGINAL_RESEARCH_ASSESSMENT_ONLY",
+      "regions": [
+        "HAIFA"
+      ],
+      "rights": "RESTRICTED_PRIVATE_ONLY_TERMS_SECTION_7",
+      "source_id": "structures:carmel-safety",
+      "source_status": "READ_OPERATOR_PAGE",
+      "url": "https://www.carmeltunnels.co.il/about-page/בטיחות-במנהרות-הכרמל/"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "finding": "Publication consent not established; no copied page content included in repository.",
+      "locator": "terms sections 6–10",
+      "public_content": "BIBLIOGRAPHIC_METADATA_AND_ORIGINAL_RESEARCH_ASSESSMENT_ONLY",
+      "regions": [
+        "HAIFA"
+      ],
+      "rights": "RESTRICTED_PRIVATE_ONLY",
+      "source_id": "structures:carmel-terms",
+      "source_status": "READ_RIGHTS_PAGE",
+      "url": "https://www.carmeltunnels.co.il/תנאי-שימושתנאי-שימוש-באתר-מנהרות-הכרמ/"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "finding": "Structural dimension description is not permissible vehicle height or measured clearance; extracted observation private.",
+      "locator": "section המנהרות במספרים",
+      "public_content": "BIBLIOGRAPHIC_METADATA_AND_ORIGINAL_RESEARCH_ASSESSMENT_ONLY",
+      "regions": [
+        "HAIFA"
+      ],
+      "rights": "RESTRICTED_PERSONAL_USE_TERMS",
+      "source_id": "structures:transisrael-carmel",
+      "source_status": "READ_PROJECT_PAGE",
+      "url": "https://www.transisrael.co.il/Project?projectID=87"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "finding": "No open dataset license established.",
+      "locator": "intellectual property and use sections",
+      "public_content": "BIBLIOGRAPHIC_METADATA_AND_ORIGINAL_RESEARCH_ASSESSMENT_ONLY",
+      "regions": [
+        "NATIONAL"
+      ],
+      "rights": "RESTRICTED_PERSONAL_USE_FAIR_QUOTATION_ONLY",
+      "source_id": "structures:transisrael-terms",
+      "source_status": "READ_RIGHTS_PAGE",
+      "url": "https://www.transisrael.co.il/ContentPage?id=23"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "finding": "Official bridge/tunnel inventory candidate. Inspected schema has no height fields; no feature rows downloaded or imported; load date is not survey date.",
+      "locator": "Fields and renderer; layer 550",
+      "public_content": "BIBLIOGRAPHIC_METADATA_AND_ORIGINAL_RESEARCH_ASSESSMENT_ONLY",
+      "regions": [
+        "TEL_AVIV"
+      ],
+      "rights": "UNKNOWN_DATASET_REUSE",
+      "source_id": "structures:telaviv-gis",
+      "source_status": "READ_SCHEMA_ONLY",
+      "url": "https://gisn.tel-aviv.gov.il/ArcGIS/rest/services/IView2/MapServer/550"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "finding": "Tender search discovery; full content unavailable. No operating limit extracted.",
+      "locator": "tender 30/12 candidate",
+      "public_content": "BIBLIOGRAPHIC_METADATA_AND_ORIGINAL_RESEARCH_ASSESSMENT_ONLY",
+      "regions": [
+        "JERUSALEM"
+      ],
+      "rights": "UNKNOWN",
+      "source_id": "structures:harel-iroads",
+      "source_status": "BLOCKED_403",
+      "url": "https://www.iroads.co.il/מכרזים/מכרזים/ביצוע/כביש-1-מנהרת-הראל-בשיטת-תכנון-ביצוע/"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "finding": "Primary construction account identifies Harel project on road 1; no current permitted vehicle height, lane or survey date established. Construction dimensions not imported as restrictions.",
+      "locator": "project description and client",
+      "public_content": "BIBLIOGRAPHIC_METADATA_AND_ORIGINAL_RESEARCH_ASSESSMENT_ONLY",
+      "regions": [
+        "JERUSALEM"
+      ],
+      "rights": "UNKNOWN_COPYRIGHT_NO_REUSE_PERMISSION",
+      "source_id": "structures:harel-builder",
+      "source_status": "READ_BUILDER_PROJECT",
+      "url": "https://www.electra-infrastructures.co.il/פרוייקטים/מנהרות_הראל"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "finding": "Full PDF unavailable in retrieval; search snippet not evidence; design guidance cannot confirm individual historical bridge rows.",
+      "locator": "candidate national height-obstacle guidelines",
+      "public_content": "BIBLIOGRAPHIC_METADATA_AND_ORIGINAL_RESEARCH_ASSESSMENT_ONLY",
+      "regions": [
+        "NATIONAL"
+      ],
+      "rights": "UNKNOWN",
+      "source_id": "structures:height-guidance",
+      "source_status": "BLOCKED_FETCH",
+      "url": "https://www.gov.il/BlobFolder/policy/traffic_height_obstacle/he/Guidelines-for-height-obstacles-2026.pdf"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "finding": "No usable dimension document located within finite search budget; entry page not evidence of a road restriction or its absence.",
+      "locator": "operator entry page; two scoped discovery passes",
+      "public_content": "BIBLIOGRAPHIC_METADATA_AND_ORIGINAL_RESEARCH_ASSESSMENT_ONLY",
+      "regions": [
+        "NATIONAL"
+      ],
+      "rights": "UNKNOWN",
+      "source_id": "structures:road6",
+      "source_status": "READ_ENTRY_ONLY_NO_RULE",
+      "url": "https://www.kvish6.co.il/"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "finding": "No usable current structure restriction located; municipality entry unavailable, search results irrelevant or historical. Southern territory remains unverified.",
+      "locator": "municipal source entry; two scoped bridge-height searches",
+      "public_content": "BIBLIOGRAPHIC_METADATA_AND_ORIGINAL_RESEARCH_ASSESSMENT_ONLY",
+      "regions": [
+        "SOUTH"
+      ],
+      "rights": "UNKNOWN",
+      "source_id": "structures:beersheva",
+      "source_status": "BLOCKED_FETCH",
+      "url": "https://www.beer-sheva.muni.il/"
+    }
+  ]
+}

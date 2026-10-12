@@ -1,0 +1,137 @@
+{
+  "sources": [
+    {
+      "source_id": "vehicle-police-2024",
+      "url": "https://www.police.gov.il/menifa/07.02.240.11_2.pdf",
+      "locator": "Procedure 02.240.11 version 2, page 1 dates; page 2 section 4(b); page 3 section 7(a)(4); page 5 section 8(a)(3)(10)(c)",
+      "checked_at": "2026-10-12",
+      "document_date": "2024-03-05",
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "READ_PRIMARY",
+      "publisher": "Israel Police",
+      "publication_basis": "Own short factual extraction of officially disclosed procedure, no source PDF or copied passages redistributed; full-document redistribution rights not asserted.",
+      "currentness": "Effective date printed 2024-03-05; cancellation field blank is not proof no later supersession; finite exact-number search found no conclusive update.",
+      "regions": [
+        "NATIONAL"
+      ]
+    },
+    {
+      "source_id": "vehicle-eilat-2024",
+      "url": "https://www.eilat.muni.il/bids/707/",
+      "locator": "Tender 6/2024, Annex B special specification, section 5 bullets 1, 2 and 4; page metadata publication 07/08/2024",
+      "checked_at": "2026-10-12",
+      "document_date": "2024-08-07",
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "READ_PRIMARY",
+      "publisher": "Eilat municipality",
+      "publication_basis": "Own brief factual metadata about publicly accessible tender clauses; no source reproduction or open licence claimed.",
+      "currentness": "Contract award, commencement, amendments and current operation unknown. Tender clause not public-road traffic order.",
+      "regions": [
+        "SOUTH"
+      ]
+    },
+    {
+      "source_id": "vehicle-carmel-safety",
+      "url": "https://www.carmeltunnels.co.il/about-page/בטיחות-במנהרות-הכרמל/",
+      "locator": "Section חשוב לדעת, entry, manoeuvre and dimensions bullets",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "RESTRICTED_PRIVATE_ONLY",
+      "source_status": "READ_PRIMARY_PRIVATE_EXTRACTION",
+      "publisher": "Carmel Tunnels operator",
+      "publication_basis": "Public registry contains URL/locator/research status only; extracted records excluded from Git because terms section 7 require prior written consent for publication.",
+      "rights_url": "https://www.carmeltunnels.co.il/תנאי-שימושתנאי-שימוש-באתר-מנהרות-הכרמ/",
+      "currentness": "Undated; effective date, exceptions, sign and supersession unknown.",
+      "regions": [
+        "HAIFA"
+      ]
+    },
+    {
+      "source_id": "vehicle-axles-2008",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/dimensions_and_weight_for_vehicles/he/314_A_1_B_omes_sarnei.pdf",
+      "locator": "Search-indexed table, regulation 314(a)(b); body unreadable",
+      "checked_at": "2026-10-12",
+      "document_date": "2008-02-17",
+      "rights": "METADATA_ONLY_NO_EXTRACTION",
+      "source_status": "BLOCKED_HTTP_403",
+      "publisher": "Ministry of Transport",
+      "date_basis": "Date appears in search result only, not independently read PDF",
+      "currentness": "Historic index entry, current legal text unverified",
+      "regions": [
+        "NATIONAL"
+      ]
+    },
+    {
+      "source_id": "vehicle-combination-2008",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/dimensions_and_weight_for_vehicles/he/314_A_3_4_miskal_kolel_mutar.pdf",
+      "locator": "Search-indexed regulation 314(a)(3)-(4); body unreadable",
+      "checked_at": "2026-10-12",
+      "document_date": "2008-02-17",
+      "rights": "METADATA_ONLY_NO_EXTRACTION",
+      "source_status": "BLOCKED_HTTP_403",
+      "publisher": "Ministry of Transport",
+      "date_basis": "Search-index metadata only",
+      "currentness": "Historical; no current mass or combination limit imported",
+      "regions": [
+        "NATIONAL"
+      ]
+    },
+    {
+      "source_id": "vehicle-dimensions-2025",
+      "url": "https://www.gov.il/BlobFolder/generalpage/instructors_in_traffic_engineering/he/רכבים%20לתכן%20-%202025.pdf",
+      "locator": "Search index: traffic engineering design vehicles, edition 3 (2025), p20 regulation 313",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "METADATA_ONLY_NO_EXTRACTION",
+      "source_status": "BLOCKED_HTTP_403",
+      "publisher": "Ministry of Transport",
+      "currentness": "Design guidance edition year is not effective law date; body unavailable",
+      "regions": [
+        "NATIONAL"
+      ]
+    },
+    {
+      "source_id": "vehicle-hazmat-ministry",
+      "url": "https://www.gov.il/he/pages/transportation_of_hazardous_materials",
+      "locator": "Hazardous-material transport ministry page; returned no readable body",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "METADATA_ONLY_NO_EXTRACTION",
+      "source_status": "BLOCKED_EMPTY_BODY",
+      "publisher": "Ministry of Transport",
+      "currentness": "No current section-specific rule extracted",
+      "regions": [
+        "NATIONAL"
+      ]
+    },
+    {
+      "source_id": "vehicle-ashdod-parking-2015",
+      "url": "https://www.ashdod.muni.il/he-il/אתר-העיר/ארכיון-חדשות/חדשות/2015/4/משאיות-חונות-כחוק/",
+      "locator": "Search lead municipal parking news April 2015, direct open timed out",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "METADATA_ONLY_NO_EXTRACTION",
+      "source_status": "BLOCKED_FETCH_TIMEOUT",
+      "publisher": "Ashdod municipality",
+      "currentness": "Historical search snippet not accepted as current rule",
+      "regions": [
+        "SOUTH"
+      ]
+    },
+    {
+      "source_id": "vehicle-telaviv-delivery",
+      "url": "https://www.tel-aviv.gov.il/Residents/Transportation/Pages/distributionvehicles.aspx",
+      "locator": "Section פיילוט פריקה וטעינה and project status",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "READ_PRIMARY_NO_CURRENT_RULE",
+      "publisher": "Tel Aviv-Yafo municipality",
+      "publication_basis": "Own research metadata only; no copied passage.",
+      "currentness": "Page says pilot ended early 2021; later plans are not current enforceable street restrictions.",
+      "regions": [
+        "TEL_AVIV"
+      ]
+    }
+  ]
+}

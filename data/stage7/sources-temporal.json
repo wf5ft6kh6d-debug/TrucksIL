@@ -1,0 +1,477 @@
+{
+  "sources": [
+    {
+      "source_id": "T-MOT-SOUTH-2018",
+      "url": "https://www.gov.il/he/pages/dover_23_10_2018",
+      "locator": "Exact announcement endpoint; document body inaccessible",
+      "checked_at": "2026-10-12",
+      "document_date": "2018-10-23",
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "FETCH_BLOCKED_403",
+      "region": "SOUTH",
+      "assessment": "Previous stage lead retried. Search snippets cannot establish times, applicability, changes or current validity.",
+      "regions": [
+        "SOUTH"
+      ]
+    },
+    {
+      "source_id": "T-MOT-ROAD1-AUDIT-2017",
+      "url": "https://www.gov.il/BlobFolder/generalpage/infrastructure_and_engineering_content_bank_2017_5/he/bakara_rashuyot_timrur_2017_derech_eretz.pdf",
+      "locator": "Exact PDF endpoint; searched paragraph on road 1 signs, page not verified",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "FETCH_BLOCKED_403",
+      "region": "JERUSALEM",
+      "assessment": "Indexed historical traffic-sign audit is a lead only; full PDF and current sign status inaccessible.",
+      "regions": [
+        "JERUSALEM"
+      ]
+    },
+    {
+      "source_id": "T-MOT-QUARRY-REPORT",
+      "url": "https://www.gov.il/BlobFolder/reports/import_materials/he/Import_of_quarrying_materials_to_Israel.pdf",
+      "locator": "Indexed printed page 33; full PDF inaccessible",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "FETCH_BLOCKED_403",
+      "region": "SOUTH",
+      "assessment": "Indexed report describes historical road 232 time regime; apparent different hours are an unresolved lead, not an established contradiction or current road fact.",
+      "regions": [
+        "SOUTH"
+      ]
+    },
+    {
+      "source_id": "T-KNESSET-2008",
+      "url": "https://fs.knesset.gov.il/globaldocs/MMM/ecc28d55-f7f7-e411-80c8-00155d010977/2_ecc28d55-f7f7-e411-80c8-00155d010977_11_10096.pdf",
+      "locator": "Exact PDF redirects to maintenance-page-geo",
+      "checked_at": "2026-10-12",
+      "document_date": "2008-03-30",
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "GEO_BLOCKED",
+      "region": "NATIONAL",
+      "assessment": "Stage6 reported reading historical pages 3–4; stage7 cannot re-read bytes. Historical cancellation cannot prove current permission.",
+      "regions": [
+        "NATIONAL"
+      ]
+    },
+    {
+      "source_id": "T-TLV-PILOT",
+      "url": "https://www.tel-aviv.gov.il/Residents/Transportation/Pages/distributionvehicles.aspx",
+      "locator": "Loading/unloading pilot section, paragraphs beginning בשנת 2020 and הפיילוט הסתיים",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "RESTRICTED: terms https://www.tel-aviv.gov.il/About/Pages/TermsofService.aspx section השימוש באתר, bullets on content reuse/database creation. No page copy or extracted rule dataset distributed; source locator and review outcome only.",
+      "source_status": "READ_HISTORICAL_NOT_CURRENT_RULE",
+      "region": "TEL_AVIV",
+      "assessment": "Municipal pilot described as ended in early 2021. No executable current time restriction extracted.",
+      "regions": [
+        "TEL_AVIV"
+      ]
+    },
+    {
+      "source_id": "T-TLV-TERMS",
+      "url": "https://www.tel-aviv.gov.il/About/Pages/TermsofService.aspx",
+      "locator": "השימוש באתר; content reuse, database and automated collection bullets",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "Municipal terms reserve content and restrict database creation. Only bibliographic locator and review outcome retained.",
+      "source_status": "READ_RIGHTS_RESTRICTIONS",
+      "region": "TEL_AVIV",
+      "assessment": "Rights review prevents database extraction or republication of page contents without a permitted basis.",
+      "regions": [
+        "TEL_AVIV"
+      ]
+    },
+    {
+      "source_id": "T-SEARCH-NAZARETH",
+      "url": "https://nazareth.muni.il/",
+      "locator": "Search target domain only, not a restriction document",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "SEARCH_TARGET_ONLY",
+      "region": "NORTH",
+      "assessment": "Home URL identifies a searched authority only. Not read as evidence of a restriction; no absence-of-ban inference.",
+      "regions": [
+        "NORTH"
+      ]
+    },
+    {
+      "source_id": "T-SEARCH-TIBERIAS",
+      "url": "https://tiberias.muni.il/",
+      "locator": "Search target domain only, not a restriction document",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "SEARCH_TARGET_ONLY",
+      "region": "NORTH",
+      "assessment": "Home URL identifies a searched authority only. Not read as evidence of a restriction; no absence-of-ban inference.",
+      "regions": [
+        "NORTH"
+      ]
+    },
+    {
+      "source_id": "T-SEARCH-HAIFA",
+      "url": "https://haifa.muni.il/",
+      "locator": "Search target domain only, not a restriction document",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "SEARCH_TARGET_ONLY",
+      "region": "HAIFA",
+      "assessment": "Home URL identifies a searched authority only. Not read as evidence of a restriction; no absence-of-ban inference.",
+      "regions": [
+        "HAIFA"
+      ]
+    },
+    {
+      "source_id": "T-SEARCH-TLV",
+      "url": "https://tel-aviv.gov.il/",
+      "locator": "Search target domain only, not a restriction document",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "SEARCH_TARGET_ONLY",
+      "region": "TEL_AVIV",
+      "assessment": "Home URL identifies a searched authority only. Not read as evidence of a restriction; no absence-of-ban inference.",
+      "regions": [
+        "TEL_AVIV"
+      ]
+    },
+    {
+      "source_id": "T-SEARCH-PETAH-TIKVA",
+      "url": "https://petah-tikva.muni.il/",
+      "locator": "Search target domain only, not a restriction document",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "SEARCH_TARGET_ONLY",
+      "region": "CENTER",
+      "assessment": "Home URL identifies a searched authority only. Not read as evidence of a restriction; no absence-of-ban inference.",
+      "regions": [
+        "CENTER"
+      ]
+    },
+    {
+      "source_id": "T-SEARCH-NETANYA",
+      "url": "https://netanya.muni.il/",
+      "locator": "Search target domain only, not a restriction document",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "SEARCH_TARGET_ONLY",
+      "region": "CENTER",
+      "assessment": "Home URL identifies a searched authority only. Not read as evidence of a restriction; no absence-of-ban inference.",
+      "regions": [
+        "CENTER"
+      ]
+    },
+    {
+      "source_id": "T-SEARCH-JERUSALEM",
+      "url": "https://jerusalem.muni.il/",
+      "locator": "Search target domain only, not a restriction document",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "SEARCH_TARGET_ONLY",
+      "region": "JERUSALEM",
+      "assessment": "Home URL identifies a searched authority only. Not read as evidence of a restriction; no absence-of-ban inference.",
+      "regions": [
+        "JERUSALEM"
+      ]
+    },
+    {
+      "source_id": "T-SEARCH-BEERSHEBA",
+      "url": "https://beer-sheva.muni.il/",
+      "locator": "Search target domain only, not a restriction document",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "SEARCH_TARGET_ONLY",
+      "region": "SOUTH",
+      "assessment": "Home URL identifies a searched authority only. Not read as evidence of a restriction; no absence-of-ban inference.",
+      "regions": [
+        "SOUTH"
+      ]
+    },
+    {
+      "source_id": "T-SEARCH-EILAT",
+      "url": "https://eilat.muni.il/",
+      "locator": "Search target domain only, not a restriction document",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "SEARCH_TARGET_ONLY",
+      "region": "SOUTH",
+      "assessment": "Home URL identifies a searched authority only. Not read as evidence of a restriction; no absence-of-ban inference.",
+      "regions": [
+        "SOUTH"
+      ]
+    },
+    {
+      "source_id": "T-SEARCH-POLICE",
+      "url": "https://police.gov.il/",
+      "locator": "Search target domain only, not a restriction document",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "UNKNOWN; no document text or images redistributed; attribution and research metadata only",
+      "source_status": "SEARCH_TARGET_ONLY",
+      "region": "NATIONAL",
+      "assessment": "Home URL identifies a searched authority only. Not read as evidence of a restriction; no absence-of-ban inference.",
+      "regions": [
+        "NATIONAL"
+      ]
+    }
+  ],
+  "search_attempts": [
+    {
+      "attempt_id": "TQ01",
+      "region": "NORTH",
+      "source_ids": [
+        "T-SEARCH-NAZARETH"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:nazareth.muni.il משאיות",
+      "checked_at": "2026-10-12",
+      "result": "No current exact temporal truck restriction established. Relevant leads separately registered; irrelevant tenders/general pages excluded."
+    },
+    {
+      "attempt_id": "TQ02",
+      "region": "NORTH",
+      "source_ids": [
+        "T-SEARCH-TIBERIAS"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:tiberias.muni.il \"משאיות\" תנועה",
+      "checked_at": "2026-10-12",
+      "result": "No current exact temporal truck restriction established. Relevant leads separately registered; irrelevant tenders/general pages excluded."
+    },
+    {
+      "attempt_id": "TQ03",
+      "region": "HAIFA",
+      "source_ids": [
+        "T-SEARCH-HAIFA"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:haifa.muni.il \"משאיות\" \"כניסה\"",
+      "checked_at": "2026-10-12",
+      "result": "No current exact temporal truck restriction established. Relevant leads separately registered; irrelevant tenders/general pages excluded."
+    },
+    {
+      "attempt_id": "TQ04",
+      "region": "TEL_AVIV",
+      "source_ids": [
+        "T-SEARCH-TLV"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:tel-aviv.gov.il \"משאיות\" \"שעות\"",
+      "checked_at": "2026-10-12",
+      "result": "No current exact temporal truck restriction established. Relevant leads separately registered; irrelevant tenders/general pages excluded."
+    },
+    {
+      "attempt_id": "TQ05",
+      "region": "CENTER",
+      "source_ids": [
+        "T-SEARCH-PETAH-TIKVA"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:petah-tikva.muni.il משאיות שעות",
+      "checked_at": "2026-10-12",
+      "result": "No current exact temporal truck restriction established. Relevant leads separately registered; irrelevant tenders/general pages excluded."
+    },
+    {
+      "attempt_id": "TQ06",
+      "region": "CENTER",
+      "source_ids": [
+        "T-SEARCH-NETANYA"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:netanya.muni.il \"משאיות\" \"שעות\"",
+      "checked_at": "2026-10-12",
+      "result": "No current exact temporal truck restriction established. Relevant leads separately registered; irrelevant tenders/general pages excluded."
+    },
+    {
+      "attempt_id": "TQ07",
+      "region": "JERUSALEM",
+      "source_ids": [
+        "T-SEARCH-JERUSALEM"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:jerusalem.muni.il \"משאיות\" \"שעות\"",
+      "checked_at": "2026-10-12",
+      "result": "No current exact temporal truck restriction established. Relevant leads separately registered; irrelevant tenders/general pages excluded."
+    },
+    {
+      "attempt_id": "TQ08",
+      "region": "SOUTH",
+      "source_ids": [
+        "T-SEARCH-BEERSHEBA"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:beer-sheva.muni.il \"משאיות\" \"כניסה\"",
+      "checked_at": "2026-10-12",
+      "result": "No current exact temporal truck restriction established. Relevant leads separately registered; irrelevant tenders/general pages excluded."
+    },
+    {
+      "attempt_id": "TQ09",
+      "region": "SOUTH",
+      "source_ids": [
+        "T-SEARCH-EILAT"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:eilat.muni.il \"משאיות\" \"שעות\"",
+      "checked_at": "2026-10-12",
+      "result": "No current exact temporal truck restriction established. Relevant leads separately registered; irrelevant tenders/general pages excluded."
+    },
+    {
+      "attempt_id": "TQ10",
+      "region": "NATIONAL",
+      "source_ids": [
+        "T-SEARCH-POLICE"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:police.gov.il \"משאיות\" \"06:30\"",
+      "checked_at": "2026-10-12",
+      "result": "No current exact temporal truck restriction established. Relevant leads separately registered; irrelevant tenders/general pages excluded."
+    },
+    {
+      "attempt_id": "TQ11",
+      "region": "NORTH",
+      "source_ids": [
+        "T-SEARCH-NAZARETH",
+        "T-SEARCH-TIBERIAS"
+      ],
+      "engine": "system1",
+      "query_pass": 2,
+      "query": "משאיות איסור כניסה שעות; domains nazareth.muni.il,tiberias.muni.il",
+      "checked_at": "2026-10-12",
+      "result": "ENGINE_RELEVANCE_FAILURE: returned unrelated websites, no usable exact municipal evidence. This pass does not establish source coverage."
+    },
+    {
+      "attempt_id": "TQ12",
+      "region": "HAIFA",
+      "source_ids": [
+        "T-SEARCH-HAIFA"
+      ],
+      "engine": "system1",
+      "query_pass": 2,
+      "query": "הגבלת תנועת משאיות איסור כניסה; domain haifa.muni.il",
+      "checked_at": "2026-10-12",
+      "result": "ENGINE_RELEVANCE_FAILURE: returned unrelated websites, no usable exact municipal evidence. This pass does not establish source coverage."
+    },
+    {
+      "attempt_id": "TQ13",
+      "region": "CENTER",
+      "source_ids": [
+        "T-SEARCH-PETAH-TIKVA",
+        "T-SEARCH-NETANYA"
+      ],
+      "engine": "system1",
+      "query_pass": 2,
+      "query": "משאיות איסור כניסה שעות; domains netanya.muni.il,petah-tikva.muni.il",
+      "checked_at": "2026-10-12",
+      "result": "ENGINE_RELEVANCE_FAILURE: returned unrelated websites, no usable exact municipal evidence. This pass does not establish source coverage."
+    },
+    {
+      "attempt_id": "TQ14",
+      "region": "JERUSALEM",
+      "source_ids": [
+        "T-SEARCH-JERUSALEM"
+      ],
+      "engine": "system1",
+      "query_pass": 2,
+      "query": "משאיות כניסה לעיר שעות; domain jerusalem.muni.il",
+      "checked_at": "2026-10-12",
+      "result": "ENGINE_RELEVANCE_FAILURE: returned unrelated websites, no usable exact municipal evidence. This pass does not establish source coverage."
+    },
+    {
+      "attempt_id": "TQ15",
+      "region": "TEL_AVIV",
+      "source_ids": [
+        "T-SEARCH-TLV"
+      ],
+      "engine": "system2",
+      "query_pass": 2,
+      "query": "site:tel-aviv.gov.il \"12\" \"משאיות\"",
+      "checked_at": "2026-10-12",
+      "result": "Tenders and strategy documents, no current exact time prohibition established."
+    },
+    {
+      "attempt_id": "TQ16",
+      "region": "SOUTH",
+      "source_ids": [
+        "T-SEARCH-BEERSHEBA"
+      ],
+      "engine": "system2",
+      "query_pass": 2,
+      "query": "\"עיריית באר שבע\" \"איסור\" \"משאיות\"",
+      "checked_at": "2026-10-12",
+      "result": "Historical secondary parking-ban articles only. Parking is not driving permission; no primary current act extracted."
+    },
+    {
+      "attempt_id": "TQ17",
+      "region": "SOUTH",
+      "source_ids": [
+        "T-SEARCH-EILAT"
+      ],
+      "engine": "system2",
+      "query_pass": 2,
+      "query": "\"עיריית אילת\" \"משאיות\" \"כניסה\"",
+      "checked_at": "2026-10-12",
+      "result": "Exact municipal facility-access tender forwarded to vehicle agent; no duplicated record or temporal rule."
+    },
+    {
+      "attempt_id": "TQ18",
+      "region": "NATIONAL",
+      "source_ids": [
+        "T-MOT-ROAD1-AUDIT-2017"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:gov.il \"משאיות\" \"שער הגיא\"",
+      "checked_at": "2026-10-12",
+      "result": "Exact historical ministry audit PDF discovered, direct read403."
+    },
+    {
+      "attempt_id": "TQ19",
+      "region": "SOUTH",
+      "source_ids": [
+        "T-MOT-SOUTH-2018",
+        "T-MOT-QUARRY-REPORT"
+      ],
+      "engine": "system2",
+      "query_pass": 1,
+      "query": "site:gov.il \"232\" \"משאיות\" \"2018\"",
+      "checked_at": "2026-10-12",
+      "result": "Exact report lead found, direct read403."
+    },
+    {
+      "attempt_id": "TQ20",
+      "region": "NATIONAL",
+      "source_ids": [],
+      "engine": "system1",
+      "query_pass": 0,
+      "query": "site.gov.il משאיות 12 טון שער הגיא סחרוב 06:30",
+      "checked_at": "2026-10-12",
+      "result": "MALFORMED_SITE_OPERATOR; irrelevant results; excluded from research coverage."
+    }
+  ],
+  "research_plan": {
+    "status": "FINITE_SEARCH_COMPLETE_WITH_BLOCKERS",
+    "region_pass_limit": 2,
+    "exact_lead_followup_limit": 1,
+    "coverage_claim": "Research attempts only, not all authorities or current road-data completeness."
+  }
+}

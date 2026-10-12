@@ -1,0 +1,86 @@
+{
+  "schema_version": "stage7.coverage-plan.v1",
+  "checked_date": "2026-10-12",
+  "scope": "NATIONAL_RESEARCH_NOT_COMPLETE_RESTRICTION_INVENTORY",
+  "regions": [
+    "NORTH",
+    "HAIFA",
+    "TEL_AVIV",
+    "CENTER",
+    "JERUSALEM",
+    "SOUTH"
+  ],
+  "additional_buckets": [
+    "NATIONAL",
+    "UNKNOWN"
+  ],
+  "finite_plan": [
+    {
+      "owner": "sources7",
+      "action": "Two targeted official national/municipal source query passes for each of six regional anchors; inspect concrete document candidates; log unavailable or inconclusive outcomes",
+      "stop": "After both passes per anchor and identified concrete document checks"
+    },
+    {
+      "owner": "bridges7",
+      "action": "Reuse all 965 normalized historical rows and gaps without import; inspect additional national structure evidence candidates",
+      "stop": "After documented source candidate checks, retain unresolved row gates"
+    },
+    {
+      "owner": "vehicle7",
+      "action": "Inspect official mass/axles/dimensions/hazmat/access sources, separate general norms",
+      "stop": "After finite source candidate register is reviewed"
+    },
+    {
+      "owner": "coverage7",
+      "action": "Inspect CBS dictionary documentation and district API once each; map all extracted records against preserved graph by exact road-reference tokens",
+      "stop": "Once all producer records have output and candidate counts; no unbounded search"
+    }
+  ],
+  "mapping": {
+    "candidate_way_limit_per_record": 50,
+    "matching": "EXACT_ROAD_REF_TOKEN_CANDIDATES_ONLY",
+    "exact_binding_requires": "Independent source-to-object, segment, direction and lane evidence absent from current record contract",
+    "automatic_snapping": false,
+    "geometry_intersection_connects_roads": false
+  },
+  "independent_reference": {
+    "documentation_url": "https://www.cbs.gov.il/en/Pages/API-Dictionary.aspx",
+    "locator": "List of Dictionaries: Geo districts; fields year,id,name_heb,name_eng; Geo localities includes district",
+    "documentation_access": "CONTENT_READ",
+    "district_api_url": "https://api.cbs.gov.il/Dictionary/geo/districts",
+    "district_api_access": "UNAVAILABLE_VIA_RETRIEVAL_TOOL",
+    "rights": "NO_GEODATA_REDISTRIBUTION_LICENSE_VERIFIED; metadata and original research notes only",
+    "restriction_inventory": false
+  },
+  "completeness": "UNKNOWN",
+  "completeness_reason": "No independently complete current restriction inventory and no validated licensed boundary dataset",
+  "jurisdiction_policy": "PBF boundary is neither legal border nor proof of jurisdiction. Administrative search buckets do not resolve disputed territory. Unresolved records stay jurisdiction UNKNOWN; no coordinate-based national membership inference.",
+  "queries_are_not_coverage": "Two passes at one municipality do not establish coverage of all municipalities or roads in a region.",
+  "search_anchors": {
+    "NORTH": [
+      "Nazareth",
+      "Tiberias"
+    ],
+    "HAIFA": [
+      "Haifa"
+    ],
+    "TEL_AVIV": [
+      "Tel Aviv-Yafo"
+    ],
+    "CENTER": [
+      "Petah Tikva",
+      "Netanya"
+    ],
+    "JERUSALEM": [
+      "Jerusalem"
+    ],
+    "SOUTH": [
+      "Beersheba",
+      "Eilat"
+    ],
+    "NATIONAL": [
+      "Ministry of Transport",
+      "Israel Police"
+    ]
+  }
+}

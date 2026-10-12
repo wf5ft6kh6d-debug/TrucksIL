@@ -1,0 +1,26 @@
+{
+  "blockers": [
+    {
+      "count": 965,
+      "id": "structures:current965",
+      "reason": "No accepted historical row independently matched to current signed or measured official object"
+    },
+    {
+      "id": "structures:carmel-rights",
+      "reason": "Private-only operator terms; public extracted record withheld"
+    },
+    {
+      "id": "structures:identity",
+      "reason": "Named objects not automatically matched to historical rows or graph edges; geometry/direction/lane unknown"
+    },
+    {
+      "id": "structures:fullness",
+      "reason": "No independent national structure inventory with confirmed rights and current measured clearance obtained; completeness UNKNOWN"
+    },
+    {
+      "id": "structures:blocked-documents",
+      "reason": "National PDF, Netivei Israel Harel tender and Beer Sheva entry unavailable; not claimed absent"
+    }
+  ],
+  "records": []
+}

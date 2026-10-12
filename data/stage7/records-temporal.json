@@ -1,0 +1,91 @@
+{
+  "records": [],
+  "blockers": [
+    {
+      "id": "TEMPORAL-NORTH",
+      "region": "NORTH",
+      "reason": "Current exact time restrictions not established by finite search; no comprehensive official sign/order register read.",
+      "source_ids": [
+        "T-SEARCH-NAZARETH",
+        "T-SEARCH-TIBERIAS"
+      ],
+      "required_action": "Obtain exact current authority order or dated sign record; no external contact made.",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "TEMPORAL-HAIFA",
+      "region": "HAIFA",
+      "reason": "Current exact time restrictions not established by finite search; no comprehensive official sign/order register read.",
+      "source_ids": [
+        "T-SEARCH-HAIFA"
+      ],
+      "required_action": "Obtain exact current authority order or dated sign record; no external contact made.",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "TEMPORAL-TEL_AVIV",
+      "region": "TEL_AVIV",
+      "reason": "Current exact time restrictions not established by finite search; no comprehensive official sign/order register read.",
+      "source_ids": [
+        "T-TLV-PILOT",
+        "T-TLV-TERMS",
+        "T-SEARCH-TLV"
+      ],
+      "required_action": "Obtain exact current authority order or dated sign record; no external contact made.",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "TEMPORAL-CENTER",
+      "region": "CENTER",
+      "reason": "Current exact time restrictions not established by finite search; no comprehensive official sign/order register read.",
+      "source_ids": [
+        "T-SEARCH-PETAH-TIKVA",
+        "T-SEARCH-NETANYA"
+      ],
+      "required_action": "Obtain exact current authority order or dated sign record; no external contact made.",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "TEMPORAL-JERUSALEM",
+      "region": "JERUSALEM",
+      "reason": "Current exact time restrictions not established by finite search; no comprehensive official sign/order register read.",
+      "source_ids": [
+        "T-MOT-ROAD1-AUDIT-2017",
+        "T-SEARCH-JERUSALEM"
+      ],
+      "required_action": "Obtain exact current authority order or dated sign record; no external contact made.",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "TEMPORAL-SOUTH",
+      "region": "SOUTH",
+      "reason": "Current exact time restrictions not established by finite search; no comprehensive official sign/order register read.",
+      "source_ids": [
+        "T-MOT-SOUTH-2018",
+        "T-MOT-QUARRY-REPORT",
+        "T-SEARCH-BEERSHEBA",
+        "T-SEARCH-EILAT"
+      ],
+      "required_action": "Obtain exact current authority order or dated sign record; no external contact made.",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "TEMPORAL-NATIONAL",
+      "region": "NATIONAL",
+      "reason": "Current exact time restrictions not established by finite search; no comprehensive official sign/order register read.",
+      "source_ids": [
+        "T-KNESSET-2008",
+        "T-SEARCH-POLICE"
+      ],
+      "required_action": "Obtain exact current authority order or dated sign record; no external contact made.",
+      "status": "BLOCKED"
+    }
+  ],
+  "summary": {
+    "new_temporal_records": 0,
+    "VERIFIED": 0,
+    "QUARANTINE": 0,
+    "UNKNOWN": 0,
+    "private_claims_not_reimported": 11
+  }
+}

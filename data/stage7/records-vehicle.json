@@ -1,0 +1,383 @@
+{
+  "records": [
+    {
+      "schema_version": "stage7.restriction.v1",
+      "id": "vehicle-police-permit-width",
+      "restriction_type": "oversize_permit_width",
+      "scope": "GENERAL_VEHICLE_NORM",
+      "geometry": null,
+      "location": {
+        "description": "General oversize-transport permit procedure; not a local road restriction",
+        "road_refs": [],
+        "region": "NATIONAL",
+        "direction": null,
+        "lane": null
+      },
+      "vehicle_conditions": {
+        "category": "vehicle transporting oversized load",
+        "dimension_basis": "load width",
+        "comparison": ">",
+        "required_authorisation": "police officer permit"
+      },
+      "value": {
+        "amount": 3.4,
+        "unit": "m",
+        "mass_basis": null
+      },
+      "validity": {
+        "effective_from": "2024-03-05",
+        "effective_to": null,
+        "days": [],
+        "hours": [],
+        "exceptions": [],
+        "last_checked": "2026-10-12"
+      },
+      "sources": [
+        "vehicle-police-2024"
+      ],
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "unknown_reasons": [
+        "CURRENT_APPLICABILITY_NOT_CONFIRMED",
+        "NO_NAVIGATION_GEOMETRY",
+        "AMENDMENTS_OR_REPEAL_UNRESOLVED"
+      ],
+      "explanation": "Procedure section 4(b) requires permit above stated load width threshold. Equality is not inferred to be unrestricted: other conditions and vehicle licence still apply. Current consolidated regulation and permit conditions not independently established.",
+      "independent_review": null,
+      "synthetic": false,
+      "navigation_eligible": false
+    },
+    {
+      "schema_version": "stage7.restriction.v1",
+      "id": "vehicle-police-permit-height",
+      "restriction_type": "oversize_permit_height",
+      "scope": "GENERAL_VEHICLE_NORM",
+      "geometry": null,
+      "location": {
+        "description": "General oversize-transport permit procedure; not a local road restriction",
+        "road_refs": [],
+        "region": "NATIONAL",
+        "direction": null,
+        "lane": null
+      },
+      "vehicle_conditions": {
+        "category": "vehicle transporting oversized load",
+        "dimension_basis": "load height",
+        "comparison": ">",
+        "required_authorisation": "police officer permit"
+      },
+      "value": {
+        "amount": 4.8,
+        "unit": "m",
+        "mass_basis": null
+      },
+      "validity": {
+        "effective_from": "2024-03-05",
+        "effective_to": null,
+        "days": [],
+        "hours": [],
+        "exceptions": [],
+        "last_checked": "2026-10-12"
+      },
+      "sources": [
+        "vehicle-police-2024"
+      ],
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "unknown_reasons": [
+        "CURRENT_APPLICABILITY_NOT_CONFIRMED",
+        "NO_NAVIGATION_GEOMETRY",
+        "AMENDMENTS_OR_REPEAL_UNRESOLVED"
+      ],
+      "explanation": "Procedure section 4(b) requires permit above stated load height threshold. Equality is not inferred to be unrestricted: other conditions and vehicle licence still apply. Current consolidated regulation and permit conditions not independently established.",
+      "independent_review": null,
+      "synthetic": false,
+      "navigation_eligible": false
+    },
+    {
+      "schema_version": "stage7.restriction.v1",
+      "id": "vehicle-police-permit-length",
+      "restriction_type": "oversize_permit_length",
+      "scope": "GENERAL_VEHICLE_NORM",
+      "geometry": null,
+      "location": {
+        "description": "General oversize-transport permit procedure; not a local road restriction",
+        "road_refs": [],
+        "region": "NATIONAL",
+        "direction": null,
+        "lane": null
+      },
+      "vehicle_conditions": {
+        "category": "vehicle transporting oversized load",
+        "dimension_basis": "vehicle together with projecting load length",
+        "comparison": ">",
+        "required_authorisation": "police officer permit"
+      },
+      "value": {
+        "amount": 20,
+        "unit": "m",
+        "mass_basis": null
+      },
+      "validity": {
+        "effective_from": "2024-03-05",
+        "effective_to": null,
+        "days": [],
+        "hours": [],
+        "exceptions": [],
+        "last_checked": "2026-10-12"
+      },
+      "sources": [
+        "vehicle-police-2024"
+      ],
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "unknown_reasons": [
+        "CURRENT_APPLICABILITY_NOT_CONFIRMED",
+        "NO_NAVIGATION_GEOMETRY",
+        "AMENDMENTS_OR_REPEAL_UNRESOLVED"
+      ],
+      "explanation": "Procedure section 4(b) requires permit above stated vehicle together with projecting load length threshold. Equality is not inferred to be unrestricted: other conditions and vehicle licence still apply. Current consolidated regulation and permit conditions not independently established.",
+      "independent_review": null,
+      "synthetic": false,
+      "navigation_eligible": false
+    },
+    {
+      "schema_version": "stage7.restriction.v1",
+      "id": "vehicle-police-licensed-mass",
+      "restriction_type": "licensed_gross_mass_permit_check",
+      "scope": "GENERAL_VEHICLE_NORM",
+      "geometry": null,
+      "location": {
+        "description": "General oversize self-escort permit application",
+        "road_refs": [],
+        "region": "NATIONAL",
+        "direction": null,
+        "lane": null
+      },
+      "vehicle_conditions": {
+        "category": "vehicle applying for oversize self-escort permit",
+        "mass_basis": "permitted_gross_mass_on_vehicle_licence_and_annex",
+        "condition": "application must not exceed licensed gross mass with load"
+      },
+      "value": {
+        "amount": null,
+        "unit": null,
+        "mass_basis": "permitted_gross_mass_on_vehicle_licence_and_annex"
+      },
+      "validity": {
+        "effective_from": "2024-03-05",
+        "effective_to": null,
+        "days": [],
+        "hours": [],
+        "exceptions": [],
+        "last_checked": "2026-10-12"
+      },
+      "sources": [
+        "vehicle-police-2024"
+      ],
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "unknown_reasons": [
+        "CURRENT_APPLICABILITY_NOT_CONFIRMED",
+        "NO_NAVIGATION_GEOMETRY",
+        "AMENDMENTS_OR_REPEAL_UNRESOLVED",
+        "UNIT_NOT_STATED"
+      ],
+      "explanation": "Page 3 section 7(a)(4): application compared to vehicle licence and annex. No numerical universal mass limit. Page 5 section 8(a)(3)(10)(c) separately addresses dimension-plus-mass excess under police escort; do not treat the self-escort condition as universal denial.",
+      "independent_review": null,
+      "synthetic": false,
+      "navigation_eligible": false
+    },
+    {
+      "schema_version": "stage7.restriction.v1",
+      "id": "vehicle-eilat-authorised-entry",
+      "restriction_type": "access_authorisation",
+      "scope": "LOCAL",
+      "geometry": null,
+      "location": {
+        "description": "Waste transfer station at end of Sderot HaTmarim near cemetery, Eilat; facility only",
+        "road_refs": [],
+        "region": "SOUTH",
+        "direction": null,
+        "lane": null
+      },
+      "vehicle_conditions": {
+        "category": "business vehicle bringing its own waste",
+        "purpose": "waste delivery"
+      },
+      "value": {
+        "amount": "municipal_authorisation_required",
+        "unit": null,
+        "mass_basis": null
+      },
+      "validity": {
+        "effective_from": null,
+        "effective_to": null,
+        "days": [],
+        "hours": [],
+        "exceptions": [],
+        "last_checked": "2026-10-12"
+      },
+      "sources": [
+        "vehicle-eilat-2024"
+      ],
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "unknown_reasons": [
+        "CURRENT_APPLICABILITY_NOT_CONFIRMED",
+        "NO_NAVIGATION_GEOMETRY",
+        "AMENDMENTS_OR_REPEAL_UNRESOLVED"
+      ],
+      "explanation": "Annex B section 5 first bullet conditions business waste acceptance on approval for both self-transport and vehicle entry. Tender obligation, current executed agreement unknown; not citywide access ban.",
+      "independent_review": null,
+      "synthetic": false,
+      "navigation_eligible": false
+    },
+    {
+      "schema_version": "stage7.restriction.v1",
+      "id": "vehicle-eilat-electronic-tag",
+      "restriction_type": "access_identification",
+      "scope": "LOCAL",
+      "geometry": null,
+      "location": {
+        "description": "Waste transfer station at end of Sderot HaTmarim near cemetery, Eilat; facility only",
+        "road_refs": [],
+        "region": "SOUTH",
+        "direction": null,
+        "lane": null
+      },
+      "vehicle_conditions": {
+        "category": "truck carrying external waste"
+      },
+      "value": {
+        "amount": "electronic_identification_tag_required",
+        "unit": null,
+        "mass_basis": null
+      },
+      "validity": {
+        "effective_from": null,
+        "effective_to": null,
+        "days": [],
+        "hours": [],
+        "exceptions": [
+          "Prior approval from manager or representative"
+        ],
+        "last_checked": "2026-10-12"
+      },
+      "sources": [
+        "vehicle-eilat-2024"
+      ],
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "unknown_reasons": [
+        "CURRENT_APPLICABILITY_NOT_CONFIRMED",
+        "NO_NAVIGATION_GEOMETRY",
+        "AMENDMENTS_OR_REPEAL_UNRESOLVED"
+      ],
+      "explanation": "Annex B section 5 second bullet specifies electronic identification tags and prior managerial permission exception. No inferred physical gate coordinate or public-road barrier.",
+      "independent_review": null,
+      "synthetic": false,
+      "navigation_eligible": false
+    },
+    {
+      "schema_version": "stage7.restriction.v1",
+      "id": "vehicle-eilat-site-speed",
+      "restriction_type": "site_speed",
+      "scope": "LOCAL",
+      "geometry": null,
+      "location": {
+        "description": "Waste transfer station at end of Sderot HaTmarim near cemetery, Eilat; inside facility only",
+        "road_refs": [],
+        "region": "SOUTH",
+        "direction": null,
+        "lane": null
+      },
+      "vehicle_conditions": {
+        "category": "vehicle moving inside facility",
+        "comparison": "<="
+      },
+      "value": {
+        "amount": 20,
+        "unit": "km/h",
+        "mass_basis": null
+      },
+      "validity": {
+        "effective_from": null,
+        "effective_to": null,
+        "days": [],
+        "hours": [],
+        "exceptions": [],
+        "last_checked": "2026-10-12"
+      },
+      "sources": [
+        "vehicle-eilat-2024"
+      ],
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "unknown_reasons": [
+        "CURRENT_APPLICABILITY_NOT_CONFIRMED",
+        "NO_NAVIGATION_GEOMETRY",
+        "AMENDMENTS_OR_REPEAL_UNRESOLVED"
+      ],
+      "explanation": "Annex B section 5 fourth bullet gives facility speed maximum. Not evidence of sign or statutory limit on nearby public streets; contract activation unknown.",
+      "independent_review": null,
+      "synthetic": false,
+      "navigation_eligible": false
+    }
+  ],
+  "blockers": [
+    {
+      "id": "vehicle-current-consolidated-law",
+      "scope": "NATIONAL",
+      "status": "BLOCKED",
+      "reason": "Readable authoritative consolidated current axle, gross-mass, length/combination and dimensions tables unavailable; numeric snippets not imported.",
+      "source_ids": [
+        "vehicle-axles-2008",
+        "vehicle-combination-2008",
+        "vehicle-dimensions-2025"
+      ],
+      "next_step": "Obtain accessible current consolidated regulatory publication and amendment history; no external request sent."
+    },
+    {
+      "id": "vehicle-carmel-rights",
+      "scope": "HAIFA",
+      "status": "BLOCKED",
+      "reason": "Operator terms section 7 do not establish redistribution permission; three extracted records private only.",
+      "source_ids": [
+        "vehicle-carmel-safety"
+      ],
+      "next_step": "Obtain publication permission or independent official reusable rule evidence."
+    },
+    {
+      "id": "vehicle-national-hazmat",
+      "scope": "NATIONAL",
+      "status": "BLOCKED",
+      "reason": "Ministry source yielded no readable body; no national hazard-class, route or time exemptions extracted.",
+      "source_ids": [
+        "vehicle-hazmat-ministry"
+      ],
+      "next_step": "Read official current regulations and route-specific orders."
+    },
+    {
+      "id": "vehicle-municipal-gaps",
+      "scope": "NORTH,CENTRAL,JERUSALEM,SOUTH,TEL_AVIV",
+      "status": "UNKNOWN",
+      "reason": "Finite municipal searches gave no current usable street access/barrier/manoeuvre register for Jerusalem, Nazareth, Beer Sheva or Netanya; Ashdod page timed out and Tel Aviv page describes ended pilot. No free passage conclusion.",
+      "source_ids": [
+        "vehicle-ashdod-parking-2015",
+        "vehicle-telaviv-delivery"
+      ],
+      "next_step": "Identify sign registers or dated traffic authority decisions for these municipal anchors."
+    },
+    {
+      "id": "vehicle-eilat-contract",
+      "scope": "SOUTH",
+      "status": "BLOCKED",
+      "reason": "Facility conditions readable in 2024 tender but executed contract, current site and amendments unknown.",
+      "source_ids": [
+        "vehicle-eilat-2024"
+      ],
+      "next_step": "Check executed contract and current facility access evidence without assuming tender commencement."
+    }
+  ]
+}
