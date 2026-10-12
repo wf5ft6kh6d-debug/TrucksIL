@@ -1,0 +1,152 @@
+{
+  "reviews": [
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "QUARANTINE",
+      "finding": "Construction height and loaded height remain separate concepts. Exact current construction-height category table and exceptions could not be independently read from the linked official guide. Indexed design dimensions on p91 are not a substitute for regulation313.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "N8-R313",
+      "interpretation_status": "UNKNOWN",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "NORM",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "N8-GUIDE-2025"
+      ],
+      "subject_id": "regulation313.construction-height",
+      "unknown_reasons": [
+        "Full current normative text and amendments not established; no local sign or road applicability."
+      ]
+    },
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "QUARANTINE",
+      "finding": "Loaded-height category table and conditional exemption up to4.80m remain unresolved against the current complete official text. No vehicle mass threshold is transferred to unknown bridge heights.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "N8-R85",
+      "interpretation_status": "UNKNOWN",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "NORM",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "N8-GUIDE-2025"
+      ],
+      "subject_id": "regulation85.loaded-height",
+      "unknown_reasons": [
+        "Full current normative text and amendments not established; no local sign or road applicability."
+      ]
+    },
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "QUARANTINE",
+      "finding": "Police procedure2024 p2 §4(b)(2) expressly requires a police permit above4.80m. This supports document-content interpretation only; it does not establish clearance or route approval.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "N8-R85-PERMIT",
+      "interpretation_status": "SUPPORTED",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "NORM",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "N8-POLICE-2024"
+      ],
+      "subject_id": "regulation85.oversize-permit",
+      "unknown_reasons": [
+        "Superseding instruments and route-specific permit validity not established."
+      ]
+    },
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "QUARANTINE",
+      "finding": "Official sign-manual search index includes regulation54, but extracted table structure and document revision are insufficient for a reliable complete truck speed/sign precedence interpretation. Existing secondary text is not promoted to current law.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "N8-R54",
+      "interpretation_status": "UNKNOWN",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "NORM",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "N8-SIGNS-2024"
+      ],
+      "subject_id": "regulation54.speed",
+      "unknown_reasons": [
+        "Full current normative text and amendments not established; no local sign or road applicability."
+      ]
+    },
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "QUARANTINE",
+      "finding": "Official2025 indexed §2.1 associates additional junction-lane permission with symbol S-47 in the relevant sign613 lane. Mere presence of any sign613 is not sufficient. Indexed official examination text also excludes public-transport lanes from the lane count. Exact consolidated current text remains blocked.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "N8-R36-613",
+      "interpretation_status": "UNKNOWN",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "NORM",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "N8-SIGN613-2025",
+        "N8-EXAM-2025"
+      ],
+      "subject_id": "regulation36e.sign613",
+      "unknown_reasons": [
+        "Indexed text only; fullPDF and current consolidated regulation not read; no installed sign geometry."
+      ]
+    },
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "QUARANTINE",
+      "finding": "All11 prior user claims retain their existing IDs, source fields and missing applicability. Targeted national official searches yielded no current exact order; unrelated results were excluded. No missing weekday, holiday, mass type, direction or exception inferred.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "N8-TEMPORAL",
+      "interpretation_status": "UNKNOWN",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "GAP",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "N8-STAGE7-TIME"
+      ],
+      "subject_id": "historic.temporal-claims",
+      "unknown_reasons": [
+        "Current acts, amendments, repeal status and dated site-specific signs unavailable."
+      ]
+    },
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "QUARANTINE",
+      "finding": "A working-reference assertion that a source was checked is distinct from independently accessible bytes or current road evidence. Claimed index reading does not mean visual PDF inspection; internal editorial review is not independent road acceptance.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "N8-REFERENCE-STATUS",
+      "interpretation_status": "UNKNOWN",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "CLAIM",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "N8-REF-PROVENANCE"
+      ],
+      "subject_id": "reference.provenance",
+      "unknown_reasons": [
+        "Prior editor source-reading history cannot be independently reproduced from the reference alone."
+      ]
+    }
+  ]
+}

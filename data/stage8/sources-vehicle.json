@@ -1,0 +1,244 @@
+{
+  "sources": [
+    {
+      "source_id": "s8-vehicle-signs-2022",
+      "url": "https://www.gov.il/BlobFolder/policy/tamrurim_7924_01_18/he/1694327856_%D7%9C%D7%95%D7%AA_%D7%9D_%D7%9E%D7%A9%D7%95%D7%9C%D7%91_0922.pdf",
+      "title": "לוח התמרורים",
+      "locator": "Rows 405, 406, 407; page number not established; filename suggests compilation 09/2022",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "INDEX_ONLY_BODY_HTTP_403",
+      "publisher": "Ministry of Transport and Road Safety",
+      "regions": [
+        "NATIONAL"
+      ],
+      "publication_basis": "Own research metadata and short paraphrases only; no original document redistribution or open licence asserted.",
+      "currentness": "Current consolidated legal effect and later amendments not independently established.",
+      "visual_pdf_verified": false,
+      "edition": "09/2022 inferred from filename, not inspected title page",
+      "index_evidence": "406 uses permitted gross mass in tonnes. Indexed 407 text refers to mandatory hazard marking and fuel/gas supply exception; full clauses and later amendments not read.",
+      "web_reference": "turn67search37; direct open turn69view0"
+    },
+    {
+      "source_id": "s8-vehicle-signs-2018",
+      "url": "https://foi.gov.il/sites/default/files/%D7%9C%D7%95%D7%97%20%D7%AA%D7%9E%D7%A8%D7%95%D7%A8%D7%99%D7%9D%20%D7%99%D7%A0%D7%95%D7%90%D7%A8%202018.pdf",
+      "title": "לוח תמרורים ינואר 2018",
+      "locator": "Row 406; page not established",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "REDIRECT_TO_EMPTY_LANDING_PAGE",
+      "publisher": "Ministry of Transport and Road Safety",
+      "regions": [
+        "NATIONAL"
+      ],
+      "publication_basis": "Own research metadata and short paraphrases only; no original document redistribution or open licence asserted.",
+      "currentness": "Current consolidated legal effect and later amendments not independently established.",
+      "visual_pdf_verified": false,
+      "edition": "January 2018 filename only",
+      "web_reference": "turn67search39; turn69view1",
+      "redirect_url": "https://www.gov.il/he/departments/foi/govil-landing-page"
+    },
+    {
+      "source_id": "s8-vehicle-sign-exemptions-2023",
+      "url": "https://www.gov.il/BlobFolder/policy/klalim_matan_ptor_tamrurim/he/03-2023.pdf",
+      "title": "כללים מנחים למתן פטור מציות לתמרורים",
+      "locator": "Sign 407 exemption section, indexed subparagraph (b); exact page unresolved",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "INDEX_ONLY_BODY_HTTP_403",
+      "publisher": "Ministry of Transport and Road Safety",
+      "regions": [
+        "NATIONAL"
+      ],
+      "publication_basis": "Own research metadata and short paraphrases only; no original document redistribution or open licence asserted.",
+      "currentness": "Current consolidated legal effect and later amendments not independently established.",
+      "visual_pdf_verified": false,
+      "edition": "03/2023 document identifier; exact issuance date not read",
+      "index_evidence": "Indexed route exception criteria concern necessary loading/unloading access or lack of an alternative route outside sign-407 roads. Not a blanket permission.",
+      "web_reference": "turn67search36; turn66view0"
+    },
+    {
+      "source_id": "s8-vehicle-licence-table",
+      "url": "https://www.gov.il/ar/pages/table-ranks",
+      "title": "قائمة التراخيص والتصاريح",
+      "locator": "C1, C, C+E rows; Hebrew counterpart /he/pages/table-ranks also 403",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "INDEX_ONLY_BODY_HTTP_403",
+      "publisher": "Ministry of Transport and Road Safety",
+      "regions": [
+        "NATIONAL"
+      ],
+      "publication_basis": "Own research metadata and short paraphrases only; no original document redistribution or open licence asserted.",
+      "currentness": "Current consolidated legal effect and later amendments not independently established.",
+      "visual_pdf_verified": false,
+      "index_evidence": "C1 indexed as permitted gross mass >3500 and <=12000 kg, trailer permitted gross <=3500 kg; C+E explicitly subject to regulation 183 and permit conditions.",
+      "web_reference": "turn64search0; turn67view0; turn66view1"
+    },
+    {
+      "source_id": "s8-vehicle-licence-dataset",
+      "url": "https://data.gov.il/dataset/driving_license_ranks",
+      "title": "driving_license_ranks",
+      "locator": "Dataset claimed by working reference; body and revision unavailable",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "BODY_HTTP_403",
+      "publisher": "Ministry of Transport and Road Safety",
+      "regions": [
+        "NATIONAL"
+      ],
+      "publication_basis": "Own research metadata and short paraphrases only; no original document redistribution or open licence asserted.",
+      "currentness": "Current consolidated legal effect and later amendments not independently established.",
+      "visual_pdf_verified": false,
+      "dataset_id_claimed": "c680ada6-9af1-47ab-9acf-d6585df6ad47",
+      "web_reference": "turn67view2"
+    },
+    {
+      "source_id": "s8-vehicle-licence-leaflet",
+      "url": "https://www.gov.il/BlobFolder/service/driving_license_renewal/ar/RISHUY_rank_license.pdf",
+      "title": "דרגות רישיון הנהיגה בישראל",
+      "locator": "C1/C/C+E table; page not inspected",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "INDEX_ONLY_BODY_HTTP_403",
+      "publisher": "Ministry of Transport and Road Safety",
+      "regions": [
+        "NATIONAL"
+      ],
+      "publication_basis": "Own research metadata and short paraphrases only; no original document redistribution or open licence asserted.",
+      "currentness": "Current consolidated legal effect and later amendments not independently established.",
+      "visual_pdf_verified": false,
+      "web_reference": "turn64search36; turn69view2"
+    },
+    {
+      "source_id": "s8-vehicle-cbs-2022",
+      "url": "https://www.cbs.gov.il/he/publications/doclib/2022/drive21_1868/intro_h.pdf",
+      "title": "מורשים לנהוג 2021 — מבוא",
+      "locator": "Printed p11 / PDF page index 3, section 3 definitions C1 and C",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "READ_PRIMARY_HISTORICAL_PDF_AND_PAGE",
+      "publisher": "Israel Central Bureau of Statistics",
+      "regions": [
+        "NATIONAL"
+      ],
+      "publication_basis": "Own research metadata and short paraphrases only; no original document redistribution or open licence asserted.",
+      "currentness": "Explicitly historical reporting period ending 2021; current 2026 entitlement unverified.",
+      "visual_pdf_verified": true,
+      "edition": "2022 publication reporting 2021; exact publication day unknown",
+      "visual_pdf_pages": [
+        3
+      ],
+      "scope": "Primary statistical definitions, not current consolidated traffic regulations",
+      "short_quote": "ולמי שהונפק רישיונו לפני 2007, עד 15 טונות",
+      "web_reference": "turn69view3 lines78–81; screenshot turn71view0"
+    },
+    {
+      "source_id": "s8-vehicle-dimensions-2025",
+      "url": "https://www.gov.il/BlobFolder/generalpage/instructors_in_traffic_engineering/he/%D7%A8%D7%9B%D7%99%D7%9D%20%D7%9C%D7%AA%D7%9B%D7%9F%20-%202025.pdf",
+      "title": "מדריך בהנדסת תנועה — רכבים לתכן",
+      "locator": "Regulation 313(a)(1),(3), claimed printed pp21–22; pages inaccessible",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "INDEX_ONLY_BODY_HTTP_403",
+      "publisher": "Ministry of Transport and Road Safety",
+      "regions": [
+        "NATIONAL"
+      ],
+      "publication_basis": "Own research metadata and short paraphrases only; no original document redistribution or open licence asserted.",
+      "currentness": "Current consolidated legal effect and later amendments not independently established.",
+      "visual_pdf_verified": false,
+      "edition": "2025 third edition as identified in reference; title page not independently inspected",
+      "web_reference": "turn67search40; turn67view1"
+    },
+    {
+      "source_id": "vehicle-police-2024",
+      "url": "https://www.police.gov.il/menifa/07.02.240.11_2.pdf",
+      "locator": "Procedure 02.240.11 version 2, page 1 dates; page 2 section 4(b); page 3 section 7(a)(4); page 5 section 8(a)(3)(10)(c)",
+      "checked_at": "2026-10-12",
+      "document_date": "2024-03-05",
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "READ_PRIMARY",
+      "publisher": "Israel Police",
+      "publication_basis": "Own short factual extraction of officially disclosed procedure, no source PDF or copied passages redistributed; full-document redistribution rights not asserted.",
+      "currentness": "Effective date printed 2024-03-05; cancellation field blank is not proof no later supersession; finite exact-number search found no conclusive update.",
+      "regions": [
+        "NATIONAL"
+      ],
+      "review_stage8": "Inherited source record read and compared; no new external source visit or status promotion."
+    },
+    {
+      "source_id": "vehicle-eilat-2024",
+      "url": "https://www.eilat.muni.il/bids/707/",
+      "locator": "Tender 6/2024, Annex B special specification, section 5 bullets 1, 2 and 4; page metadata publication 07/08/2024",
+      "checked_at": "2026-10-12",
+      "document_date": "2024-08-07",
+      "rights": "PUBLIC_FACTS_METADATA_ONLY",
+      "source_status": "READ_PRIMARY",
+      "publisher": "Eilat municipality",
+      "publication_basis": "Own brief factual metadata about publicly accessible tender clauses; no source reproduction or open licence claimed.",
+      "currentness": "Contract award, commencement, amendments and current operation unknown. Tender clause not public-road traffic order.",
+      "regions": [
+        "SOUTH"
+      ],
+      "review_stage8": "Inherited source record read and compared; no new external source visit or status promotion."
+    },
+    {
+      "source_id": "vehicle-carmel-safety",
+      "url": "https://www.carmeltunnels.co.il/about-page/בטיחות-במנהרות-הכרמל/",
+      "locator": "Section חשוב לדעת, entry, manoeuvre and dimensions bullets",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "rights": "RESTRICTED_PRIVATE_ONLY",
+      "source_status": "READ_PRIMARY_PRIVATE_EXTRACTION",
+      "publisher": "Carmel Tunnels operator",
+      "publication_basis": "Public registry contains URL/locator/research status only; extracted records excluded from Git because terms section 7 require prior written consent for publication.",
+      "rights_url": "https://www.carmeltunnels.co.il/תנאי-שימושתנאי-שימוש-באתר-מנהרות-הכרמ/",
+      "currentness": "Undated; effective date, exceptions, sign and supersession unknown.",
+      "regions": [
+        "HAIFA"
+      ],
+      "review_stage8": "Inherited source record read and compared; no new external source visit or status promotion."
+    },
+    {
+      "source_id": "vehicle-axles-2008",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/dimensions_and_weight_for_vehicles/he/314_A_1_B_omes_sarnei.pdf",
+      "locator": "Search-indexed table, regulation 314(a)(b); body unreadable",
+      "checked_at": "2026-10-12",
+      "document_date": "2008-02-17",
+      "rights": "METADATA_ONLY_NO_EXTRACTION",
+      "source_status": "BLOCKED_HTTP_403",
+      "publisher": "Ministry of Transport",
+      "date_basis": "Date appears in search result only, not independently read PDF",
+      "currentness": "Historic index entry, current legal text unverified",
+      "regions": [
+        "NATIONAL"
+      ],
+      "review_stage8": "Inherited source record read and compared; no new external source visit or status promotion."
+    },
+    {
+      "source_id": "vehicle-combination-2008",
+      "url": "https://www.gov.il/BlobFolder/legalinfo/dimensions_and_weight_for_vehicles/he/314_A_3_4_miskal_kolel_mutar.pdf",
+      "locator": "Search-indexed regulation 314(a)(3)-(4); body unreadable",
+      "checked_at": "2026-10-12",
+      "document_date": "2008-02-17",
+      "rights": "METADATA_ONLY_NO_EXTRACTION",
+      "source_status": "BLOCKED_HTTP_403",
+      "publisher": "Ministry of Transport",
+      "date_basis": "Search-index metadata only",
+      "currentness": "Historical; no current mass or combination limit imported",
+      "regions": [
+        "NATIONAL"
+      ],
+      "review_stage8": "Inherited source record read and compared; no new external source visit or status promotion."
+    }
+  ]
+}

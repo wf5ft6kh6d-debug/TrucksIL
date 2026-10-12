@@ -1,0 +1,22 @@
+{
+  "sources": [
+    {
+      "source_id": "stage8:height-guidelines-2026",
+      "url": "https://www.gov.il/BlobFolder/policy/traffic_height_obstacle/he/Guidelines-for-height-obstacles-2026.pdf",
+      "locator": "Definitions; sections 2.5.1, 5.3.3–5.3.4, 5.3.6; locators supplied by reference, page verification unavailable",
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "edition_claim": "Second edition, April 2026, search-index metadata only",
+      "publisher": "Israel Ministry of Transport",
+      "title": "הנחיות להסדרי תנועה בקרבת מכשולי גובה",
+      "rights": "UNKNOWN_DOCUMENT_REUSE; PUBLIC_BIBLIOGRAPHIC_METADATA_ONLY",
+      "source_status": "INDEX_EXCERPT_ONLY_FULL_PDF_403",
+      "visual_check": false,
+      "full_document_read": false,
+      "regions": [
+        "NATIONAL"
+      ],
+      "finding": "Index excerpts do not establish current implementation at any individual structure."
+    }
+  ]
+}

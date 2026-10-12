@@ -1,0 +1,429 @@
+{
+  "reviews": [
+    {
+      "id": "s8-vehicle-405",
+      "subject_id": "reference:2.4:405",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Sign 405 numbering and motor-vehicle prohibition remain a claim awaiting readable current official schedule. No local installation or restriction inferred.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-signs-2022"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-406",
+      "subject_id": "reference:2.4:406",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Official index specifies PERMITTED gross mass in tonnes for commercial motor vehicles, strictly exceeding the displayed amount. Actual mass and axle load are distinct. Full current text and location remain unverified.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-signs-2022",
+        "s8-vehicle-signs-2018"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-407",
+      "subject_id": "reference:2.4:407",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Official sign-schedule index mentions hazardous loads requiring legal marking and a fuel/gas-supply exception. This is a lead to exact wording, not proof of all current classes, exceptions or a local ban.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-signs-2022",
+        "s8-vehicle-sign-exemptions-2023"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-407-permit",
+      "subject_id": "sign407:exemption-procedure",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Procedure 03/2023 index identifies conditional routing exemptions. Exact authority, approvals, route, dates and later amendments must be read before applying any exemption; no general hazmat permission is inferred.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-sign-exemptions-2023"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-licence-c1",
+      "subject_id": "reference:4:C1",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Indexed ministry table uses permitted gross vehicle mass >3500 and <=12000 kg and permitted trailer gross mass <=3500 kg. Dataset and full current source unavailable; licence category does not grant road access.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-licence-table",
+        "s8-vehicle-licence-dataset"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-licence-c",
+      "subject_id": "reference:4:C",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "CBS historical definition supports C above 12 tonnes in 2021. Current consolidated C entitlement, trailer provision and individual endorsements still require the licensing authority record.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-cbs-2022",
+        "s8-vehicle-licence-table"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-licence-ce",
+      "subject_id": "reference:4:CE",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Indexed ministry C+E row includes combination and permit conditions under regulation 183. A generic category label does not establish every towing entitlement or permit.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-licence-table",
+        "s8-vehicle-licence-leaflet"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-licence-legacy",
+      "subject_id": "reference:4:historical-entitlements",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Historical CBS p11 distinguishes pre-2007 C1 holders up to 15 tonnes. This documented scope caveat prevents applying the modern category table to every legacy licence. Its 2026 effect remains unverified.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "SUPPORTED",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "HISTORICAL_STATISTICAL_DEFINITION_NOT_CURRENT_LAW",
+        "INDIVIDUAL_LICENCE_ENDORSEMENT_UNKNOWN"
+      ],
+      "sources": [
+        "s8-vehicle-cbs-2022"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-width",
+      "subject_id": "reference:5:width",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Construction width must remain separate from local sign limits and physical clearance. Current regulation 313(a)(1), including body/manufacturer conditions, was not read; claimed numerical values remain private and unconfirmed.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-dimensions-2025"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-refrigerated-width",
+      "subject_id": "reference:5:refrigerated-width",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Refrigerated-body construction exceptions require registration, applicable standards and cargo conditions. Complete current primary conditions were not read; no generic truck width allowance is established.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-dimensions-2025"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-truck-length",
+      "subject_id": "reference:5:truck-length",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Commercial-vehicle construction length is not a local road limit. Current regulation 313(a)(3)(a) was not read; no numerical threshold is promoted.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-dimensions-2025"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-bus-length",
+      "subject_id": "reference:5:bus-length",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Bus construction lengths depend on axle count and articulation. These categories cannot be assigned to freight vehicles or road objects; claimed primary pages were unavailable.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-dimensions-2025"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-combination-length",
+      "subject_id": "reference:5:combination-length",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Articulated-combination length must be distinguished from isolated tractor length. Current primary text, special combinations and exceptions were not read.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-dimensions-2025"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-semitrailer-geometry",
+      "subject_id": "reference:5:semitrailer-geometry",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Kingpin-to-rear distance and front sweep are separate dimension bases. Container exceptions require complete current primary text, which was unavailable.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-dimensions-2025"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-train-length",
+      "subject_id": "reference:5:train-length",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Coupled-train construction length must remain separate from articulated combination and single-trailer dimensions. The complete current primary text was unavailable; no road applicability inferred.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_PRIMARY_TEXT_NOT_READ",
+        "AMENDMENTS_AND_EXCEPTIONS_UNRESOLVED"
+      ],
+      "sources": [
+        "s8-vehicle-dimensions-2025"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-mass-axles",
+      "subject_id": "national:mass-and-axle-gaps",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "GAP",
+      "finding": "Inherited official mass/axle-table access failures persist as unresolved evidence, not zero limits. Permitted gross mass, actual mass, axle-group load and geometry must remain distinct; no universal 12-tonne height rule.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "UNKNOWN",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_MASS_AND_AXLE_TABLES_UNAVAILABLE",
+        "NO_LOCAL_SECTION_OR_DIRECTION"
+      ],
+      "sources": [
+        "vehicle-axles-2008",
+        "vehicle-combination-2008",
+        "vehicle-police-2024"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-police-reuse",
+      "subject_id": "vehicle-police-permit-width",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "NORM",
+      "finding": "Stage7 oversize-permit records retained without reimport or promotion. Permit thresholds concern their stated measurement bases and do not grant unrestricted passage or establish a local road ban.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENTNESS_NOT_NEWLY_RECHECKED",
+        "PERMIT_NOT_LOCAL_ROAD_EVIDENCE"
+      ],
+      "sources": [
+        "vehicle-police-2024"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-eilat-reuse",
+      "subject_id": "vehicle-eilat-2024",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "LOCAL_RESTRICTION",
+      "finding": "Stage7 Eilat facility conditions remain historical tender evidence; current contract, gate position, direction, lane and operating applicability unresolved. No municipal-wide access rule created.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "UNKNOWN",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "CURRENT_CONTRACT_AND_OPERATION_UNKNOWN",
+        "GATE_DIRECTION_LANE_UNBOUND"
+      ],
+      "sources": [
+        "vehicle-eilat-2024"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "id": "s8-vehicle-carmel-rights",
+      "subject_id": "vehicle-carmel-safety",
+      "schema_version": "stage8.review.v1",
+      "review_kind": "LOCAL_RESTRICTION",
+      "finding": "Stage7 operator-derived records retained privately. Public output adds only metadata; dated signs, direction-specific applicability, exceptions and permission to republish remain unresolved.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "UNKNOWN",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "PRIVATE_RECORDS_NOT_REPUBLISHED",
+        "DATED_SIGN_AND_EXCEPTIONS_UNCONFIRMED"
+      ],
+      "sources": [
+        "vehicle-carmel-safety"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    }
+  ]
+}

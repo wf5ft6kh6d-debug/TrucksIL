@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "finding": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "schema_version": {
+      "enum": [
+        "stage8.review.v1"
+      ]
+    },
+    "review_kind": {
+      "enum": [
+        "NORM",
+        "LOCAL_RESTRICTION",
+        "CLAIM",
+        "GAP"
+      ]
+    },
+    "evidence_status": {
+      "enum": [
+        "QUARANTINE",
+        "UNKNOWN"
+      ]
+    },
+    "interpretation_status": {
+      "enum": [
+        "SUPPORTED",
+        "UNKNOWN",
+        "UNSUPPORTED",
+        "CONFLICT"
+      ]
+    },
+    "currentness_status": {
+      "enum": [
+        "CURRENT",
+        "UNKNOWN",
+        "EXPIRED"
+      ]
+    },
+    "geobinding_status": {
+      "enum": [
+        "BOUND",
+        "UNKNOWN",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "rights_status": {
+      "enum": [
+        "PUBLIC_METADATA_ONLY",
+        "PRIVATE",
+        "UNKNOWN"
+      ]
+    },
+    "unknown_reasons": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      }
+    },
+    "checked_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "navigation_eligible": {
+      "const": false
+    },
+    "operational_change": {
+      "const": false
+    }
+  },
+  "required": [
+    "id",
+    "subject_id",
+    "finding",
+    "schema_version",
+    "review_kind",
+    "evidence_status",
+    "interpretation_status",
+    "currentness_status",
+    "geobinding_status",
+    "rights_status",
+    "unknown_reasons",
+    "sources",
+    "checked_at",
+    "navigation_eligible",
+    "operational_change"
+  ]
+}

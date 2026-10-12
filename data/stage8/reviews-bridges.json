@@ -1,0 +1,96 @@
+{
+  "reviews": [
+    {
+      "schema_version": "stage8.review.v1",
+      "id": "stage8:bridges:height-concepts",
+      "subject_id": "reference:section:1.3",
+      "review_kind": "CLAIM",
+      "finding": "Sign announcement and physical clearance must remain distinct; general guidance cannot supply local measurements.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "FULL_PRIMARY_DOCUMENT_UNAVAILABLE",
+        "REVISION_AND_SUPERSESSION_NOT_ESTABLISHED",
+        "NO_LOCAL_STRUCTURE_EVIDENCE"
+      ],
+      "sources": [
+        "stage8:height-guidelines-2026"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "schema_version": "stage8.review.v1",
+      "id": "stage8:bridges:height-sign-416",
+      "subject_id": "reference:section:2.1",
+      "review_kind": "CLAIM",
+      "finding": "Sign-number claim and assertion about absence of legacy numbering remain unconfirmed against the complete primary document.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "FULL_PRIMARY_DOCUMENT_UNAVAILABLE",
+        "REVISION_AND_SUPERSESSION_NOT_ESTABLISHED",
+        "NO_LOCAL_STRUCTURE_EVIDENCE"
+      ],
+      "sources": [
+        "stage8:height-guidelines-2026"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "schema_version": "stage8.review.v1",
+      "id": "stage8:bridges:height-warning-device",
+      "subject_id": "reference:section:2.2",
+      "review_kind": "CLAIM",
+      "finding": "Threshold and device alternatives require complete sections and exceptions; indexed discovery alone cannot establish universal applicability.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "FULL_PRIMARY_DOCUMENT_UNAVAILABLE",
+        "REVISION_AND_SUPERSESSION_NOT_ESTABLISHED",
+        "NO_LOCAL_STRUCTURE_EVIDENCE"
+      ],
+      "sources": [
+        "stage8:height-guidelines-2026"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    },
+    {
+      "schema_version": "stage8.review.v1",
+      "id": "stage8:bridges:height-design-margin",
+      "subject_id": "reference:section:2.3",
+      "review_kind": "CLAIM",
+      "finding": "Indexed passage supports a design margin and downward rounding, but normative force versus the reference wording remains unresolved without full document context. No margin is applied to bridge records.",
+      "evidence_status": "QUARANTINE",
+      "interpretation_status": "UNKNOWN",
+      "currentness_status": "UNKNOWN",
+      "geobinding_status": "NOT_APPLICABLE",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "unknown_reasons": [
+        "FULL_PRIMARY_DOCUMENT_UNAVAILABLE",
+        "REVISION_AND_SUPERSESSION_NOT_ESTABLISHED",
+        "NO_LOCAL_STRUCTURE_EVIDENCE"
+      ],
+      "sources": [
+        "stage8:height-guidelines-2026"
+      ],
+      "checked_at": "2026-10-12",
+      "navigation_eligible": false,
+      "operational_change": false
+    }
+  ]
+}

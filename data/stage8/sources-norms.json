@@ -1,0 +1,107 @@
+{
+  "sources": [
+    {
+      "checked_at": "2026-10-12",
+      "current_supersession_checked": false,
+      "document_date": null,
+      "indexed_date_context": {
+        "current_consolidated_law_date": false,
+        "observed_date": "2025-08-01",
+        "role": "date associated with black-colored design-vehicle volume in indexed preface; publication versus revision role unestablished"
+      },
+      "locator": "Indexed preface printed p6; reference-supplied p15–16/p21 not directly readable",
+      "original_fragment": "השחור – מיום 01.08.2025",
+      "publisher": "Ministry of Transport",
+      "rights": "PUBLIC_METADATA_ONLY; own research metadata and brief quotation; no PDF republication licence established",
+      "source_id": "N8-GUIDE-2025",
+      "source_status": "INDEXED_PREFACE_ONLY_DIRECT_403",
+      "title": "מדריך בהנדסת תנועה – רכבים לתכן, מהדורה 3",
+      "url": "https://www.gov.il/BlobFolder/generalpage/instructors_in_traffic_engineering/he/%D7%A8%D7%9B%D7%91%D7%99%D7%9D%20%D7%9C%D7%AA%D7%9B%D7%9F%20-%202025.pdf",
+      "visual_check": false
+    },
+    {
+      "checked_at": "2026-10-12",
+      "current_supersession_checked": false,
+      "document_date": null,
+      "locator": "Indexed cover says November2025 (also Hebrew month Nisan); §2.1 sign definition; full PDF403",
+      "original_fragment": "ציון בנתיב סמל ס-47",
+      "publisher": "Ministry of Transport",
+      "rights": "PUBLIC_METADATA_ONLY; own research metadata and brief quotation; no PDF republication licence established",
+      "source_id": "N8-SIGN613-2025",
+      "source_status": "INDEXED_SECTION_ONLY_DIRECT_403",
+      "title": "הנחיות לתמרור 613, מהדורה 2",
+      "url": "https://www.gov.il/BlobFolder/policy/613/he/%D7%94%D7%A0%D7%97%D7%99%D7%95%D7%AA%20%D7%9C%D7%AA%D7%9E%D7%A8%D7%95%D7%A8%20613%20-%20%D7%A0%D7%95%D7%91%D7%9E%D7%91%D7%A8%202025.pdf",
+      "visual_check": false
+    },
+    {
+      "checked_at": "2026-10-12",
+      "current_supersession_checked": false,
+      "document_date": null,
+      "locator": "Indexed regulation54 table and sign613 entry; URL2024/title2022 mismatch unresolved; page not visually verified",
+      "original_fragment": "תקנה 54 לתקנות התעבורה",
+      "publisher": "Ministry of Transport",
+      "rights": "PUBLIC_METADATA_ONLY; own research metadata and brief quotation; no PDF republication licence established",
+      "source_id": "N8-SIGNS-2024",
+      "source_status": "INDEXED_SECTION_ONLY_DIRECT_403",
+      "title": "תקנות והנחיות להצבת תמרורים",
+      "url": "https://www.gov.il/BlobFolder/policy/2020_tamrur_0/he/%D7%AA%D7%A7%D7%A0%D7%95%D7%AA%20%D7%95%D7%94%D7%A0%D7%97%D7%99%D7%95%D7%AA%20%D7%9C%D7%94%D7%A6%D7%91%D7%AA%20%D7%AA%D7%9E%D7%A8%D7%95%D7%A8%D7%99%D7%9D%202024.pdf",
+      "visual_check": false
+    },
+    {
+      "checked_at": "2026-10-12",
+      "current_supersession_checked": false,
+      "document_date": "2024-03-05",
+      "locator": "Printed p2 §4(b)(2); PDF page index1 visually checked; cover effective date2024-03-05",
+      "original_fragment": "מטען החורג לגובה מעל 4.80 מטר.",
+      "publisher": "Israel Police",
+      "rights": "PUBLIC_METADATA_ONLY; own research metadata and brief quotation; no PDF republication licence established",
+      "source_id": "N8-POLICE-2024",
+      "source_status": "READ_PDF_PAGE_VISUAL",
+      "title": "היתרים והגבלות לשינוע מטען חורג, procedure02.240.11 v2",
+      "url": "https://www.police.gov.il/menifa/07.02.240.11_2.pdf",
+      "visual_check": true
+    },
+    {
+      "checked_at": "2026-10-12",
+      "current_supersession_checked": false,
+      "document_date": null,
+      "locator": "Indexed p1 item ג(2); educational quotation, not consolidated legislation",
+      "original_fragment": "לא יובא במניין הנתיבים נתיב שיועד לתחבורה ציבורית.",
+      "publisher": "Ministry of Labour",
+      "rights": "PUBLIC_METADATA_ONLY; own research metadata and brief quotation; no PDF republication licence established",
+      "source_id": "N8-EXAM-2025",
+      "source_status": "INDEXED_ONLY_NOT_VISUAL",
+      "title": "Driving teacher examination answers October2025",
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/drivingteacher-10-25-type2/he/final-exams_drivingteacher-10-25-type2-answers.pdf",
+      "visual_check": false
+    },
+    {
+      "checked_at": "2026-10-12",
+      "current_supersession_checked": false,
+      "document_date": "2026-10-12",
+      "locator": "Immutable stage7 temporal report; private11gap records separately hash checked",
+      "original_fragment": "",
+      "publisher": "TrucksIL",
+      "rights": "PUBLIC_METADATA_ONLY; own research metadata and brief quotation; no PDF republication licence established",
+      "source_id": "N8-STAGE7-TIME",
+      "source_status": "REUSED_RESEARCH_NOT_PRIMARY",
+      "title": "Stage7 temporal source research",
+      "url": "https://github.com/wf5ft6kh6d-debug/TrucksIL/blob/4f2fd1214e2c8b5e5d12bc818c505398b1fd171e/docs/stage7/TEMPORAL_SOURCES_RU.md",
+      "visual_check": false
+    },
+    {
+      "checked_at": "2026-10-12",
+      "current_supersession_checked": false,
+      "document_date": "2026-10-12",
+      "locator": "Private reference inventory; URL identifies project only, not legal evidence",
+      "original_fragment": "",
+      "publisher": "TrucksIL",
+      "rights": "PUBLIC_METADATA_ONLY; own research metadata and brief quotation; no PDF republication licence established",
+      "source_id": "N8-REF-PROVENANCE",
+      "source_status": "PRIVATE_REFERENCE_METADATA_ONLY",
+      "title": "Private working-reference provenance review",
+      "url": "https://github.com/wf5ft6kh6d-debug/TrucksIL",
+      "visual_check": false
+    }
+  ]
+}
