@@ -13,6 +13,30 @@ from scripts.stage5.postgis import generate
 
 ROOT=Path(__file__).resolve().parents[2]
 
+# This is the complete producer contract, not a directory scan. Workspace sync
+# sidecars are not pipeline outputs; missing declared artifacts remain fatal.
+REQUIRED_ARTIFACTS = (
+    'barriers/barrier-nodes.jsonl',
+    'barriers/node-way-access.jsonl',
+    'barriers/summary.json',
+    'barriers/way-access.jsonl',
+    'connectivity.json',
+    'independent.json',
+    'research.jsonl',
+    'stage5-postgis.sql',
+    'synthetic-scenarios.jsonl',
+)
+
+def artifact_manifest(directory):
+    root=Path(directory)
+    result={}
+    for name in REQUIRED_ARTIFACTS:
+        path=root/name
+        if not path.is_file() or path.is_symlink():
+            raise ValueError('Missing or nonregular required artifact: '+name)
+        result[name]={'sha256':sha256(path),'size_bytes':path.stat().st_size}
+    return result
+
 def lines(path):
     with open(path,encoding='utf-8') as stream:
         for line in stream:
@@ -96,7 +120,7 @@ def build(graph,pbf,out,manifest):
                         'user_time_restriction_text':'Exact original not supplied to this pipeline; no reconstruction',
                         'official_current_verification':'No evidence promotion; VERIFIED remains zero',
                         'national_turn_routing':'Via-way rules require history-expanded graph; actual small synthetic history-state scenarios only, no national turn routing'},
-             'outputs':{str(p.relative_to(out)):{'sha256':sha256(p),'size_bytes':p.stat().st_size} for p in sorted(out.rglob('*')) if p.is_file()}}
+             'outputs':artifact_manifest(out)}
     (out/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,sort_keys=True,indent=2)+'\n')
     return summary
 

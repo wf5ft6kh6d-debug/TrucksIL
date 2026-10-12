@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from scripts.stage5.contract import make_record,canonical
 from scripts.stage5.postgis import generate
-from scripts.stage5.run_research import decision,wrap
+from scripts.stage5.run_research import decision,wrap,artifact_manifest,REQUIRED_ARTIFACTS
 
 class IntegrationTests(unittest.TestCase):
     def test_restricted_not_allowed(self):
@@ -35,3 +35,37 @@ class IntegrationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/'bad.jsonl';path.write_text('{"status":"VERIFIED"}\n')
             with self.assertRaises(Exception):generate(path,Path(tmp)/'bad.sql')
+
+
+class ArtifactManifestTests(unittest.TestCase):
+    def populate(self, root):
+        for name in REQUIRED_ARTIFACTS:
+            path=root/name
+            path.parent.mkdir(parents=True,exist_ok=True)
+            path.write_text('SYNTHETIC fixture: '+name+'\n')
+
+    def test_manifest_ignores_incidental_sync_files(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);self.populate(root)
+            before=artifact_manifest(root)
+            (root/'.research.jsonl.0TBAVM').write_text('SYNTHETIC transient sync copy')
+            (root/'barriers/.way-access.jsonl.sync').write_text('SYNTHETIC sidecar')
+            (root/'editor-temporary.tmp').write_text('SYNTHETIC unrelated temporary output')
+            self.assertEqual(artifact_manifest(root),before)
+            self.assertEqual(set(before),set(REQUIRED_ARTIFACTS))
+            self.assertEqual(len(before),9)
+
+    def test_each_missing_required_output_fails(self):
+        for name in REQUIRED_ARTIFACTS:
+            with self.subTest(artifact=name), tempfile.TemporaryDirectory() as temp:
+                root=Path(temp);self.populate(root)
+                (root/name).unlink()
+                with self.assertRaisesRegex(ValueError,'required artifact'):
+                    artifact_manifest(root)
+
+    def test_required_artifact_mutation_changes_manifest(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);self.populate(root)
+            before=artifact_manifest(root)
+            (root/'research.jsonl').write_text('SYNTHETIC altered content')
+            self.assertNotEqual(artifact_manifest(root),before)
