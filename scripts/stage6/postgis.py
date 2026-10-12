@@ -62,8 +62,8 @@ CREATE TABLE records(
  CHECK(valid_reasons(payload->'reasons') IS TRUE),
  CHECK((payload->'geometry'='null'::jsonb OR
   (jsonb_typeof(payload->'geometry')='object' AND
-   payload->'geometry' ?& ARRAY['type','coordinates'] AND
-   payload->'geometry' - ARRAY['type','coordinates']='{}'::jsonb AND
+   (payload->'geometry') ?& ARRAY['type','coordinates'] AND
+   (payload->'geometry') - ARRAY['type','coordinates']='{}'::jsonb AND
    payload->'geometry'->>'type' IN ('Point','LineString') AND
    jsonb_typeof(payload->'geometry'->'coordinates')='array')) IS TRUE),
  CHECK((CASE WHEN payload->'geometry'='null'::jsonb THEN geom IS NULL

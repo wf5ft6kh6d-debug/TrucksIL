@@ -42,3 +42,12 @@ class PostgisContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             p=Path(tmp)/'source.jsonl';row=self.record();row['navigation_eligible']=True;p.write_text(json.dumps(row)+'\n')
             with self.assertRaises(Exception):generate(p,Path(tmp)/'out.sql')
+
+
+    def test_extracted_json_is_grouped_before_key_subtraction(self):
+        # Regression for actual PostgreSQL parse failure in run 38214494862.
+        # Arithmetic '-' binds more tightly than the JSON extraction operator.
+        from scripts.stage6.postgis import HEADER
+        self.assertIn("(payload->'geometry') - ARRAY['type','coordinates']",HEADER)
+        self.assertIn("(payload->'geometry') ?& ARRAY['type','coordinates']",HEADER)
+        self.assertNotRegex(HEADER,r"->\s*'[^']+'\s*[-+*/](?!>)")
