@@ -1,0 +1,54 @@
+{
+  "sources": [
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "locator": "Vehicle type steps 6; Android Auto and AAOS lists",
+      "rights": "PUBLIC_METADATA_ONLY; original research annotations and locators; no source page redistribution",
+      "source_id": "S8-COV-WAZE",
+      "source_status": "READ_OFFICIAL_HELP",
+      "title": "Select your vehicle type",
+      "url": "https://support.google.com/waze/answer/7579259?hl=en"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "locator": "Learn about transportation modes / Driving; Customize your route",
+      "rights": "PUBLIC_METADATA_ONLY; original research annotations and locators; no source page redistribution",
+      "source_id": "S8-COV-MAPS",
+      "source_status": "READ_OFFICIAL_HELP",
+      "title": "Get directions & show routes in Google Maps",
+      "url": "https://support.google.com/maps/answer/144339?hl=en"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "locator": "research_route, normalize_rules and transition history",
+      "rights": "PUBLIC_METADATA_ONLY; original research annotations and locators; no source page redistribution",
+      "source_id": "S8-COV-ROUTER",
+      "source_status": "READ_CODE_AND_EXECUTED_44_EXISTING_TESTS",
+      "title": "Stage6 research router",
+      "url": "https://github.com/wf5ft6kh6d-debug/TrucksIL/blob/4f2fd1214e2c8b5e5d12bc818c505398b1fd171e/scripts/stage6/routing.py"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "locator": "_select_corridors, _worker, run, constants MAX_CASES and ROUTE_LIMITS",
+      "rights": "PUBLIC_METADATA_ONLY; original research annotations and locators; no source page redistribution",
+      "source_id": "S8-COV-ADAPTER",
+      "source_status": "READ_CODE_AND_VERIFIED_PRIOR_ARTIFACT",
+      "title": "Stage6 bounded national adapter",
+      "url": "https://github.com/wf5ft6kh6d-debug/TrucksIL/blob/4f2fd1214e2c8b5e5d12bc818c505398b1fd171e/scripts/stage6/national.py"
+    },
+    {
+      "checked_at": "2026-10-12",
+      "document_date": null,
+      "locator": "mapping, independent_reference, jurisdiction_policy",
+      "rights": "PUBLIC_METADATA_ONLY; original research annotations and locators; no source page redistribution",
+      "source_id": "S8-COV-REGIONS",
+      "source_status": "READ_PRIOR_PLAN_AND_OUTPUT",
+      "title": "Stage7 coverage plan",
+      "url": "https://github.com/wf5ft6kh6d-debug/TrucksIL/blob/4f2fd1214e2c8b5e5d12bc818c505398b1fd171e/data/stage7/coverage-plan.json"
+    }
+  ]
+}

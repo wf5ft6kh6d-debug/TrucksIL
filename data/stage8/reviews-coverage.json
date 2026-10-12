@@ -1,0 +1,109 @@
+{
+  "reviews": [
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "UNKNOWN",
+      "finding": "Official Waze vehicle selection help lists private car, taxi and motorcycle. A truck choice is not documented in that list; this is not an exhaustive regional product audit.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "S8-REVIEW-COV-WAZE",
+      "interpretation_status": "SUPPORTED",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "CLAIM",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "S8-COV-WAZE"
+      ],
+      "subject_id": "reference-section-8-waze",
+      "unknown_reasons": [
+        "NO_ISRAEL_TRUCK_COVERAGE_AUDIT"
+      ]
+    },
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "UNKNOWN",
+      "finding": "Official Google Maps directions help describes driving routes as designed for cars and potentially using car-only roads. The inspected page does not establish truck height or weight routing support.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "S8-REVIEW-COV-MAPS",
+      "interpretation_status": "SUPPORTED",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "CLAIM",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "S8-COV-MAPS"
+      ],
+      "subject_id": "reference-section-8-google-maps",
+      "unknown_reasons": [
+        "NO_HGV_CONFIGURATION_OR_ISRAEL_COVERAGE_EVIDENCE"
+      ]
+    },
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "UNKNOWN",
+      "finding": "Existing research routing tracks via-way entry/history and repeated nodes; no/only/except, maneuver arrival conditions and resource limits have existing regression coverage. This is model support, not verified road admissibility.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "S8-REVIEW-COV-HISTORY",
+      "interpretation_status": "SUPPORTED",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "CLAIM",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "S8-COV-ROUTER"
+      ],
+      "subject_id": "stage6-history-routing",
+      "unknown_reasons": [
+        "MODEL_SUPPORT_NOT_ROAD_EVIDENCE"
+      ]
+    },
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "UNKNOWN",
+      "finding": "National adapter executes bounded relation-centered corridors only. Accepted prior output contains 12 corridors and 383 unique source segments with synthetic segment durations. It is not an all-road operational router.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "S8-REVIEW-COV-NATIONAL",
+      "interpretation_status": "SUPPORTED",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "GAP",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "S8-COV-ADAPTER"
+      ],
+      "subject_id": "stage6-national-execution",
+      "unknown_reasons": [
+        "NATIONAL_COMPLETENESS_NOT_TESTED"
+      ]
+    },
+    {
+      "checked_at": "2026-10-12",
+      "currentness_status": "UNKNOWN",
+      "evidence_status": "UNKNOWN",
+      "finding": "Source highway classes can be counted. No independently validated restriction denominator or licensed region-to-graph binding is available; region-by-class completeness remains unknown.",
+      "geobinding_status": "NOT_APPLICABLE",
+      "id": "S8-REVIEW-COV-REGIONAL",
+      "interpretation_status": "UNKNOWN",
+      "navigation_eligible": false,
+      "operational_change": false,
+      "review_kind": "GAP",
+      "rights_status": "PUBLIC_METADATA_ONLY",
+      "schema_version": "stage8.review.v1",
+      "sources": [
+        "S8-COV-REGIONS"
+      ],
+      "subject_id": "region-roadclass-completeness",
+      "unknown_reasons": [
+        "NO_INDEPENDENT_DENOMINATOR_OR_REGION_BINDING"
+      ]
+    }
+  ]
+}

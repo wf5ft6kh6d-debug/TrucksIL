@@ -1,0 +1,82 @@
+{
+  "change-ledger.json": {
+    "base_sha": "4f2fd1214e2c8b5e5d12bc818c505398b1fd171e",
+    "changes": [
+      {
+        "action": "ADDED",
+        "area": "review_registry",
+        "basis": "New working reference and independent proof/interpretation/currency/geobinding/rights dimensions",
+        "road_status_promotion": false
+      },
+      {
+        "action": "RECHECKED_NO_REIMPORT",
+        "area": "historical_bridge_rows",
+        "basis": "Existing normalized rows reused; private preservation appendix",
+        "road_status_promotion": false
+      },
+      {
+        "action": "UNCHANGED",
+        "area": "routing_policy",
+        "basis": "UNKNOWN/expired/conflict policy remains proposal only",
+        "road_status_promotion": false
+      },
+      {
+        "action": "ADDED_REVIEW_GUARDS",
+        "area": "storage",
+        "basis": "New additive review contract; reused transactional storage and source registry",
+        "road_status_promotion": false
+      }
+    ]
+  },
+  "draft-decisions.json": {
+    "decisions": [
+      {
+        "id": "D8-UNKNOWN",
+        "proposal": "Present unresolved critical evidence as uncertainty; never infer permission from no record, unknown or expired data"
+      },
+      {
+        "id": "D8-NORM",
+        "proposal": "Keep general vehicle norms separate from local graph restrictions until local applicability is evidenced"
+      },
+      {
+        "id": "D8-VERIFIED",
+        "proposal": "Any future VERIFIED promotion needs individual documented independent review; operational effect requires a separate decision"
+      },
+      {
+        "id": "D8-CONTACT",
+        "proposal": "External contacts, paid acquisitions and private-data transfer require separate authorization"
+      }
+    ],
+    "implemented": false,
+    "status": "DRAFT_REQUIRES_USER_APPROVAL"
+  },
+  "owner-questions.json": {
+    "external_contact_sent": false,
+    "questions": [
+      {
+        "id": "Q8-NORM",
+        "needed_for": "General norm applicability, not automatic local restriction",
+        "owner_role": "Transport regulator",
+        "request": "Current consolidated provision and amendment/repeal chain; vehicle category, maximum permitted versus actual mass, axle applicability and exceptions"
+      },
+      {
+        "id": "Q8-ROAD",
+        "needed_for": "Individual local restriction evidence and geobinding",
+        "owner_role": "Road authority",
+        "request": "Exact order or dated sign evidence with road/from/to/direction/lane/kilometres, weekdays, holidays, hours, effective dates, permits and repeal"
+      },
+      {
+        "id": "Q8-BRIDGE",
+        "needed_for": "Resolve specific historical row gaps before deciding whether measurement is necessary",
+        "owner_role": "Structure custodian",
+        "request": "Historical-ID-to-current-object crosswalk, structural height versus clearance versus sign value, units, direction/lane and survey date"
+      },
+      {
+        "id": "Q8-RIGHTS",
+        "needed_for": "Publication permission separately from factual credibility",
+        "owner_role": "Data rights holder",
+        "request": "Fields and derivatives allowed for publication, attribution, retention and update conditions"
+      }
+    ]
+  }
+}
