@@ -4,7 +4,7 @@ on:
     branches: [main]
     types: [opened, synchronize, reopened]
   push:
-    branches: [stage3/israel-road-data-foundation, stage5/truck-rules-research-20261012, stage6/restriction-evidence-routing-20261012, stage7/israel-restriction-evidence-20261012, stage8/reference-evidence-review-20261012, stage9/bridge-evidence-acquisition-20261012, stage10/israel-object-matching-20261012]
+    branches: [stage3/israel-road-data-foundation, stage5/truck-rules-research-20261012, stage6/restriction-evidence-routing-20261012, stage7/israel-restriction-evidence-20261012, stage8/reference-evidence-review-20261012, stage9/bridge-evidence-acquisition-20261012, stage10/israel-object-matching-20261012, stage11/evidence-review-governance-20261012]
 permissions:
   contents: read
 concurrency:
@@ -39,6 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m unittest discover -s tests -v 2>&1 | tee evidence/unit-tests.log
+          python -O -m unittest discover -s tests -p test_stage11_audit_gate.py -v 2>&1 | tee evidence/stage11-optimized.log
           python scripts/compare_schema_engine.py 2>&1 | tee evidence/schema-comparison.log
       - name: Reproduce frozen OSM pilot without source network access
         shell: bash

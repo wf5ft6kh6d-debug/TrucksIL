@@ -1,7 +1,7 @@
 name: Stage 8 national evidence review acceptance
 on:
   push:
-    branches: [stage8/reference-evidence-review-20261012, stage9/bridge-evidence-acquisition-20261012, stage10/israel-object-matching-20261012]
+    branches: [stage8/reference-evidence-review-20261012, stage9/bridge-evidence-acquisition-20261012, stage10/israel-object-matching-20261012, stage11/evidence-review-governance-20261012]
 permissions:
   contents: read
 concurrency:
@@ -30,6 +30,7 @@ jobs:
         run: |
           set -o pipefail
           python -m unittest discover -s tests -v 2>&1 | tee evidence/unit.log
+          python -O -m unittest discover -s tests -p test_stage11_audit_gate.py -v 2>&1 | tee evidence/stage11-optimized.log
           python scripts/compare_schema_engine.py | tee evidence/schema.log
           python scripts/stage6/contract.py | tee evidence/stage6-schema.log
       - name: Integrate attributed public evidence and exact replay
