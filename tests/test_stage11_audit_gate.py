@@ -1,0 +1,81 @@
+"""Synthetic regression fixtures only: no real road fact or audit evidence."""
+import contextlib
+import copy
+import importlib.util
+import io
+import json
+from pathlib import Path
+import shutil
+import tempfile
+import unittest
+from unittest.mock import patch
+
+from scripts.stage11 import audit_gate as m
+
+class GraphAuditGateTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp=tempfile.TemporaryDirectory(prefix='trucksil-synthetic-audit-')
+        self.addCleanup(self.tmp.cleanup)
+        self.source=Path(self.tmp.name);self.root=self.source/'review'
+        self.files={
+          'graph_archive':self.source/'recovery/graph-archive/TrucksIL-national-research-261008.zip',
+          'graph_candidates':self.source/'recovery/stage10/stage10-private/geometry/graph-candidates.jsonl',
+          'passage_review':self.root/'geometry/passage-binding-review.csv',
+          'audit_checker':self.root/'audit/check_graph.py'}
+        payloads={'graph_archive':b'SYNTHETIC_NOT_A_GRAPH_ARCHIVE',
+          'graph_candidates':b''.join((json.dumps({'record_id':f'SYNTHETIC-{i}'})+'\n').encode() for i in range(2431)),
+          'passage_review':('record_id\n'+''.join(f'SYNTHETIC-{i}\n' for i in range(2431))).encode(),
+          'audit_checker':b'# SYNTHETIC CHECKER FIXTURE NOT EXECUTED\n'}
+        for k,p in self.files.items():p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(payloads[k])
+        self.archive_hash=m.digest(self.files['graph_archive'])
+        self.expected_patch=patch.object(m,'EXPECTED_ARCHIVE',self.archive_hash);self.expected_patch.start();self.addCleanup(self.expected_patch.stop)
+        self.report={'schema_version':1,'status':'PASS_EXACT_ID_SQL_SCOPE','method':'INDEPENDENT_FRESH_TEMP_EXTRACTION_IMMUTABLE_SQL',
+          'failures':[],'records_checked':2431,'csv_records_checked':2431,
+          'distance_recalculation':'NOT_RUN_NO_NEW_GEOMETRY_ALGORITHM','db_bytes':m.EXPECTED_DB_BYTES,
+          'db_sha256_before':m.EXPECTED_DB,'db_sha256_after':m.EXPECTED_DB,'archive_sha256':self.archive_hash,
+          'inputs':{k:{'bytes':p.stat().st_size,'sha256':m.digest(p)} for k,p in self.files.items()}}
+        self.report_path=self.root/'audit/graph-checks.json';self.save()
+    def save(self):self.report_path.write_text(json.dumps(self.report))
+    def validate(self):return m.validate_graph_audit(self.root,self.source)
+    def test_valid_current_report_passes(self):self.assertEqual(self.validate()['status'],'PASS')
+    def test_missing_report_blocks(self):
+        self.report_path.unlink();self.assertEqual(self.validate()['status'],'BLOCKED')
+    def test_failed_report_fails(self):
+        self.report['status']='FAIL';self.save();self.assertEqual(self.validate()['status'],'FAIL')
+    def test_legacy_report_blocks(self):
+        del self.report['schema_version'];self.save();self.assertEqual(self.validate()['status'],'BLOCKED')
+    def test_malformed_and_nonobject_report_fail(self):
+        for value in ('{','[]','null'):
+            self.report_path.write_text(value);self.assertEqual(self.validate()['status'],'FAIL')
+    def test_stale_every_bound_input_blocks(self):
+        for name,p in self.files.items():
+            with self.subTest(name=name):
+                original=p.read_bytes();p.write_bytes(original+b'X')
+                self.assertEqual(self.validate()['reason'],'STALE_AUDIT_INPUT:'+name)
+                p.write_bytes(original)
+    def test_invalid_counts_fail(self):
+        for key in ('records_checked','csv_records_checked'):
+            for value in (2430,2432,True,'2431',None):
+                with self.subTest(key=key,value=value):
+                    self.report[key]=value;self.save();self.assertEqual(self.validate()['status'],'FAIL')
+            self.report[key]=2431
+    def test_invalid_hash_and_metadata_fail(self):
+        original=copy.deepcopy(self.report)
+        for change in ({'bytes':True,'sha256':'f'*64},{'bytes':1,'sha256':'bad'}, {'bytes':-1,'sha256':'f'*64}):
+            self.report=copy.deepcopy(original);self.report['inputs']['passage_review']=change;self.save()
+            self.assertEqual(self.validate()['status'],'FAIL')
+    def test_input_unavailable_blocks(self):
+        self.files['graph_candidates'].unlink();self.assertEqual(self.validate()['status'],'BLOCKED')
+    def test_fresh_hash_does_not_hide_wrong_row_count(self):
+        p=self.files['passage_review'];p.write_text('record_id\nSYNTHETIC-0\n')
+        self.report['inputs']['passage_review']={'bytes':p.stat().st_size,'sha256':m.digest(p)};self.save()
+        self.assertEqual(self.validate()['reason'],'CURRENT_INPUT_COUNT_MISMATCH')
+    def test_audit_failures_cannot_pass(self):
+        self.report['failures']=['SYNTHETIC_FAILURE'];self.save();self.assertEqual(self.validate()['status'],'FAIL')
+    def test_wrong_database_digest_fails(self):
+        self.report['db_sha256_after']='0'*64;self.save();self.assertEqual(self.validate()['status'],'FAIL')
+    def test_missing_audit_directory_blocks(self):
+        shutil.rmtree(self.root/'audit') # disposable synthetic fixture only
+        self.assertEqual(self.validate()['status'],'BLOCKED')
+
+if __name__=='__main__': unittest.main()
