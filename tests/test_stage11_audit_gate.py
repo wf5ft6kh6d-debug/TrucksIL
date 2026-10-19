@@ -30,12 +30,15 @@ class GraphAuditGateTests(unittest.TestCase):
         self.archive_hash=m.digest(self.files['graph_archive'])
         self.expected_patch=patch.object(m,'EXPECTED_ARCHIVE',self.archive_hash);self.expected_patch.start();self.addCleanup(self.expected_patch.stop)
         self.report={'schema_version':1,'status':'PASS_EXACT_ID_SQL_SCOPE','method':'INDEPENDENT_FRESH_TEMP_EXTRACTION_IMMUTABLE_SQL',
-          'sqlite_integrity_check':'PASS','reference_check':'PASS_2431_EXACT_REFERENCES','failures':[],'records_checked':2431,'csv_records_checked':2431,
+          'sqlite_integrity_check_before':'PASS','sqlite_integrity_check_after':'PASS','sqlite_integrity_check':'PASS','reference_check':'PASS_2431_EXACT_REFERENCES','failures':[],'records_checked':2431,'csv_records_checked':2431,
           'distance_recalculation':'NOT_RUN_NO_NEW_GEOMETRY_ALGORITHM','db_bytes':m.EXPECTED_DB_BYTES,
           'db_sha256_before':m.EXPECTED_DB,'db_sha256_after':m.EXPECTED_DB,'archive_sha256':self.archive_hash,
           'inputs':{k:{'bytes':p.stat().st_size,'sha256':m.digest(p)} for k,p in self.files.items()}}
+        self.report['db_bytes_after']=m.EXPECTED_DB_BYTES;self.report['inputs_after']=copy.deepcopy(self.report['inputs'])
         self.report_path=self.root/'audit/graph-checks.json';self.save()
-    def save(self):self.report_path.write_text(json.dumps(self.report))
+    def save(self):
+        self.report['inputs_after']=copy.deepcopy(self.report['inputs'])
+        self.report_path.write_text(json.dumps(self.report))
     def validate(self):return m.validate_graph_audit(self.root,self.source)
     def test_valid_current_report_passes(self):self.assertEqual(self.validate()['status'],'PASS')
     def test_missing_report_blocks(self):
@@ -77,6 +80,28 @@ class GraphAuditGateTests(unittest.TestCase):
     def test_missing_audit_directory_blocks(self):
         shutil.rmtree(self.root/'audit') # disposable synthetic fixture only
         self.assertEqual(self.validate()['status'],'BLOCKED')
+
+
+    def test_integrity_reference_absent_vs_failed(self):
+        original=copy.deepcopy(self.report)
+        for key in ('sqlite_integrity_check','sqlite_integrity_check_before','sqlite_integrity_check_after','reference_check'):
+            with self.subTest(field=key,outcome='missing'):
+                self.report=copy.deepcopy(original);del self.report[key];self.save()
+                self.assertEqual(self.validate()['status'],'BLOCKED')
+            with self.subTest(field=key,outcome='failed'):
+                self.report[key]='FAIL';self.save();self.assertEqual(self.validate()['status'],'FAIL')
+
+
+    def test_after_audit_metadata_missing_or_invalid(self):
+        original=copy.deepcopy(self.report)
+        cases=[('db_bytes_after',None,'BLOCKED'),('db_bytes_after',1,'FAIL'),('inputs_after',None,'BLOCKED'),('inputs_after',{},'FAIL')]
+        for field,value,status in cases:
+            with self.subTest(field=field,value=value):
+                self.report=copy.deepcopy(original)
+                if value is None:del self.report[field]
+                else:self.report[field]=value
+                self.report_path.write_text(json.dumps(self.report))
+                self.assertEqual(self.validate()['status'],status)
 
 
 class TechnicalAcceptanceTests(unittest.TestCase):

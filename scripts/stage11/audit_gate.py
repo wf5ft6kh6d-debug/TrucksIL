@@ -20,14 +20,19 @@ def validate_graph_audit(root, source_root):
         if type(report.get('schema_version')) is not int or report['schema_version']!=1:return result('BLOCKED','AUDIT_INPUT_CONTRACT_MISSING_OR_UNSUPPORTED')
         if report.get('failures')!=[]:return result('FAIL','AUDIT_FAILURES_PRESENT_OR_MISSING')
         if report.get('method')!='INDEPENDENT_FRESH_TEMP_EXTRACTION_IMMUTABLE_SQL':return result('FAIL','UNSUPPORTED_AUDIT_METHOD')
-        if report.get('sqlite_integrity_check')!='PASS':return result('FAIL','SQLITE_INTEGRITY_NOT_PASSED')
-        if report.get('reference_check')!='PASS_2431_EXACT_REFERENCES':return result('FAIL','REFERENCE_CHECK_NOT_PASSED')
+        for field,expected in [('sqlite_integrity_check','PASS'),('sqlite_integrity_check_before','PASS'),('sqlite_integrity_check_after','PASS'),('reference_check','PASS_2431_EXACT_REFERENCES')]:
+            if field not in report:return result('BLOCKED','REQUIRED_AUDIT_CHECK_MISSING:'+field)
+            if report[field]!=expected:return result('FAIL','REQUIRED_AUDIT_CHECK_FAILED:'+field)
         if report.get('distance_recalculation')!='NOT_RUN_NO_NEW_GEOMETRY_ALGORITHM':return result('FAIL','UNSUPPORTED_DISTANCE_SCOPE')
         for key in ('records_checked','csv_records_checked'):
             if type(report.get(key)) is not int or report[key]!=2431:return result('FAIL','INVALID_AUDIT_COUNT:'+key)
         if type(report.get('db_bytes')) is not int or report['db_bytes']!=EXPECTED_DB_BYTES:return result('FAIL','INVALID_DB_SIZE')
         if report.get('db_sha256_before')!=EXPECTED_DB or report.get('db_sha256_after')!=EXPECTED_DB:return result('FAIL','INVALID_DB_DIGEST')
+        if 'db_bytes_after' not in report:return result('BLOCKED','DB_SIZE_AFTER_MISSING')
+        if type(report['db_bytes_after']) is not int or report['db_bytes_after']!=EXPECTED_DB_BYTES:return result('FAIL','INVALID_DB_SIZE_AFTER')
         inputs=report.get('inputs')
+        if 'inputs_after' not in report:return result('BLOCKED','INPUTS_AFTER_MISSING')
+        if report['inputs_after']!=inputs:return result('FAIL','INPUTS_CHANGED_DURING_AUDIT')
         paths={'graph_archive':source_root/'recovery/graph-archive/TrucksIL-national-research-261008.zip',
                'graph_candidates':source_root/'recovery/stage10/stage10-private/geometry/graph-candidates.jsonl',
                'passage_review':root/'geometry/passage-binding-review.csv',
