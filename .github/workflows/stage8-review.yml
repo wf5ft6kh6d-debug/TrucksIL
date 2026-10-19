@@ -30,6 +30,7 @@ jobs:
         run: |
           set -o pipefail
           python -m unittest discover -s tests -v 2>&1 | tee evidence/unit.log
+          python -O -m unittest discover -s tests -p test_stage11_audit_gate.py -v 2>&1 | tee evidence/stage11-optimized.log
           python scripts/compare_schema_engine.py | tee evidence/schema.log
           python scripts/stage6/contract.py | tee evidence/stage6-schema.log
       - name: Integrate attributed public evidence and exact replay

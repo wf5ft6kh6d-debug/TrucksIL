@@ -39,6 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m unittest discover -s tests -v 2>&1 | tee evidence/unit-tests.log
+          python -O -m unittest discover -s tests -p test_stage11_audit_gate.py -v 2>&1 | tee evidence/stage11-optimized.log
           python scripts/compare_schema_engine.py 2>&1 | tee evidence/schema-comparison.log
       - name: Reproduce frozen OSM pilot without source network access
         shell: bash

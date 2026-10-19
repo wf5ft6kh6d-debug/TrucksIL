@@ -30,7 +30,7 @@ class GraphAuditGateTests(unittest.TestCase):
         self.archive_hash=m.digest(self.files['graph_archive'])
         self.expected_patch=patch.object(m,'EXPECTED_ARCHIVE',self.archive_hash);self.expected_patch.start();self.addCleanup(self.expected_patch.stop)
         self.report={'schema_version':1,'status':'PASS_EXACT_ID_SQL_SCOPE','method':'INDEPENDENT_FRESH_TEMP_EXTRACTION_IMMUTABLE_SQL',
-          'failures':[],'records_checked':2431,'csv_records_checked':2431,
+          'sqlite_integrity_check':'PASS','reference_check':'PASS_2431_EXACT_REFERENCES','failures':[],'records_checked':2431,'csv_records_checked':2431,
           'distance_recalculation':'NOT_RUN_NO_NEW_GEOMETRY_ALGORITHM','db_bytes':m.EXPECTED_DB_BYTES,
           'db_sha256_before':m.EXPECTED_DB,'db_sha256_after':m.EXPECTED_DB,'archive_sha256':self.archive_hash,
           'inputs':{k:{'bytes':p.stat().st_size,'sha256':m.digest(p)} for k,p in self.files.items()}}
@@ -78,4 +78,61 @@ class GraphAuditGateTests(unittest.TestCase):
         shutil.rmtree(self.root/'audit') # disposable synthetic fixture only
         self.assertEqual(self.validate()['status'],'BLOCKED')
 
-if __name__=='__main__': unittest.main()
+
+class TechnicalAcceptanceTests(unittest.TestCase):
+    def checks(self):return {k:{'status':'PASS','reason':'SYNTHETIC'} for k in ('tables','graph','temporal')}
+    def test_pass_does_not_require_verified(self):
+        result=m.technical_acceptance(self.checks())
+        self.assertEqual(result['exit_code'],0);self.assertEqual(result['status'],'PASS');self.assertFalse(result['road_verification_required'])
+    def test_failed_or_blocked_check_cannot_exit_zero(self):
+        for key in self.checks():
+            for status,code in [('FAIL',1),('BLOCKED',2),('UNKNOWN',1),('PASS_FROM_HISTORY',1)]:
+                checks=self.checks();checks[key]['status']=status
+                self.assertEqual(m.technical_acceptance(checks)['exit_code'],code)
+    def test_missing_checks_fail(self):
+        self.assertEqual(m.technical_acceptance({})['exit_code'],1)
+    def test_status_not_truthiness(self):
+        checks=self.checks();checks['graph']['status']=True
+        self.assertEqual(m.technical_acceptance(checks)['status'],'FAIL')
+
+class AutomationConsumerTests(unittest.TestCase):
+    def test_cli_status_and_exit_normal_and_optimized(self):
+        import subprocess,sys
+        with tempfile.TemporaryDirectory(prefix='synthetic-summary-') as tmp:
+            path=Path(tmp)/'summary.json'
+            for optimize in (False,True):
+                for state,code in [('PASS',0),('BLOCKED',2),('FAIL',1)]:
+                    checks={key:{'status':'PASS','reason':'SYNTHETIC'} for key in ('tables','graph','temporal')}
+                    checks['graph']['status']=state
+                    acceptance=m.technical_acceptance(checks)
+                    path.write_text(json.dumps({'status':state,'technical_acceptance':acceptance}))
+                    command=[sys.executable]+(['-O'] if optimize else [])+[m.__file__,'--summary',str(path)]
+                    process=subprocess.run(command,capture_output=True,text=True)
+                    self.assertEqual(process.returncode,code,process.stderr)
+                    self.assertEqual(json.loads(process.stdout)['status'],state)
+    def test_stale_top_level_pass_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'summary.json';checks={key:{'status':'BLOCKED','reason':'SYNTHETIC'} for key in ('tables','graph','temporal')}
+            path.write_text(json.dumps({'status':'PASS','technical_acceptance':m.technical_acceptance(checks)}))
+            self.assertEqual(m.consume_summary(path)['exit_code'],1)
+    def test_missing_and_invalid_reports_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'summary.json'
+            self.assertEqual(m.consume_summary(path)['exit_code'],1)
+            for text in ('{','null','[]','{}'):
+                path.write_text(text);self.assertEqual(m.consume_summary(path)['exit_code'],1)
+
+class MalformedAcceptanceTests(unittest.TestCase):
+    def test_non_object_checks_and_missing_reasons_rejected(self):
+        for checks in (None,[],True,{'tables':{},'graph':{},'temporal':{}}):
+            self.assertEqual(m.technical_acceptance(checks)['exit_code'],1)
+    def test_consumer_missing_reasons_or_wrong_exit_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'summary.json'
+            checks={key:{'status':'PASS','reason':'SYNTHETIC'} for key in ('tables','graph','temporal')}
+            for field in ('reasons','exit_code'):
+                result=m.technical_acceptance(checks);del result[field]
+                path.write_text(json.dumps({'status':'PASS','technical_acceptance':result}))
+                self.assertEqual(m.consume_summary(path)['exit_code'],1)
+
+if __name__=='__main__':unittest.main(verbosity=2)

@@ -20,6 +20,8 @@ def validate_graph_audit(root, source_root):
         if type(report.get('schema_version')) is not int or report['schema_version']!=1:return result('BLOCKED','AUDIT_INPUT_CONTRACT_MISSING_OR_UNSUPPORTED')
         if report.get('failures')!=[]:return result('FAIL','AUDIT_FAILURES_PRESENT_OR_MISSING')
         if report.get('method')!='INDEPENDENT_FRESH_TEMP_EXTRACTION_IMMUTABLE_SQL':return result('FAIL','UNSUPPORTED_AUDIT_METHOD')
+        if report.get('sqlite_integrity_check')!='PASS':return result('FAIL','SQLITE_INTEGRITY_NOT_PASSED')
+        if report.get('reference_check')!='PASS_2431_EXACT_REFERENCES':return result('FAIL','REFERENCE_CHECK_NOT_PASSED')
         if report.get('distance_recalculation')!='NOT_RUN_NO_NEW_GEOMETRY_ALGORITHM':return result('FAIL','UNSUPPORTED_DISTANCE_SCOPE')
         for key in ('records_checked','csv_records_checked'):
             if type(report.get(key)) is not int or report[key]!=2431:return result('FAIL','INVALID_AUDIT_COUNT:'+key)
@@ -47,3 +49,38 @@ def validate_graph_audit(root, source_root):
         return result('PASS','CURRENT_INPUT_HASHES_AND_AUDIT_SCOPE_VALIDATED')
     except (ValueError,TypeError,KeyError,UnicodeError,OSError,csv.Error) as e:
         return result('FAIL','INVALID_OR_UNREADABLE_AUDIT:'+type(e).__name__)
+
+def technical_acceptance(checks):
+    """Integration scope only; VERIFIED is deliberately not an acceptance input."""
+    required={'tables','graph','temporal'}
+    if not isinstance(checks,dict) or set(checks)!=required:
+        return {'status':'FAIL','exit_code':1,'reasons':['REQUIRED_CHECKS_MISSING_OR_UNEXPECTED'],'checks':checks}
+    if any(not isinstance(v,dict) or not isinstance(v.get('reason'),str) or not v['reason'] for v in checks.values()):
+        return {'status':'FAIL','exit_code':1,'reasons':['CHECK_REASON_MISSING_OR_INVALID'],'checks':checks}
+    statuses=[v.get('status') if isinstance(v,dict) else None for v in checks.values()]
+    status='PASS' if all(x=='PASS' for x in statuses) else ('BLOCKED' if all(x in ('PASS','BLOCKED') for x in statuses) else 'FAIL')
+    return {'status':status,'exit_code':{'PASS':0,'FAIL':1,'BLOCKED':2}[status],
+            'reasons':[k+':'+str(v.get('reason','CHECK_NOT_PASSED')) for k,v in checks.items() if isinstance(v,dict) and v.get('status')!='PASS'],
+            'checks':checks,'scope':'REVIEW_TABLE_COUNTS_CURRENT_BOUND_GRAPH_AUDIT_TEMPORAL_RESTORATION',
+            'road_verification_required':False,'ci_and_release_acceptance':'SEPARATE_NOT_INFERRED'}
+
+def consume_summary(path):
+    """Automation protocol guard; not an independent re-audit of the source files."""
+    try:
+        summary=json.loads(Path(path).read_text(encoding='utf-8'))
+        supplied=summary['technical_acceptance']
+        result=technical_acceptance(supplied['checks'])
+        if summary.get('status')!=result['status'] or supplied.get('status')!=result['status'] or type(supplied.get('exit_code')) is not int or supplied['exit_code']!=result['exit_code'] or supplied.get('reasons')!=result['reasons']:
+            return {'status':'FAIL','exit_code':1,'reasons':['SUMMARY_STATUS_INCONSISTENT']}
+        return result
+    except (OSError,UnicodeError,ValueError,TypeError,KeyError,AttributeError) as e:
+        return {'status':'FAIL','exit_code':1,'reasons':['SUMMARY_READ_OR_SCHEMA_ERROR:'+type(e).__name__]}
+
+if __name__=='__main__':
+    import argparse
+    import sys
+    parser=argparse.ArgumentParser(description='Read explicit technical integration status; never infer road validity.')
+    parser.add_argument('--summary',required=True,type=Path)
+    result=consume_summary(parser.parse_args().summary)
+    print(json.dumps(result))
+    sys.exit(result['exit_code'])
