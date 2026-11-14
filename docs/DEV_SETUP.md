@@ -121,3 +121,9 @@ npm test
 - `/health` отвечает `503`, если БД или включённая Valhalla недоступна; из-за этого Docker-healthcheck контейнера `api` тоже покажет `unhealthy`.
 - Высоты рельефа (`build_elevation`) и пробки не используются.
 - Сервис `valhalla` в этом окружении разработки ещё ни разу не запускался на реальном `.pbf`; первый запуск на вашей машине — фактически проверка конфигурации.
+
+## Проверено на машине владельца (14.11.2026, Ubuntu 26.04 / WSL2, Docker Engine)
+- `docker compose --profile routing up -d --build`: образы скачались, API собрался, Valhalla построила 82 тайла из выгрузки Geofabrik за ~17 с.
+- `GET /health` → `{"status":"ok","db":"ok","valhalla":"ok"}` (после `VALHALLA_URL=http://valhalla:8002` в `.env` и `up -d --force-recreate api`).
+- `POST /v1/route` Тель-Авив → Иерусалим с вымышленным профилем тягача: маршрут построен, `travel_type: "truck"`.
+- Подсказка: если после правки `.env` compose пишет `Running`, а не `Recreated`, значит значение не изменилось — проверьте `grep -n VALHALLA_URL .env`.
