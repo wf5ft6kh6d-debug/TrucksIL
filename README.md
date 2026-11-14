@@ -47,4 +47,4 @@ npm test
 
 ## Лицензия / License
 
-Лицензия ещё не выбрана. / No license has been chosen yet.
+Код: Apache-2.0 (см. `LICENSE`, `NOTICE`). Данные лицензируются отдельно (OSM — ODbL). / Code: Apache-2.0 (see `LICENSE`, `NOTICE`). Data is licensed separately (OSM — ODbL).

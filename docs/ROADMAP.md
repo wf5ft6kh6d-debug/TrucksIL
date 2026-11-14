@@ -6,7 +6,7 @@ _Дата анализа: 2026-11-14_
 
 ### Статус на 14.11.2026
 
-- **Этап 0 завершён:** README, страница-заглушка, `.gitignore`, `.editorconfig`, `CONTRIBUTING.md`, CI (GitHub Actions). Файл `LICENSE` ждёт решения по лицензии.
+- **Этап 0 завершён:** README, страница-заглушка, `.gitignore`, `.editorconfig`, `CONTRIBUTING.md`, CI (GitHub Actions). Лицензия: Apache-2.0 (`LICENSE`, `NOTICE`).
 - **Этап 1 в работе:**
   - схемы `restrictions.schema.json` и `vehicle-profile.schema.json` готовы; для высоты, ширины и длины `valueSource` обязателен (`posted_sign` — значение со знака, показывается водителю как есть);
   - тесты валидации схем и фикстур (`npm test`) запускаются в CI;
@@ -15,7 +15,7 @@ _Дата анализа: 2026-11-14_
   - PRD обновлён до v0.2 (user stories, критерии приёмки, MoSCoW).
 - **Код приложения и маршрутизации:** нет (ожидаемо до этапа 2).
 
-**Открытые решения:** лицензия проекта; платформа MVP; движок маршрутизации (Valhalla / GraphHopper). Фиксировать в `docs/adr/`.
+**Решения приняты 14.11.2026:** PWA для MVP (ADR-0008), Valhalla (ADR-0009), Apache-2.0 (ADR-0010).
 
 **Блокеры:**
 - слой «גשרים» Минтранса не опубликован в data.gov.il;
@@ -34,7 +34,7 @@ _Дата анализа: 2026-11-14_
 
 ### Этап 0: Гигиена репозитория — завершён
 - [x] Исправить `README.md`: название, цель, статус «прототип, не для навигации», структура репо.
-- [x] Добавить `LICENSE`, `.gitignore`, `.editorconfig`, `CONTRIBUTING.md`. (`LICENSE` — после решения по лицензии)
+- [x] Добавить `LICENSE`, `.gitignore`, `.editorconfig`, `CONTRIBUTING.md`.
 - [x] Унифицировать имена `README.md`.
 - [x] Настроить GitHub Actions: проверка JSON-схем и линтер Markdown.
 - [ ] Завести issues и milestones по этапам ниже.
