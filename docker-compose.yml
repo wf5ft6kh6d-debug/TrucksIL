@@ -1,5 +1,5 @@
 # TrucksIL local development stack (stage 2, step 1). See docs/DEV_SETUP.md.
-#   docker compose up -d                    -> db + api (no routing, no OSM data needed)
+#   docker compose up -d                    -> db + api + web (no routing, no OSM data needed)
 #   docker compose --profile routing up -d  -> also Valhalla (needs data/osm/*.osm.pbf)
 name: trucksil
 
@@ -68,6 +68,18 @@ services:
       VALHALLA_URL: ${VALHALLA_URL-http://valhalla:8002}
     ports:
       - "127.0.0.1:${API_PORT:-8080}:8080"
+
+  # PWA prototype client (stage 4). nginx serves the built app and proxies /api/* -> api:8080,
+  # so the browser talks to one origin and the API needs no CORS. Not for navigation.
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8081}:80"
 
 volumes:
   db-data:

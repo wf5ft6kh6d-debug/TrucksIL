@@ -9,7 +9,8 @@
 const ALONG_ROUTE_SQL = `
 WITH route AS (SELECT ST_SetSRID(ST_GeomFromGeoJSON($1), 4326) AS g)
 SELECT r.id, r.road_segment_id, r.value_source, r.direction, r.restriction_type, r.value_numeric,
-       r.value_boolean, r.unit, r.time_windows, r.status, r.verified_at, r.review_due_at
+       r.value_boolean, r.unit, r.time_windows, r.status, r.verified_at, r.review_due_at,
+       ST_AsGeoJSON(r.geometry, 7)::json AS geometry
 FROM restrictions r, route
 WHERE r.geometry IS NOT NULL
   AND r.status <> 'expired'
