@@ -9,6 +9,7 @@
     "id": {"type": "string", "minLength": 1},
     "roadSegmentId": {"type": "string", "minLength": 1},
     "geometry": {"$ref": "#/$defs/geometry"},
+    "valueSource": {"enum": ["posted_sign", "measured", "regulation", "derived", "unknown"], "description": "Origin of the value. posted_sign = limit shown on the road sign (legally binding, shown to drivers as-is); measured = surveyed physical clearance."},
     "direction": {"enum": ["both", "forward", "backward"], "default": "both", "description": "Applicable travel direction relative to the segment/geometry digitization order."},
     "restrictionType": {"enum": ["max_height", "max_width", "max_length", "max_gross_weight", "max_axle_weight", "truck_prohibited", "hazmat_restriction"]},
     "value": {"type": ["number", "boolean"]},
