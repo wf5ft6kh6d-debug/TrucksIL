@@ -185,3 +185,10 @@ npm test
 - `GET /health` → `{"status":"ok","db":"ok","valhalla":"ok"}` (после `VALHALLA_URL=http://valhalla:8002` в `.env` и `up -d --force-recreate api`).
 - `POST /v1/route` Тель-Авив → Иерусалим с вымышленным профилем тягача: маршрут построен, `travel_type: "truck"`.
 - Подсказка: если после правки `.env` compose пишет `Running`, а не `Recreated`, значит значение не изменилось — проверьте `grep -n VALHALLA_URL .env`.
+
+## Проверка объезда на настоящей Valhalla (14.11.2026, машина владельца)
+- Маршрут Тель-Авив → Иерусалим без ограничений: `avoided: []`, `reroutes: 0`.
+- Вымышленный мост `max_height 3.5 m` (`unverified`, `posted_sign`) в точке 34.992966,31.826908 на маршруте.
+- Тягач 4,0 м: ограничение в `avoided` с причиной `heightM 4 > limit 3.5 m`, `reroutes: 1` — маршрут перестроен в обход.
+- Тестовая запись удалена (`deleted 1 row(s)`).
+- Замечание: в WSL нужен Linux-`node` (`sudo apt install nodejs npm`); npm из Windows через WSL ставит пакеты, но `node` не находится.
