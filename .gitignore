@@ -21,3 +21,7 @@ npm-debug.log*
 dist/
 build/
 coverage/
+__pycache__/
+*.pyc
+.venv/
+*.osm.pbf
