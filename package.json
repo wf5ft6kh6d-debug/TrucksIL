@@ -1,0 +1,17 @@
+{
+  "name": "trucksil",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "description": "TrucksIL data schemas and fixture validation (draft).",
+  "scripts": {
+    "test": "node --test test/schemas.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}
