@@ -247,3 +247,8 @@ E2E_ONLY=S02,S03 npm run test:e2e                # только выбранны
 - Тягач 4,0 м: ограничение в `avoided` с причиной `heightM 4 > limit 3.5 m`, `reroutes: 1` — маршрут перестроен в обход.
 - Тестовая запись удалена (`deleted 1 row(s)`).
 - Замечание: в WSL нужен Linux-`node` (`sudo apt install nodejs npm`); npm из Windows через WSL ставит пакеты, но `node` не находится.
+
+## Эталонные маршруты на настоящей Valhalla (14.11.2026, машина владельца)
+`node scripts/e2e_routes.js`: 10 PASS, 0 FAIL, 1 SKIP (S10 — только в имитации). Объезды (S02, S04, S05, S06a) — по 1 перестроению.
+
+WSL: если `npm run` запускает Windows-npm (`UNC paths are not supported`), добавьте в `/etc/wsl.conf` секцию `[interop]` с `appendWindowsPath=false` и выполните `wsl --shutdown` в PowerShell.
