@@ -2,6 +2,8 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { createServer } = require('../../api/src/app');
+const { encodePolyline } = require('../../api/src/polyline');
+const trip = { status: 0, legs: [{ shape: encodePolyline([[34.78, 32.08], [35.21, 31.77]]) }] };
 
 const truck = { profileName: 'Test rigid', heightM: 3.8, widthM: 2.5, lengthM: 10, grossWeightT: 18 };
 const okDb = { query: async (sql) => (sql === 'SELECT 1' ? { rows: [{ '?column?': 1 }] } : { rows: [] }) };
@@ -103,12 +105,14 @@ test('route: valhalla unreachable -> 503', async () => {
 
 test('route: proxies to valhalla with truck costing and adds trucksil block', async () => {
   let sent;
-  const fakeFetch = async (url, init) => { sent = { url, body: JSON.parse(init.body) }; return jsonResponse(200, { trip: { status: 0 } }); };
+  const fakeFetch = async (url, init) => { sent = { url, body: JSON.parse(init.body) }; return jsonResponse(200, { trip }); };
   await withServer({ db: okDb, valhallaUrl: 'http://valhalla:8002', fetch: fakeFetch }, async (base) => {
     const r = await call(base, '/v1/route', post({ from: [34.78, 32.08], to: [35.21, 31.77], vehicle: truck }));
     assert.equal(r.status, 200);
-    assert.deepEqual(r.body.trip, { status: 0 });
-    assert.deepEqual(r.body.trucksil, { disclaimer: 'prototype, not for navigation', unverifiedCoverage: 'unknown' });
+    assert.deepEqual(r.body.trip, trip);
+    assert.equal(r.body.trucksil.disclaimer, 'prototype, not for navigation');
+    assert.equal(r.body.trucksil.unverifiedCoverage, 'unknown');
+    assert.deepEqual(r.body.trucksil.avoided, []);
     assert.equal(sent.url, 'http://valhalla:8002/route');
     assert.equal(sent.body.costing, 'truck');
     assert.deepEqual(sent.body.costing_options.truck, { height: 3.8, width: 2.5, length: 10, weight: 18 });

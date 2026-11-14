@@ -47,12 +47,14 @@ cp .env.example .env
 docker compose up -d --build
 docker compose ps                         # db должен быть healthy
 curl -s localhost:8080/health
-# {"status":"ok","db":"ok","valhalla":"disabled"}
+# {"status":"degraded","db":"ok","valhalla":"down"}   <- valhalla не запущен, это ожидаемо
 curl -s 'localhost:8080/v1/restrictions?bbox=34.2,29.4,35.9,33.4'
 # {"type":"FeatureCollection","features":[]}
 ```
 
-`POST /v1/route` в этом режиме отвечает `503` с понятным сообщением «routing disabled».
+По умолчанию `VALHALLA_URL=http://valhalla:8002` (задано в `docker-compose.yml`), поэтому без профиля `routing` `/health` показывает `"valhalla":"down"` (код 503), а `POST /v1/route` отвечает `503` «Valhalla unreachable». API при этом не падает.
+
+Если маршрутизация не нужна намеренно, раскомментируйте в `.env` пустое значение `VALHALLA_URL=` — тогда `/health` → `{"status":"ok","db":"ok","valhalla":"disabled"}`, а `/v1/route` → `503` «routing disabled».
 
 Миграции из `db/migrations/*.sql` применяются автоматически **только при первом запуске** (когда том `db-data` пуст). Чтобы пересоздать базу с нуля: `docker compose down -v` (удалит все данные БД).
 
@@ -64,7 +66,7 @@ curl -s 'localhost:8080/v1/restrictions?bbox=34.2,29.4,35.9,33.4'
    mv ~/Downloads/israel-and-palestine-latest.osm.pbf data/osm/
    ```
    Папка `data/osm/` в git игнорируется (кроме `.gitkeep`). Сам стенд ничего не скачивает.
-3. В `.env` раскомментируйте/задайте `VALHALLA_URL=http://valhalla:8002`.
+3. Править `.env` не нужно: `VALHALLA_URL` по умолчанию указывает на сервис `valhalla`. (Если в старом `.env` осталась строка `VALHALLA_URL=` с пустым значением — удалите её, иначе маршрутизация будет выключена.)
 4. Запустите:
    ```bash
    docker compose --profile routing up -d --build
@@ -94,15 +96,69 @@ curl -s -X POST localhost:8080/v1/route \
   }'
 ```
 
-Ответ — ответ Valhalla `/route` (поле `trip`) плюс блок:
+Ответ — ответ Valhalla `/route` (поле `trip`) плюс блок `trucksil`:
 
 ```json
-"trucksil": {"disclaimer": "prototype, not for navigation", "unverifiedCoverage": "unknown"}
+"trucksil": {
+  "disclaimer": "prototype, not for navigation",
+  "avoided": [{"id": "...", "restrictionType": "max_height", "value": 3.5, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "reason": "heightM 4 > limit 3.5 m"}],
+  "onRoute": [{"id": "...", "restrictionType": "max_height", "value": 4.6, "unit": "m", "status": "verified", "valueSource": "posted_sign"}],
+  "coverage": {"verifiedOnRoute": 1, "unverifiedOnRoute": 0, "note": "Absence of restrictions in TrucksIL data does not mean the route is safe"},
+  "unverifiedCoverage": "unknown",
+  "reroutes": 1
+}
 ```
+
+Как применяются собственные ограничения TrucksIL (таблица `restrictions`):
+
+1. Valhalla строит маршрут; API декодирует `trip.legs[].shape` (polyline6) и ищет в PostGIS ограничения в пределах 50 м от линии маршрута (`status <> 'expired'`, действующие сейчас по `time_windows`, время — Asia/Jerusalem).
+2. Конфликт — ограничение, которое ТС нарушает: `max_height < heightM`, `max_width < widthM`, `max_length < lengthM`, `max_gross_weight < grossWeightT`, `max_axle_weight < axleLoadT` (если `axleLoadT` не указан — тоже конфликт), `truck_prohibited = true`, `hazmat_restriction = true` при наличии `hazmat`. Равенство не считается нарушением.
+3. Конфликты объезжаются **независимо от статуса** (verified/unverified/disputed): объезд — всегда безопасное направление. Вокруг каждого конфликта строится многоугольник радиусом 20 м (`ST_Buffer` по geography) и передаётся в Valhalla как `exclude_polygons`; до 3 перестроений.
+4. Если конфликт остаётся — `409` со списком `conflicts`; если Valhalla не находит маршрут в обход — `422`. Небезопасный маршрут как успешный не возвращается.
+5. `onRoute` — ограничения на итоговом маршруте, которые ТС не нарушает (со статусом). Маршрут никогда не объявляется безопасным из-за непроверенных данных, а отсутствие записей ничего не гарантирует: `unverifiedCoverage` остаётся `"unknown"`.
+
+`valueSource` и `value` показываются ровно как в базе (значение со знака — ADR-0004). Направление (`direction`) пока не учитывается: ограничение применяется в обе стороны (консервативно).
 
 Сопоставление полей профиля с `costing_options.truck` Valhalla: `heightM→height`, `widthM→width`, `lengthM→length` (метры), `grossWeightT→weight`, `axleLoadT→axle_load` (тонны), наличие `hazmat→hazmat: true`.
 
-Коды ответов: `400` — неверный JSON/координаты/профиль (с перечнем ошибок), `503` — Valhalla отключена или недоступна, `502` — Valhalla вернула ошибку 5xx; ошибки 4xx Valhalla (например, «маршрут не найден») передаются как есть.
+Коды ответов: `400` — неверный JSON/координаты/профиль (с перечнем ошибок); `409` — маршрут всё ещё проходит через известное ограничение после 3 перестроений; `422` — маршрута в обход известных ограничений нет; `503` — Valhalla отключена/недоступна или БД недоступна (без проверки ограничений маршрут не отдаётся); `502` — Valhalla вернула 5xx или ответ без `shape`; ошибки 4xx Valhalla для первого запроса (например, «маршрут не найден») передаются как есть.
+
+### Ручная проверка объезда (вымышленное ограничение)
+
+Нужен запущенный стек с профилем `routing` и `npm ci` на хосте (для `pg`). Запись вымышленная, помечается `unverified` и источником `dev-test`; после проверки удалите её.
+
+```bash
+export DATABASE_URL="postgres://trucksil:$(grep ^POSTGRES_PASSWORD= .env | cut -d= -f2)@localhost:5432/trucksil"
+REQ='{"from":[34.7818,32.0853],"to":[35.2137,31.7683],"vehicle":{"profileName":"Демо (вымышленный)","heightM":4.0,"widthM":2.55,"lengthM":16.5,"grossWeightT":40,"axleLoadT":11.5}}'
+
+# 1. Исходный маршрут; точка из середины его линии (скрипт декодирует shape)
+curl -s -X POST localhost:8080/v1/route -H 'content-type: application/json' -d "$REQ" > /tmp/route.json
+P=$(node scripts/dev_add_test_restriction.js pick < /tmp/route.json); echo "$P"   # например 35.0123,31.8456
+
+# 2. Вымышленный мост 3.5 м в этой точке
+node scripts/dev_add_test_restriction.js add ${P/,/ } 3.5
+
+# 3. Тягач 4.0 м: ограничение должно попасть в trucksil.avoided, reroutes >= 1
+curl -s -X POST localhost:8080/v1/route -H 'content-type: application/json' -d "$REQ" | jq .trucksil
+#   (можно сравнить trip.summary.length с /tmp/route.json — маршрут изменился)
+#   С heightM 3.4 то же ограничение окажется в onRoute, а не в avoided.
+#   Если объезда нет (точка на единственной дороге) — ответ 422 с conflicts.
+
+# 4. Удалить запись
+node scripts/dev_add_test_restriction.js delete
+```
+
+Без скрипта точку можно выбрать вручную: возьмите координату `[lon, lat]` из `trip.legs[0].shape` (polyline6, декодер — `api/src/polyline.js`) или кликните по дороге маршрута на карте OSM, и вставьте SQL:
+
+```sql
+INSERT INTO restrictions (id, road_segment_id, geometry, value_source, restriction_type, value_numeric, unit, status, source, observed_at)
+VALUES ('dev-test-max-height', 'dev-test', ST_SetSRID(ST_MakePoint(<lon>, <lat>), 4326), 'posted_sign', 'max_height', 3.5, 'm',
+        'unverified', '{"name":"dev-test","reference":"fictional"}', now());
+-- после проверки:
+DELETE FROM restrictions WHERE id = 'dev-test-max-height';
+```
+
+(`docker compose exec db psql -U trucksil -d trucksil`.) Точка должна лежать не дальше 50 м от линии маршрута.
 
 ## 5. Тесты
 
@@ -115,10 +171,12 @@ npm test
 
 ## Известные ограничения
 
-- Собственные ограничения TrucksIL из таблицы `restrictions` **пока не передаются** в Valhalla: маршрут строится только по тегам OSM (`maxheight`, `maxweight` и т. п.), а их значения — лишь кандидаты (ADR-0006). Поэтому `unverifiedCoverage` всегда `"unknown"`.
+- Собственные ограничения TrucksIL применяются только после построения маршрута (проверка по линии + `exclude_polygons`), а не внутри графа Valhalla; базовый маршрут по-прежнему опирается на теги OSM, значения которых — лишь кандидаты (ADR-0006). Где в данных TrucksIL пробелы, узнать нельзя, поэтому `unverifiedCoverage` всегда `"unknown"`.
+- `exclude_polygons` исключает все рёбра, пересекающие многоугольник (20 м), — в т. ч. соседнюю проезжую часть или пересекающую дорогу на развязке. Это консервативно, но может удлинить маршрут или дать `422`.
+- `direction` ограничения не учитывается; временные окна проверяются на момент запроса, а не на время прохождения участка.
 - Нет аутентификации, ограничения частоты запросов и HTTPS — стенд только для локальной машины (порты привязаны к `127.0.0.1`).
 - `/v1/restrictions` возвращает не более 5000 объектов и только записи с геометрией.
-- `/health` отвечает `503`, если БД или включённая Valhalla недоступна; из-за этого Docker-healthcheck контейнера `api` тоже покажет `unhealthy`.
+- `/health` отвечает `503`, если БД или включённая Valhalla недоступна (в т. ч. при запуске без профиля `routing` и без `VALHALLA_URL=`); из-за этого Docker-healthcheck контейнера `api` тоже покажет `unhealthy`.
 - Высоты рельефа (`build_elevation`) и пробки не используются.
 - Сервис `valhalla` в этом окружении разработки ещё ни разу не запускался на реальном `.pbf`; первый запуск на вашей машине — фактически проверка конфигурации.
 

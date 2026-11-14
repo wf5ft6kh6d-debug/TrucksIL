@@ -4,6 +4,8 @@ const http = require('node:http');
 const {
   TRUCKSIL_NOTICE, loadVehicleValidator, parseBbox, validateRouteRequest, buildValhallaRouteRequest,
 } = require('./lib');
+const { planRoute, RouteError } = require('./routing');
+const { createRestrictionsRepo } = require('./restrictionsRepo');
 
 const MAX_BODY = 64 * 1024;
 
@@ -68,8 +70,12 @@ function readJson(req) {
  * @param {string} [deps.valhallaUrl]       base URL; empty/undefined = routing disabled
  * @param {Function} [deps.fetch]           fetch implementation
  * @param {number} [deps.timeoutMs]
+ * @param {object} [deps.repo]            restrictions repository (default: PostGIS via db)
  */
-function createHandler({ db, valhallaUrl, fetch = globalThis.fetch, timeoutMs = 15000, validateVehicle = loadVehicleValidator() } = {}) {
+function createHandler({
+  db, valhallaUrl, fetch = globalThis.fetch, timeoutMs = 15000, validateVehicle = loadVehicleValidator(),
+  repo = db ? createRestrictionsRepo(db) : null,
+} = {}) {
   const base = valhallaUrl ? valhallaUrl.replace(/\/+$/, '') : '';
 
   async function checkDb() {
@@ -108,26 +114,37 @@ function createHandler({ db, valhallaUrl, fetch = globalThis.fetch, timeoutMs = 
     const v = validateRouteRequest(body, validateVehicle);
     if (!v.ok) return send(res, 400, { error: 'invalid request', details: v.errors });
     if (!base) {
-      return send(res, 503, { error: 'routing disabled: Valhalla is not configured (start with `docker compose --profile routing up` and set VALHALLA_URL)', trucksil: TRUCKSIL_NOTICE });
+      return send(res, 503, { error: 'routing disabled: Valhalla is not configured (start with `docker compose --profile routing up`; VALHALLA_URL is empty)', trucksil: TRUCKSIL_NOTICE });
     }
-    let r;
+    if (!repo) return send(res, 503, { error: 'database unavailable: TrucksIL restrictions cannot be checked', trucksil: TRUCKSIL_NOTICE });
+
+    async function callValhalla(reqBody) {
+      let r;
+      try {
+        r = await fetch(`${base}/route`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(reqBody),
+          signal: AbortSignal.timeout(timeoutMs),
+        });
+      } catch (e) {
+        throw new RouteError(503, { error: `routing unavailable: Valhalla unreachable at ${base} (${e.name})` });
+      }
+      let json;
+      try { json = await r.json(); } catch { throw new RouteError(502, { error: 'invalid response from Valhalla' }); }
+      return { ok: r.ok, status: r.status, json };
+    }
+
+    let planned;
     try {
-      r = await fetch(`${base}/route`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(buildValhallaRouteRequest(body)),
-        signal: AbortSignal.timeout(timeoutMs),
-      });
+      planned = await planRoute({ callValhalla, repo, baseRequest: buildValhallaRouteRequest(body), vehicle: body.vehicle });
     } catch (e) {
-      return send(res, 503, { error: `routing unavailable: Valhalla unreachable at ${base} (${e.name})`, trucksil: TRUCKSIL_NOTICE });
+      if (e instanceof RouteError) return send(res, e.status, { ...e.body, trucksil: TRUCKSIL_NOTICE });
+      // Anything else here is a repository (PostGIS) failure: never return an unchecked route.
+      console.error('route check failed:', e.message);
+      return send(res, 503, { error: 'database unavailable: TrucksIL restrictions cannot be checked', trucksil: TRUCKSIL_NOTICE });
     }
-    let result;
-    try { result = await r.json(); } catch { return send(res, 502, { error: 'invalid response from Valhalla', trucksil: TRUCKSIL_NOTICE }); }
-    if (!r.ok) {
-      // 4xx from Valhalla (e.g. no route found) is passed through; 5xx becomes 502.
-      return send(res, r.status >= 500 ? 502 : r.status, { error: 'Valhalla error', valhalla: result, trucksil: TRUCKSIL_NOTICE });
-    }
-    send(res, 200, { ...result, trucksil: TRUCKSIL_NOTICE });
+    send(res, 200, { ...planned.result, trucksil: planned.trucksil });
   }
 
   return async function handler(req, res) {

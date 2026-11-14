@@ -61,9 +61,11 @@ services:
     environment:
       PORT: "8080"
       DATABASE_URL: postgres://${POSTGRES_USER:-trucksil}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-trucksil}
-      # Empty = routing disabled (POST /v1/route -> 503). With the "routing" profile set
-      # VALHALLA_URL=http://valhalla:8002 in .env.
-      VALHALLA_URL: ${VALHALLA_URL:-}
+      # Defaults to the compose valhalla service, so `--profile routing` needs no .env edit.
+      # Without the profile /health reports valhalla "down" and /v1/route returns 503.
+      # To run without routing on purpose, set VALHALLA_URL= (empty) in .env -> "disabled".
+      # Note `-` (not `:-`): an explicitly empty value is kept, only an unset one gets the default.
+      VALHALLA_URL: ${VALHALLA_URL-http://valhalla:8002}
     ports:
       - "127.0.0.1:${API_PORT:-8080}:8080"
 
