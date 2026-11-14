@@ -41,7 +41,7 @@
   "allOf": [
     {
       "if": {"properties": {"restrictionType": {"enum": ["max_height", "max_width", "max_length"]}}, "required": ["restrictionType"]},
-      "then": {"properties": {"value": {"type": "number", "exclusiveMinimum": 0, "maximum": 50}, "unit": {"const": "m"}}}
+      "then": {"required": ["valueSource"], "properties": {"valueSource": true, "value": {"type": "number", "exclusiveMinimum": 0, "maximum": 50}, "unit": {"const": "m"}}}
     },
     {
       "if": {"properties": {"restrictionType": {"enum": ["max_gross_weight", "max_axle_weight"]}}, "required": ["restrictionType"]},
