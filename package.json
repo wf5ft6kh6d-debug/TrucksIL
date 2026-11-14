@@ -5,7 +5,7 @@
   "license": "UNLICENSED",
   "description": "TrucksIL data schemas and fixture validation (draft).",
   "scripts": {
-    "test": "node --test test/schemas.test.js"
+    "test": "node --test test/schemas.test.js test/mot-bridges.test.js"
   },
   "engines": {
     "node": ">=20"
