@@ -99,6 +99,8 @@ class H(osmium.SimpleHandler):
 
     def node(self, n):
         self._ts(n)
+        if len(n.tags) == 0:  # most nodes are untagged; skip fast
+            return
         for t in TAGS:
             if t in n.tags:
                 self.tag_nodes[t] += 1
