@@ -25,3 +25,7 @@ __pycache__/
 *.pyc
 .venv/
 *.osm.pbf
+
+# Local dev stack
+data/osm/*
+!data/osm/.gitkeep
