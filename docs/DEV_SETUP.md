@@ -167,7 +167,62 @@ npm ci
 npm test
 ```
 
-Тесты API (`test/api/`) не требуют Docker: база и Valhalla подменяются заглушками.
+Тесты API (`test/api/`) не требуют Docker: база и Valhalla подменяются заглушками. Эталонные маршруты — см. раздел 6.
+
+## 6. Эталонные маршруты
+
+Набор эталонных сценариев лежит в `test/scenarios/routes.json`. **Все ограничения в нём вымышленные** (источник `e2e-fictional`, id с префиксом `e2e-`) и к реальным дорогам отношения не имеют. Один и тот же файл используется дважды:
+
+- `npm test` — быстрые тесты (`test/api/scenarios.test.js`) без Docker: настоящий HTTP-обработчик API, заглушка Valhalla (прямая линия; при `exclude_polygons` — объезд с отклонением ~5 км в середине) и хранилище ограничений в памяти с той же логикой, что SQL (50 м от линии, `expired` не применяется).
+- `npm run test:e2e` — прогон на запущенном стенде (БД + API + настоящая Valhalla).
+
+### Запуск на стенде
+
+```bash
+docker compose --profile routing up -d          # дождаться /health -> "status":"ok"
+export DATABASE_URL=postgres://trucksil:<пароль из .env>@localhost:5432/trucksil
+npm run test:e2e                                 # API_URL по умолчанию http://localhost:8080
+E2E_ONLY=S02,S03 npm run test:e2e                # только выбранные сценарии
+```
+
+Для каждого сценария скрипт `scripts/e2e_routes.js`: строит базовый маршрут через API → вычисляет точки `{"onRouteFraction": f}` по его линии → записывает вымышленные ограничения → вызывает `POST /v1/route` → сверяет ожидания → **всегда** удаляет свои записи (в т. ч. после ошибки; перед запуском удаляются и остатки прерванного прогона). В конце печатается таблица PASS/FAIL/SKIP; при любом FAIL (или если в базе остались строки `e2e-*`) код выхода ненулевой. Сравниваются только засеянные `e2e-*` записи, так что реальные данные в базе не мешают (их число на базовом маршруте выводится в примечании).
+
+### Что проверяет каждый сценарий
+
+| ID | Маршрут | Проверка |
+|----|---------|----------|
+| S01 | Тель-Авив → Иерусалим | без ограничений: 200, `avoided` пуст, `reroutes` 0 |
+| S02 | Тель-Авив → Иерусалим | мост 4,2 м, тягач 4,5 м → в `avoided`, `reroutes` ≥ 1 |
+| S03 | Тель-Авив → Иерусалим | тот же мост, машина 3,9 м → в `onRoute`, без перестроения |
+| S04 | Хайфа → Тель-Авив | `max_gross_weight` 20 т, 40 т → в `avoided` |
+| S05 | Хайфа → Тель-Авив | `truck_prohibited` → в `avoided` |
+| S06a | Беэр-Шева → Ашдод | `hazmat_restriction`, груз ADR 3 → в `avoided` |
+| S06b | Беэр-Шева → Ашдод | то же без опасного груза → в `onRoute` |
+| S07 | Тель-Авив → Иерусалим | высота 4,0 м = лимиту 4,0 м → не нарушение (`onRoute`) |
+| S08 | Тель-Авив → Иерусалим | `verified` мост 5,0 м → `onRoute`, `coverage.verifiedOnRoute` ≥ 1 |
+| S09 | Тель-Авив → Иерусалим | `expired` мост 3,0 м → игнорируется (нет ни в `avoided`, ни в `onRoute`) |
+| S10 | Беэр-Шева → Ашдод | объезда нет → 422 с `conflicts`; **только заглушка** (`mockOnly`), в e2e пропускается |
+
+На настоящей Valhalla число перестроений может быть больше 1 (рядом с исключённой точкой может оказаться параллельная проезжая часть), поэтому для объездов задан диапазон `minReroutes`…`maxReroutes` (1…3). Если точка `onRouteFraction` попала на участок без объезда, сценарий с объездом получит 422 — выберите другую долю.
+
+### Как добавить сценарий
+
+Добавьте объект в `scenarios` файла `test/scenarios/routes.json`:
+
+```json
+{
+  "id": "S11", "description": "что проверяем",
+  "from": "haifa", "to": "telAviv", "vehicle": "semi45",
+  "restrictions": [{ "id": "s11-width", "type": "max_width", "value": 2.4, "unit": "m",
+                     "status": "unverified", "valueSource": "posted_sign", "where": { "onRouteFraction": 0.3 } }],
+  "expected": { "status": 200, "avoidedIds": ["s11-width"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3 }
+}
+```
+
+- `from`/`to` — имя из `places` или `[lon, lat]`; `vehicle` — имя из `vehicles` или полный профиль.
+- `where` — `[lon, lat]` или `{"onRouteFraction": 0…1}` (доля длины базового маршрута); id указывается без `e2e-`, префикс добавляется автоматически.
+- `expected`: `status` (200/409/422), `avoidedIds`, `onRouteIds`, `absentIds`, `conflictIds`, `minReroutes`/`maxReroutes`, `minVerifiedOnRoute`. Для сценариев, которые нельзя воспроизвести на настоящей Valhalla, — `"mockOnly": true` и `"mock": {"noDetour": true}`.
+- Затем `npm test` (сценарий автоматически станет отдельным тестом) и `npm run test:e2e` на стенде.
 
 ## Известные ограничения
 

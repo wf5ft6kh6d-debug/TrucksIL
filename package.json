@@ -6,7 +6,8 @@
   "description": "TrucksIL data schemas, importers and local API (draft).",
   "scripts": {
     "test": "node --test test/schemas.test.js test/mot-bridges.test.js test/api/*.test.js",
-    "start": "node api/src/server.js"
+    "start": "node api/src/server.js",
+    "test:e2e": "node scripts/e2e_routes.js"
   },
   "engines": {
     "node": ">=20"

@@ -1,0 +1,85 @@
+{
+  "_comment": "Reference (golden) route scenarios. ALL restrictions here are FICTIONAL test data (source 'e2e-fictional'), not real Israeli road data. Used by test/api/scenarios.test.js (mock Valhalla) and scripts/e2e_routes.js (real stack). Restriction ids get the prefix 'e2e-' when seeded. See docs/DEV_SETUP.md, section 'Эталонные маршруты'.",
+  "places": {
+    "telAviv": [34.7818, 32.0853],
+    "jerusalem": [35.2137, 31.7683],
+    "haifa": [34.9896, 32.7940],
+    "beerSheva": [34.7913, 31.2520],
+    "ashdod": [34.6553, 31.8044]
+  },
+  "vehicles": {
+    "semi45": { "profileName": "Fictional semi 4.5 m / 40 t", "heightM": 4.5, "widthM": 2.55, "lengthM": 16.5, "grossWeightT": 40, "axleLoadT": 11.5 },
+    "rigid39": { "profileName": "Fictional rigid 3.9 m / 18 t", "heightM": 3.9, "widthM": 2.5, "lengthM": 10, "grossWeightT": 18, "axleLoadT": 10 },
+    "semi40": { "profileName": "Fictional semi 4.0 m / 40 t", "heightM": 4.0, "widthM": 2.55, "lengthM": 16.5, "grossWeightT": 40, "axleLoadT": 11.5 },
+    "tankerHazmat": { "profileName": "Fictional ADR tanker", "heightM": 3.8, "widthM": 2.55, "lengthM": 12, "grossWeightT": 26, "axleLoadT": 10, "hazmat": { "adrClasses": ["3"] } },
+    "tankerEmpty": { "profileName": "Fictional tanker, no dangerous goods", "heightM": 3.8, "widthM": 2.55, "lengthM": 12, "grossWeightT": 26, "axleLoadT": 10 }
+  },
+  "scenarios": [
+    {
+      "id": "S01", "description": "Tel Aviv -> Jerusalem, no seeded restrictions: plain route",
+      "from": "telAviv", "to": "jerusalem", "vehicle": "semi45", "restrictions": [],
+      "expected": { "status": 200, "avoidedIds": [], "onRouteIds": [], "minReroutes": 0, "maxReroutes": 0 }
+    },
+    {
+      "id": "S02", "description": "Low bridge 4.2 m on the route, truck 4.5 m -> avoided",
+      "from": "telAviv", "to": "jerusalem", "vehicle": "semi45",
+      "restrictions": [{ "id": "s02-bridge", "type": "max_height", "value": 4.2, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "where": { "onRouteFraction": 0.5 } }],
+      "expected": { "status": 200, "avoidedIds": ["s02-bridge"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3 }
+    },
+    {
+      "id": "S03", "description": "Same 4.2 m bridge, truck 3.9 m -> fits, reported on route, no reroute",
+      "from": "telAviv", "to": "jerusalem", "vehicle": "rigid39",
+      "restrictions": [{ "id": "s03-bridge", "type": "max_height", "value": 4.2, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "where": { "onRouteFraction": 0.5 } }],
+      "expected": { "status": 200, "avoidedIds": [], "onRouteIds": ["s03-bridge"], "minReroutes": 0, "maxReroutes": 0 }
+    },
+    {
+      "id": "S04", "description": "Haifa -> Tel Aviv, weight limit 20 t, truck 40 t -> avoided",
+      "from": "haifa", "to": "telAviv", "vehicle": "semi45",
+      "restrictions": [{ "id": "s04-weight", "type": "max_gross_weight", "value": 20, "unit": "t", "status": "unverified", "valueSource": "posted_sign", "where": { "onRouteFraction": 0.4 } }],
+      "expected": { "status": 200, "avoidedIds": ["s04-weight"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3 }
+    },
+    {
+      "id": "S05", "description": "Haifa -> Tel Aviv, truck_prohibited segment -> avoided",
+      "from": "haifa", "to": "telAviv", "vehicle": "rigid39",
+      "restrictions": [{ "id": "s05-notrucks", "type": "truck_prohibited", "value": true, "unit": "boolean", "status": "unverified", "valueSource": "regulation", "where": { "onRouteFraction": 0.6 } }],
+      "expected": { "status": 200, "avoidedIds": ["s05-notrucks"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3 }
+    },
+    {
+      "id": "S06a", "description": "Be'er Sheva -> Ashdod, hazmat restriction, vehicle carries ADR class 3 -> avoided",
+      "from": "beerSheva", "to": "ashdod", "vehicle": "tankerHazmat",
+      "restrictions": [{ "id": "s06a-hazmat", "type": "hazmat_restriction", "value": true, "unit": "boolean", "status": "unverified", "valueSource": "regulation", "where": { "onRouteFraction": 0.5 } }],
+      "expected": { "status": 200, "avoidedIds": ["s06a-hazmat"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3 }
+    },
+    {
+      "id": "S06b", "description": "Same hazmat restriction, vehicle without dangerous goods -> on route, not avoided",
+      "from": "beerSheva", "to": "ashdod", "vehicle": "tankerEmpty",
+      "restrictions": [{ "id": "s06b-hazmat", "type": "hazmat_restriction", "value": true, "unit": "boolean", "status": "unverified", "valueSource": "regulation", "where": { "onRouteFraction": 0.5 } }],
+      "expected": { "status": 200, "avoidedIds": [], "onRouteIds": ["s06b-hazmat"], "minReroutes": 0, "maxReroutes": 0 }
+    },
+    {
+      "id": "S07", "description": "Bridge limit 4.0 m == truck height 4.0 m -> not a violation (strict <)",
+      "from": "telAviv", "to": "jerusalem", "vehicle": "semi40",
+      "restrictions": [{ "id": "s07-bridge", "type": "max_height", "value": 4.0, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "where": { "onRouteFraction": 0.5 } }],
+      "expected": { "status": 200, "avoidedIds": [], "onRouteIds": ["s07-bridge"], "minReroutes": 0, "maxReroutes": 0 }
+    },
+    {
+      "id": "S08", "description": "Verified 5.0 m bridge, truck 4.5 m -> on route and counted in coverage.verifiedOnRoute",
+      "from": "telAviv", "to": "jerusalem", "vehicle": "semi45",
+      "restrictions": [{ "id": "s08-bridge", "type": "max_height", "value": 5.0, "unit": "m", "status": "verified", "valueSource": "measured", "where": { "onRouteFraction": 0.5 } }],
+      "expected": { "status": 200, "avoidedIds": [], "onRouteIds": ["s08-bridge"], "minReroutes": 0, "maxReroutes": 0, "minVerifiedOnRoute": 1 }
+    },
+    {
+      "id": "S09", "description": "Expired 3.0 m bridge, truck 4.5 m -> ignored entirely (neither avoided nor on route)",
+      "from": "telAviv", "to": "jerusalem", "vehicle": "semi45",
+      "restrictions": [{ "id": "s09-bridge", "type": "max_height", "value": 3.0, "unit": "m", "status": "expired", "valueSource": "posted_sign", "where": { "onRouteFraction": 0.5 } }],
+      "expected": { "status": 200, "avoidedIds": [], "onRouteIds": [], "absentIds": ["s09-bridge"], "minReroutes": 0, "maxReroutes": 0 }
+    },
+    {
+      "id": "S10", "description": "Low bridge, but Valhalla finds no route once it is excluded -> 422 with conflicts",
+      "mockOnly": true, "mock": { "noDetour": true },
+      "from": "beerSheva", "to": "ashdod", "vehicle": "semi45",
+      "restrictions": [{ "id": "s10-bridge", "type": "max_height", "value": 3.5, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "where": { "onRouteFraction": 0.5 } }],
+      "expected": { "status": 422, "conflictIds": ["s10-bridge"] }
+    }
+  ]
+}
