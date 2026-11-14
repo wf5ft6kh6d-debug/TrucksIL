@@ -1,0 +1,31 @@
+.anchor/
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Logs and build output
+*.log
+npm-debug.log*
+dist/
+build/
+coverage/
+__pycache__/
+*.pyc
+.venv/
+*.osm.pbf
+
+# Local dev stack
+data/osm/*
+!data/osm/.gitkeep

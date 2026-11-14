@@ -1,8 +1,9 @@
 {
-  "profileName": "Example truck — placeholder only",
+  "profileName": "Example truck — fictional placeholder only",
   "heightM": 3.8,
   "widthM": 2.5,
   "lengthM": 12.0,
   "grossWeightT": 18.0,
-  "note": "Fictional dimensions. Replace with actual registered vehicle specifications."
+  "axleLoadT": 10.0,
+  "note": "FICTIONAL dimensions. Replace with actual registered vehicle specifications."
 }

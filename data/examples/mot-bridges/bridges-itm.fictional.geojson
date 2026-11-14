@@ -1,0 +1,26 @@
+{
+  "type": "FeatureCollection",
+  "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::2039"}},
+  "features": [
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [178000, 665000]},
+     "properties": {"OBJECTID": 9001, "ID": "FX-001", "NAME": "FICTIONAL bridge A", "Road": 9999, "Placement": "1R", "Function": 1, "Trans_Use": 1, "Gavrit_min": 4.6, "Gavrit_max": 5.1, "D_Update": "202405"}},
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [178100, 665100]},
+     "properties": {"OBJECTID": 9002, "ID": "FX-002", "NAME": "FICTIONAL bridge B (-1)", "Function": 1, "Gavrit_min": -1, "Gavrit_max": -1, "D_Update": "202405"}},
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [178200, 665200]},
+     "properties": {"OBJECTID": 9003, "ID": "FX-003", "NAME": "FICTIONAL bridge C (9999)", "Function": 3, "Gavrit_min": 9999, "Gavrit_max": 9999}},
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [178300, 665300]},
+     "properties": {"OBJECTID": 9004, "ID": "FX-004", "NAME": "FICTIONAL rail-over-stream", "Function": 4, "Trans_Use": 2, "Gavrit_min": 3.2}},
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [178400, 665400]},
+     "properties": {"OBJECTID": 9005, "ID": "", "NAME": "FICTIONAL alias Min_Gavrit", "Function": "", "Min_Gavrit": "4,25", "Max_Gavrit": 4.8, "D_Update": 202311}},
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [178500, 665500]},
+     "properties": {"OBJECTID": 9006, "ID": "FX-006", "NAME": "FICTIONAL blank height", "Function": 6, "Gavrit_min": "", "Gavrit_max": null}},
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [178600, 665600]},
+     "properties": {"OBJECTID": 9007, "ID": "FX-007", "NAME": "FICTIONAL text height", "Function": 1, "Gavrit_min": "n/a"}},
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [178700, 665700]},
+     "properties": {"OBJECTID": 9008, "ID": "FX-008", "NAME": "FICTIONAL 0 and >50", "Function": 1, "Gavrit_min": 0}},
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [178800, 665800]},
+     "properties": {"OBJECTID": 9009, "ID": "FX-009", "NAME": "FICTIONAL 51", "Function": 1, "Gavrit_min": 51}},
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [178900, 665900]},
+     "properties": {"OBJECTID": 9010, "ID": "FX-010", "NAME": "FICTIONAL pedestrian passage", "Function": 7, "Gavrit_min": 2.5}}
+  ]
+}

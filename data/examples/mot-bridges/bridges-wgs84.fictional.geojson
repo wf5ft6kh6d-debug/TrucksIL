@@ -1,0 +1,9 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [34.9, 31.9]},
+     "properties": {"OBJECTID": 9101, "ID": "FX-101", "NAME": "FICTIONAL WGS84 bridge", "Function": 1, "Placement": "MM", "Gavrit_min": 4.3, "Gavrit_max": 4.3, "D_Update": "202512"}},
+    {"type": "Feature", "geometry": {"type": "Point", "coordinates": [34.91, 31.91]},
+     "properties": {"OBJECTID": 9102, "NAME": "FICTIONAL no ID, bad date", "Gavrit_min": 5, "D_Update": "2025-13"}}
+  ]
+}

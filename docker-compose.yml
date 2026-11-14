@@ -1,0 +1,73 @@
+# TrucksIL local development stack (stage 2, step 1). See docs/DEV_SETUP.md.
+#   docker compose up -d                    -> db + api (no routing, no OSM data needed)
+#   docker compose --profile routing up -d  -> also Valhalla (needs data/osm/*.osm.pbf)
+name: trucksil
+
+services:
+  db:
+    image: postgis/postgis:16-3.5
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-trucksil}
+      POSTGRES_USER: ${POSTGRES_USER:-trucksil}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env (copy .env.example)}
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      # Init scripts run only when the volume is empty (first start), after PostGIS's own 10_postgis.sh.
+      - ./db/migrations:/trucksil-migrations:ro
+      - ./db/initdb.sh:/docker-entrypoint-initdb.d/20_trucksil_migrations.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  valhalla:
+    image: ghcr.io/valhalla/valhalla-scripted:3.9.2
+    profiles: ["routing"]
+    restart: unless-stopped
+    environment:
+      # Build tiles from the .pbf in /custom_files (= ./data/osm). Nothing is downloaded.
+      tile_urls: ""
+      use_tiles_ignore_pbf: "True"
+      force_rebuild: "False"
+      build_elevation: "False"
+      build_admins: "True"
+      build_time_zones: "True"
+      serve_tiles: "True"
+      server_threads: "2"
+    ports:
+      - "127.0.0.1:${VALHALLA_PORT:-8002}:8002"
+    volumes:
+      - ./data/osm:/custom_files
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8002/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 30m
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: "8080"
+      DATABASE_URL: postgres://${POSTGRES_USER:-trucksil}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-trucksil}
+      # Defaults to the compose valhalla service, so `--profile routing` needs no .env edit.
+      # Without the profile /health reports valhalla "down" and /v1/route returns 503.
+      # To run without routing on purpose, set VALHALLA_URL= (empty) in .env -> "disabled".
+      # Note `-` (not `:-`): an explicitly empty value is kept, only an unset one gets the default.
+      VALHALLA_URL: ${VALHALLA_URL-http://valhalla:8002}
+    ports:
+      - "127.0.0.1:${API_PORT:-8080}:8080"
+
+volumes:
+  db-data:

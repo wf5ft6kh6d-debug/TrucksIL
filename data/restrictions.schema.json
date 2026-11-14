@@ -1,19 +1,105 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://trucksil.invalid/schemas/restrictions.schema.json",
   "title": "TrucksIL road restriction (draft)",
+  "description": "One road restriction record. Per docs/DATA_VERIFICATION.md, status 'verified' requires verifiedBy and verifiedAt. Absence of a restriction is NOT evidence that a road is suitable.",
   "type": "object",
   "required": ["id", "roadSegmentId", "restrictionType", "value", "unit", "status", "source", "observedAt"],
   "properties": {
-    "id": {"type": "string"},
-    "roadSegmentId": {"type": "string"},
+    "id": {"type": "string", "minLength": 1},
+    "roadSegmentId": {"type": "string", "minLength": 1},
+    "geometry": {"$ref": "#/$defs/geometry"},
+    "valueSource": {"enum": ["posted_sign", "measured", "regulation", "derived", "unknown"], "description": "Origin of the value. posted_sign = limit shown on the road sign (legally binding, shown to drivers as-is); measured = surveyed physical clearance."},
+    "direction": {"enum": ["both", "forward", "backward"], "default": "both", "description": "Applicable travel direction relative to the segment/geometry digitization order."},
     "restrictionType": {"enum": ["max_height", "max_width", "max_length", "max_gross_weight", "max_axle_weight", "truck_prohibited", "hazmat_restriction"]},
-    "value": {"type": "number", "minimum": 0},
+    "value": {"type": ["number", "boolean"]},
     "unit": {"enum": ["m", "t", "boolean"]},
+    "timeWindows": {
+      "type": "array",
+      "description": "Optional periods when the restriction applies. Omit if it always applies.",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/timeWindow"}
+    },
     "status": {"enum": ["unverified", "verified", "disputed", "expired"]},
-    "source": {"type": "object", "required": ["name", "reference"], "properties": {"name": {"type": "string"}, "reference": {"type": "string"}}},
+    "source": {
+      "type": "object",
+      "required": ["name", "reference"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "reference": {"type": "string", "minLength": 1},
+        "url": {"type": "string", "format": "uri"},
+        "license": {"type": "string", "minLength": 1, "description": "License or terms under which the source data may be used (e.g. SPDX id)."}
+      },
+      "additionalProperties": false
+    },
     "observedAt": {"type": "string", "format": "date-time"},
+    "verifiedBy": {"type": ["string", "null"], "minLength": 1},
     "verifiedAt": {"type": ["string", "null"], "format": "date-time"},
     "reviewDueAt": {"type": ["string", "null"], "format": "date-time"}
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {"properties": {"restrictionType": {"enum": ["max_height", "max_width", "max_length"]}}, "required": ["restrictionType"]},
+      "then": {"required": ["valueSource"], "properties": {"valueSource": true, "value": {"type": "number", "exclusiveMinimum": 0, "maximum": 50}, "unit": {"const": "m"}}}
+    },
+    {
+      "if": {"properties": {"restrictionType": {"enum": ["max_gross_weight", "max_axle_weight"]}}, "required": ["restrictionType"]},
+      "then": {"properties": {"value": {"type": "number", "exclusiveMinimum": 0, "maximum": 200}, "unit": {"const": "t"}}}
+    },
+    {
+      "if": {"properties": {"restrictionType": {"enum": ["truck_prohibited", "hazmat_restriction"]}}, "required": ["restrictionType"]},
+      "then": {"properties": {"value": {"type": "boolean"}, "unit": {"const": "boolean"}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "verified"}}, "required": ["status"]},
+      "then": {
+        "required": ["verifiedBy", "verifiedAt"],
+        "properties": {"verifiedBy": {"type": "string"}, "verifiedAt": {"type": "string"}}
+      }
+    }
+  ],
+  "$defs": {
+    "position": {
+      "type": "array",
+      "description": "WGS84 [longitude, latitude] (RFC 7946).",
+      "prefixItems": [
+        {"type": "number", "minimum": -180, "maximum": 180},
+        {"type": "number", "minimum": -90, "maximum": 90}
+      ],
+      "minItems": 2,
+      "maxItems": 3,
+      "items": {"type": "number"}
+    },
+    "geometry": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["type", "coordinates"],
+          "properties": {"type": {"const": "Point"}, "coordinates": {"$ref": "#/$defs/position"}},
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["type", "coordinates"],
+          "properties": {"type": {"const": "LineString"}, "coordinates": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/position"}}},
+          "additionalProperties": false
+        }
+      ]
+    },
+    "timeWindow": {
+      "type": "object",
+      "properties": {
+        "days": {"type": "array", "uniqueItems": true, "minItems": 1, "items": {"enum": ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]}},
+        "startTime": {"type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"},
+        "endTime": {"type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"},
+        "validFrom": {"type": "string", "format": "date"},
+        "validUntil": {"type": "string", "format": "date"},
+        "note": {"type": "string"}
+      },
+      "dependentRequired": {"startTime": ["endTime"], "endTime": ["startTime"]},
+      "minProperties": 1,
+      "additionalProperties": false
+    }
+  }
 }

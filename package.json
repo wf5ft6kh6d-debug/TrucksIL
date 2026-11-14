@@ -1,0 +1,20 @@
+{
+  "name": "trucksil",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "description": "TrucksIL data schemas, importers and local API (draft).",
+  "scripts": {
+    "test": "node --test test/schemas.test.js test/mot-bridges.test.js test/api/*.test.js",
+    "start": "node api/src/server.js",
+    "test:e2e": "node scripts/e2e_routes.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "pg": "8.23.1"
+  }
+}
