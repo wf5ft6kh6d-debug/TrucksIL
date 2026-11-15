@@ -216,3 +216,19 @@ test('repository passes route line and buffers to SQL', async () => {
   assert.deepEqual(await repo.exclusionPolygons(['a'], 20), [{ id: 'a', ring }]);
   assert.deepEqual(seen[1][1], [['a'], 20]);
 });
+
+test('classify: GeoJSON geometry is passed through to avoided/onRoute items (for map markers)', () => {
+  const geometry = { type: 'Point', coordinates: [35.0001, 31.9001] };
+  const { conflicts, onRoute } = classify([
+    { ...low, geometry },
+    { ...fine, geometry: { type: 'LineString', coordinates: [[35, 31.9], [35.001, 31.9]] } },
+    { ...fine, id: 'no-geom' },
+  ], truck, now);
+  assert.deepEqual(conflicts[0].geometry, geometry);
+  assert.equal(onRoute[0].geometry.type, 'LineString');
+  assert.equal('geometry' in onRoute[1], false);
+});
+
+test('ALONG_ROUTE_SQL selects geometry as GeoJSON', () => {
+  assert.match(ALONG_ROUTE_SQL, /ST_AsGeoJSON\(r\.geometry, 7\)::json AS geometry/);
+});

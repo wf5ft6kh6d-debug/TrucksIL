@@ -1,0 +1,20 @@
+{
+  "name": "trucksil-web",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "description": "TrucksIL PWA prototype client (stage 4, first slice). Not for navigation.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "maplibre-gl": "6.15.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.5"
+  }
+}

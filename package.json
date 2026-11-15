@@ -5,7 +5,8 @@
   "license": "Apache-2.0",
   "description": "TrucksIL data schemas, importers and local API (draft).",
   "scripts": {
-    "test": "node --test test/schemas.test.js test/mot-bridges.test.js test/api/*.test.js",
+    "test": "node --test test/schemas.test.js test/mot-bridges.test.js test/api/*.test.js web/test/*.test.js",
+    "test:web-smoke": "node web/smoke/smoke.cjs",
     "start": "node api/src/server.js",
     "test:e2e": "node scripts/e2e_routes.js"
   },

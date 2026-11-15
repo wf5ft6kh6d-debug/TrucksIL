@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#b71c1c">
+  <title>TrucksIL — prototype</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+</head>
+<body>
+  <header class="banner" role="alert" aria-live="polite">
+    <strong data-i18n="banner.prototype"></strong>
+    <span data-i18n="banner.coverage"></span>
+  </header>
+  <div class="layout">
+    <aside class="panel">
+      <div class="row lang">
+        <label for="lang" data-i18n="lang.label"></label>
+        <select id="lang">
+          <option value="he">עברית</option>
+          <option value="ar">العربية</option>
+          <option value="ru">Русский</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+
+      <section aria-labelledby="h-profile">
+        <h2 id="h-profile" data-i18n="profile.heading"></h2>
+        <label for="saved" data-i18n="profile.saved"></label>
+        <select id="saved"></select>
+        <form id="profile" novalidate>
+          <label><span data-i18n="profile.name"></span><input name="profileName" maxlength="120" required></label>
+          <div class="grid">
+            <label><span data-i18n="profile.height"></span><input name="heightM" inputmode="decimal" dir="ltr" required></label>
+            <label><span data-i18n="profile.width"></span><input name="widthM" inputmode="decimal" dir="ltr" required></label>
+            <label><span data-i18n="profile.length"></span><input name="lengthM" inputmode="decimal" dir="ltr" required></label>
+            <label><span data-i18n="profile.weight"></span><input name="grossWeightT" inputmode="decimal" dir="ltr" required></label>
+            <label><span data-i18n="profile.axle"></span><input name="axleLoadT" inputmode="decimal" dir="ltr"></label>
+          </div>
+          <fieldset><legend data-i18n="profile.hazmat"></legend><div id="adr" class="adr"></div></fieldset>
+          <label><span data-i18n="profile.note"></span><input name="note"></label>
+          <div class="row">
+            <button type="submit" data-i18n="profile.save"></button>
+            <button type="button" id="del" class="secondary" data-i18n="profile.delete"></button>
+          </div>
+          <div id="profile-msg" class="msg" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <section aria-labelledby="h-route">
+        <h2 id="h-route" data-i18n="route.heading"></h2>
+        <form id="route" novalidate>
+          <label><span data-i18n="route.from"></span>
+            <span class="row"><input name="from" dir="ltr" placeholder="34.7818,32.0853"><button type="button" class="secondary" data-pick="from" data-i18n="route.pickFrom"></button></span></label>
+          <label><span data-i18n="route.to"></span>
+            <span class="row"><input name="to" dir="ltr" placeholder="35.2137,31.7683"><button type="button" class="secondary" data-pick="to" data-i18n="route.pickTo"></button></span></label>
+          <button type="submit" data-i18n="route.submit"></button>
+          <div id="route-msg" class="msg" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <section id="restr" aria-labelledby="h-restr" aria-live="polite">
+        <h2 id="h-restr" data-i18n="restr.heading"></h2>
+        <div id="restr-body"></div>
+      </section>
+    </aside>
+    <main id="map" aria-label="map"></main>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -81,6 +81,8 @@ function toPublic(row, reason) {
     valueSource: row.value_source ?? null,
   };
   if (reason) out.reason = reason;
+  // GeoJSON geometry (WGS84) so clients can place markers; omitted when the row has none.
+  if (row.geometry && typeof row.geometry === 'object') out.geometry = row.geometry;
   return out;
 }
 
