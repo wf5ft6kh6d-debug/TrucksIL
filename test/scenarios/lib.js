@@ -83,11 +83,40 @@ function resolveWhere(where, baselineShape) {
   throw new Error(`bad "where": ${JSON.stringify(where)}`);
 }
 
-/** Restriction as a DB row (same column names as restrictionsRepo's SELECT) plus a `point`. */
-function toRow(r, point) {
+function shapeLengthM(shape) {
+  let total = 0;
+  for (let i = 1; i < shape.length; i += 1) total += haversineM(shape[i - 1], shape[i]);
+  return total;
+}
+
+/**
+ * Resolves `where` to a GeoJSON geometry. `{onRouteFraction, lineM}` -> a LineString of ~lineM metres
+ * centred on that fraction and digitized along the route's travel direction (`reversed: true` -> against it).
+ * Anything else -> Point (resolveWhere).
+ */
+function resolveGeometry(where, baselineShape) {
+  if (where && Number.isFinite(where.lineM) && Number.isFinite(where.onRouteFraction)) {
+    const half = where.lineM / 2 / (shapeLengthM(baselineShape) || 1);
+    const coords = [-1, 0, 1].map((k) => pointAtFraction(baselineShape, where.onRouteFraction + k * half));
+    return { type: 'LineString', coordinates: where.reversed ? coords.reverse() : coords };
+  }
+  return { type: 'Point', coordinates: resolveWhere(where, baselineShape) };
+}
+
+/** Representative point of a Point/LineString geometry (middle vertex). */
+const geometryPoint = (g) => (g.type === 'Point' ? g.coordinates : g.coordinates[Math.floor(g.coordinates.length / 2)]);
+
+/**
+ * Restriction as a DB row (same column names as restrictionsRepo's SELECT) plus a `point`.
+ * The second argument is a [lon,lat] point or a GeoJSON geometry (see resolveGeometry).
+ */
+function toRow(r, where) {
+  const geometry = Array.isArray(where) ? { type: 'Point', coordinates: where } : where;
+  const point = geometryPoint(geometry);
   const bool = r.unit === 'boolean';
   return {
-    id: r.id, road_segment_id: 'e2e-fictional', value_source: r.valueSource ?? null, direction: 'both',
+    geometry,
+    id: r.id, road_segment_id: 'e2e-fictional', value_source: r.valueSource ?? null, direction: r.direction ?? 'both',
     restriction_type: r.type, value_numeric: bool ? null : r.value, value_boolean: bool ? r.value : null,
     unit: r.unit, time_windows: r.timeWindows ?? null, status: r.status,
     verified_at: r.status === 'verified' ? new Date('2026-01-01T00:00:00Z') : null, review_due_at: null, point,
@@ -96,13 +125,14 @@ function toRow(r, point) {
 
 /**
  * In-memory stand-in for restrictionsRepo: same filters as ALONG_ROUTE_SQL (geometry within bufferM of the
- * line, status <> 'expired', ORDER BY id) and a square ring of ~bufferM around the point for exclusions.
+ * line, status <> 'expired', ORDER BY id; LineStrings tested by their vertices) and a square ring of ~bufferM around the point for exclusions.
  */
 function createMemoryRepo(rows) {
   return {
     async findAlongRoute(coords, bufferM) {
       if (!coords.length) return [];
-      return rows.filter((r) => r.status !== 'expired' && distanceToShapeM(r.point, coords) <= bufferM)
+      const near = (r) => (r.geometry.type === 'Point' ? [r.point] : r.geometry.coordinates).some((p) => distanceToShapeM(p, coords) <= bufferM);
+      return rows.filter((r) => r.status !== 'expired' && near(r))
         .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
         .map(({ point, ...row }) => row);
     },
@@ -189,6 +219,6 @@ function checkExpectations(scenario, status, body) {
 }
 
 module.exports = {
-  SEED_PREFIX, SCENARIO_FILE, loadScenarios, haversineM, pointAtFraction, distanceToShapeM, resolveWhere, toRow,
+  SEED_PREFIX, SCENARIO_FILE, loadScenarios, haversineM, pointAtFraction, distanceToShapeM, resolveWhere, resolveGeometry, toRow,
   createMemoryRepo, mockShape, mockValhallaRoute, mockValhallaFetch, checkExpectations, routeShape,
 };

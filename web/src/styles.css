@@ -45,3 +45,8 @@ li.restr.avoided, li.restr.conflict { list-style-type: square; }
   .panel { width: 100%; border-inline-end: 0; border-top: 1px solid var(--line); }
   #map { min-height: 45vh; }
 }
+
+/* Driver reports (ADR-0012): visually distinct from official restrictions; always labelled unverified. */
+li.report { margin: 4px 0; list-style-type: circle; }
+.badge.report { color: #4a148c; background: #f3e5f5; border-color: #8e24aa; border-style: dashed; }
+li.report .votes button { font-size: 12px; padding: 1px 6px; margin-inline-end: 4px; }

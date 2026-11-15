@@ -66,6 +66,9 @@ services:
       # To run without routing on purpose, set VALHALLA_URL= (empty) in .env -> "disabled".
       # Note `-` (not `:-`): an explicitly empty value is kept, only an unset one gets the default.
       VALHALLA_URL: ${VALHALLA_URL-http://valhalla:8002}
+      # Driver reports (ADR-0012). Empty REPORTS_SALT -> dev salt + warning; empty MODERATOR_TOKEN -> moderation 403.
+      REPORTS_SALT: ${REPORTS_SALT:-}
+      MODERATOR_TOKEN: ${MODERATOR_TOKEN:-}
     ports:
       - "127.0.0.1:${API_PORT:-8080}:8080"
 

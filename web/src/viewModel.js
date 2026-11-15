@@ -2,6 +2,7 @@
 // Safety rule (ADR-0002): only a 200 response ever yields route geometry. 409/422 show conflicts
 // and never a route; every other status shows an error and no route.
 import { routeShape } from '../../api/src/polyline.mjs';
+import { reportItems } from './reports.js';
 
 /** Representative [lon, lat] for a GeoJSON geometry (marker position), or null. */
 export function markerPosition(geometry) {
@@ -50,7 +51,7 @@ const list = (a, kind) => (Array.isArray(a) ? a.map((r) => restrictionItem(r, ki
  */
 export function routeViewModel(status, body) {
   const b = body && typeof body === 'object' ? body : {};
-  const base = { route: null, summary: null, avoided: [], onRoute: [], conflicts: [], coverage: null, error: null };
+  const base = { route: null, summary: null, avoided: [], onRoute: [], conflicts: [], reports: [], coverage: null, error: null };
   if (status === 200) {
     const ts = b.trucksil || {};
     let coords = [];
@@ -67,6 +68,8 @@ export function routeViewModel(status, body) {
       summary: s ? { km: Number(s.length).toFixed(1), min: Math.round(Number(s.time) / 60), reroutes: ts.reroutes ?? 0 } : null,
       avoided: list(ts.avoided, 'avoided'),
       onRoute: list(ts.onRoute, 'onRoute'),
+      // Unverified driver reports near the route (informational only, ADR-0012).
+      reports: reportItems(ts.reports),
       coverage: ts.coverage ? {
         verified: ts.coverage.verifiedOnRoute ?? 0,
         unverified: ts.coverage.unverifiedOnRoute ?? 0,

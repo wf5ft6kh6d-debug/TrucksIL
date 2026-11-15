@@ -1,5 +1,5 @@
 {
-  "_comment": "Reference (golden) route scenarios. ALL restrictions here are FICTIONAL test data (source 'e2e-fictional'), not real Israeli road data. Used by test/api/scenarios.test.js (mock Valhalla) and scripts/e2e_routes.js (real stack). Restriction ids get the prefix 'e2e-' when seeded. See docs/DEV_SETUP.md, section 'Эталонные маршруты'.",
+  "_comment": "Reference (golden) route scenarios. ALL restrictions here are FICTIONAL test data (source 'e2e-fictional'), not real Israeli road data. Used by test/api/scenarios.test.js (mock Valhalla) and scripts/e2e_routes.js (real stack). Restriction ids get the prefix 'e2e-' when seeded. LineString restrictions: where {onRouteFraction, lineM, reversed} (digitized along/against travel). See docs/DEV_SETUP.md, section 'Эталонные маршруты'.",
   "places": {
     "telAviv": [34.7818, 32.0853],
     "jerusalem": [35.2137, 31.7683],
@@ -80,6 +80,10 @@
       "from": "beerSheva", "to": "ashdod", "vehicle": "semi45",
       "restrictions": [{ "id": "s10-bridge", "type": "max_height", "value": 3.5, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "where": { "onRouteFraction": 0.5 } }],
       "expected": { "status": 422, "conflictIds": ["s10-bridge"] }
-    }
+    },
+    {"id": "S11a", "description": "Directional 3.8 m limit (forward), line digitized along travel direction -> applies, avoided", "from": "telAviv", "to": "jerusalem", "vehicle": "semi45", "restrictions": [{"id": "s11a-oneway-bridge", "type": "max_height", "value": 3.8, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "direction": "forward", "where": {"onRouteFraction": 0.5, "lineM": 40, "reversed": false}}], "expected": {"status": 200, "avoidedIds": ["s11a-oneway-bridge"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3}},
+    {"id": "S11b", "description": "Directional 3.8 m limit (forward), line digitized against travel direction -> other carriageway, ignored", "from": "telAviv", "to": "jerusalem", "vehicle": "semi45", "restrictions": [{"id": "s11b-oneway-bridge", "type": "max_height", "value": 3.8, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "direction": "forward", "where": {"onRouteFraction": 0.5, "lineM": 40, "reversed": true}}], "expected": {"status": 200, "avoidedIds": [], "onRouteIds": [], "absentIds": ["s11b-oneway-bridge"], "minReroutes": 0, "maxReroutes": 0}},
+    {"id": "S11c", "description": "Directional 3.8 m limit (backward), line digitized against travel direction -> applies, avoided", "from": "telAviv", "to": "jerusalem", "vehicle": "semi45", "restrictions": [{"id": "s11c-oneway-bridge", "type": "max_height", "value": 3.8, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "direction": "backward", "where": {"onRouteFraction": 0.5, "lineM": 40, "reversed": true}}], "expected": {"status": 200, "avoidedIds": ["s11c-oneway-bridge"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3}},
+    {"id": "S11d", "description": "3.8 m limit on a line with direction both, digitized against travel direction -> applies, avoided", "from": "telAviv", "to": "jerusalem", "vehicle": "semi45", "restrictions": [{"id": "s11d-oneway-bridge", "type": "max_height", "value": 3.8, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "direction": "both", "where": {"onRouteFraction": 0.5, "lineM": 40, "reversed": true}}], "expected": {"status": 200, "avoidedIds": ["s11d-oneway-bridge"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3}}
   ]
 }

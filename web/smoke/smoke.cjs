@@ -32,6 +32,12 @@ async function main() {
   const requests = [];
   const server = http.createServer((req, res) => {
     const u = new URL(req.url, 'http://x');
+    if (u.pathname === '/api/v1/reports' && req.method === 'GET') {
+      // Driver reports (ADR-0012): one unverified report in any bbox.
+      res.writeHead(200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ reports: [{ id: 'r-smoke', type: 'hazard', position: [34.8, 32.1], note: null, ageMinutes: 4, confirmations: 1, verified: false }] }));
+      return;
+    }
     if (u.pathname.startsWith('/api/')) {
       let b = ''; req.on('data', (c) => { b += c; });
       req.on('end', () => { requests.push({ path: u.pathname, body: JSON.parse(b || 'null') }); res.writeHead(mode, { 'content-type': 'application/json' }); res.end(JSON.stringify(fx[mode])); });
@@ -100,8 +106,13 @@ async function main() {
     assert.match(txt, /4\.5 m/);
     assert.match(txt, /проверено/);
     assert.equal(await routeFeatureCount(page), 4);
-    assert.deepEqual(requests.at(-1).body.from, [34.78, 32.08]);
-    assert.equal(requests.at(-1).body.vehicle.heightM, 4);
+    const routeReqs = requests.filter((r) => r.path === '/api/v1/route');
+    assert.deepEqual(routeReqs.at(-1).body.from, [34.78, 32.08]);
+    assert.equal(routeReqs.at(-1).body.vehicle.heightM, 4);
+
+    // Driver reports panel: distinct item, always labelled unverified.
+    await page.waitForSelector('#reports-body li.report');
+    assert.match(await page.textContent('#reports-body'), /сообщение водителя, не проверено/);
 
     // Manifest + service worker are served.
     const man = await (await page.request.get(`${base}/manifest.webmanifest`)).json();
