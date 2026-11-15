@@ -6,6 +6,8 @@ const {
 } = require('./lib');
 const { planRoute, RouteError } = require('./routing');
 const { createRestrictionsRepo } = require('./restrictionsRepo');
+const { createReportsRepo, createReportsRoutes, reportsForRoute } = require('./reports');
+const { routeShape } = require('./polyline');
 
 const MAX_BODY = 64 * 1024;
 
@@ -71,11 +73,16 @@ function readJson(req) {
  * @param {Function} [deps.fetch]           fetch implementation
  * @param {number} [deps.timeoutMs]
  * @param {object} [deps.repo]            restrictions repository (default: PostGIS via db)
+ * @param {object} [deps.reportsRepo]     driver reports repository (default: PostGIS via db)
+ * @param {object} [deps.reports]         options for createReportsRoutes (salt, moderatorToken, now, limiter)
  */
 function createHandler({
   db, valhallaUrl, fetch = globalThis.fetch, timeoutMs = 15000, validateVehicle = loadVehicleValidator(),
   repo = db ? createRestrictionsRepo(db) : null,
+  reportsRepo = db ? createReportsRepo(db) : null, reports = {},
 } = {}) {
+  const reportsRoute = createReportsRoutes({ repo: reportsRepo, ...reports });
+  const reportsNow = reports.now || (() => new Date());
   const base = valhallaUrl ? valhallaUrl.replace(/\/+$/, '') : '';
 
   async function checkDb() {
@@ -144,7 +151,12 @@ function createHandler({
       console.error('route check failed:', e.message);
       return send(res, 503, { error: 'database unavailable: TrucksIL restrictions cannot be checked', trucksil: TRUCKSIL_NOTICE });
     }
-    send(res, 200, { ...planned.result, trucksil: planned.trucksil });
+    // Driver reports near the final route (ADR-0012): informational, unverified, never part of the
+    // safety check. Attached after planRoute so routing.js stays unaware of them; null = lookup failed.
+    let coords = [];
+    try { coords = routeShape(planned.result); } catch { coords = []; }
+    const nearby = await reportsForRoute(reportsRepo, coords, reportsNow());
+    send(res, 200, { ...planned.result, trucksil: { ...planned.trucksil, reports: nearby } });
   }
 
   return async function handler(req, res) {
@@ -153,6 +165,7 @@ function createHandler({
       if (req.method === 'GET' && url.pathname === '/health') return await health(req, res, url);
       if (req.method === 'GET' && url.pathname === '/v1/restrictions') return await restrictions(req, res, url);
       if (req.method === 'POST' && url.pathname === '/v1/route') return await route(req, res, url);
+      if (url.pathname.startsWith('/v1/reports') && await reportsRoute(req, res, url, { send, readJson })) return;
       if (['/health', '/v1/restrictions', '/v1/route'].includes(url.pathname)) return send(res, 405, { error: 'method not allowed' });
       send(res, 404, { error: 'not found' });
     } catch (e) {

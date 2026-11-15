@@ -11,6 +11,7 @@ import { ADR_CLASSES, createVehicleValidator, profileFromForm, parseLonLat } fro
 import { loadProfiles, saveProfile, deleteProfile } from './storage.js';
 import { routeViewModel, markersGeoJSON } from './viewModel.js';
 import { requestRoute } from './api.js';
+import { REPORT_TYPES, getClientId, reportItems, reportsGeoJSON, validateDraft, submitMessage, postReport, fetchReports, voteReport } from './reports.js';
 
 const LANG_KEY = 'trucksil.lang';
 const store = (() => { try { return window.localStorage; } catch { return null; } })();
@@ -19,7 +20,9 @@ const storage = store || { getItem: (k) => memStore.get(k) ?? null, setItem: (k,
 
 let lang = resolveLang(storage.getItem(LANG_KEY), navigator.languages || []);
 let lastVm = null;
-let pickTarget = null;
+let pickTarget = null; // 'from' | 'to' | 'report'
+let reportPos = null;
+let areaReports = [];
 const validateProfile = createVehicleValidator(schema);
 
 const $ = (s) => document.querySelector(s);
@@ -37,6 +40,8 @@ function renderStrings() {
   for (const n of document.querySelectorAll('[data-i18n]')) n.textContent = t(lang, n.dataset.i18n);
   $('#lang').value = lang;
   renderSaved();
+  renderReportTypes();
+  renderReports();
   if (lastVm) renderRestrictions(lastVm);
 }
 
@@ -118,11 +123,18 @@ map.on('load', () => {
       'circle-stroke-width': ['match', ['get', 'status'], 'verified', 3, 1.5],
     },
   });
+  // Driver reports: separate source/layer, purple dashed-looking ring, never mixed with restrictions.
+  map.addSource('reports', { type: 'geojson', data: EMPTY });
+  map.addLayer({ id: 'reports', type: 'circle', source: 'reports', paint: { 'circle-radius': 7, 'circle-color': '#f3e5f5', 'circle-stroke-color': '#8e24aa', 'circle-stroke-width': 3, 'circle-opacity': 0.9 } });
   if (lastVm) drawVm(lastVm);
+  loadAreaReports();
 });
+map.on('moveend', () => loadAreaReports());
+map.on('contextmenu', (e) => startReport([e.lngLat.lng, e.lngLat.lat])); // long-press / right click
 
 map.on('click', (e) => {
   if (!pickTarget) return;
+  if (pickTarget === 'report') { pickTarget = null; map.getCanvas().style.cursor = ''; startReport([e.lngLat.lng, e.lngLat.lat]); return; }
   $('#route').elements[pickTarget].value = `${e.lngLat.lng.toFixed(5)},${e.lngLat.lat.toFixed(5)}`;
   pickTarget = null;
   map.getCanvas().style.cursor = '';
@@ -151,6 +163,58 @@ function drawVm(vm) {
     const b = pts.reduce((acc, p) => acc.extend(p), new maplibregl.LngLatBounds(pts[0], pts[0]));
     map.fitBounds(b, { padding: 60, maxZoom: 15, duration: 0 });
   }
+}
+
+// ---------- driver reports (stage 5, ADR-0012) ----------
+function renderReportTypes() {
+  const sel = $('#report-type');
+  const cur = sel.value;
+  sel.replaceChildren(...REPORT_TYPES.map((k) => el('option', { value: k }, t(lang, `rtype.${k}`))));
+  if (cur) sel.value = cur;
+}
+
+function startReport(pos) {
+  reportPos = [Number(pos[0].toFixed(5)), Number(pos[1].toFixed(5))];
+  $('#report-form').hidden = false;
+  showMsg('#report-msg', `${reportPos[0]},${reportPos[1]}`);
+}
+
+function reportNode(it) {
+  const li = el('li', { class: 'report', 'data-id': it.id },
+    el('span', { class: 'type' }, t(lang, it.typeKey)), ' ',
+    el('span', { class: 'badge report' }, t(lang, it.labelKey)), ' ',
+    el('span', { class: 'src' }, [it.ageMinutes !== null ? t(lang, 'reports.age', { min: it.ageMinutes }) : '', t(lang, 'reports.confirmations', { n: it.confirmations })].filter(Boolean).join(' · ')));
+  if (it.note) li.append(el('div', { class: 'reason' }, el('bdi', {}, it.note)));
+  const votes = el('div', { class: 'votes' });
+  for (const v of ['confirm', 'reject']) {
+    const b = el('button', { type: 'button', class: 'secondary', 'data-vote': v }, t(lang, `reports.${v}`));
+    b.addEventListener('click', async () => {
+      const r = await voteReport(it.id, v, getClientId(storage));
+      const m = submitMessage('vote', r.status);
+      showMsg('#report-msg', t(lang, m.key, { status: r.status ?? '—' }), m.cls);
+      loadAreaReports();
+    });
+    votes.append(b);
+  }
+  li.append(votes);
+  return li;
+}
+
+function renderReports() {
+  const body = $('#reports-body');
+  body.replaceChildren(areaReports.length ? el('ul', {}, ...areaReports.map(reportNode)) : el('p', { class: 'none' }, t(lang, 'reports.none')));
+  const src = map.getSource && map.getSource('reports');
+  const routeReports = lastVm ? lastVm.reports : [];
+  const seen = new Set(areaReports.map((r) => r.id));
+  if (src) src.setData(reportsGeoJSON([...areaReports, ...routeReports.filter((r) => !seen.has(r.id))]));
+}
+
+async function loadAreaReports() {
+  if (!map.getBounds) return;
+  const b = map.getBounds();
+  const { status, body } = await fetchReports([b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]);
+  areaReports = status === 200 && body ? reportItems(body.reports) : [];
+  renderReports();
 }
 
 // ---------- restrictions panel ----------
@@ -186,6 +250,7 @@ function renderRestrictions(vm) {
     if (vm.summary) body.append(el('p', { class: 'summary' }, t(lang, 'route.summary', vm.summary)));
     body.append(listSection('restr.avoided', vm.avoided), listSection('restr.onRoute', vm.onRoute));
     if (vm.coverage) body.append(el('p', { class: 'coverage' }, t(lang, 'restr.coverage', vm.coverage)));
+    if (vm.reports.length) body.append(el('div', { class: 'list' }, el('h3', {}, t(lang, 'reports.nearRoute')), el('ul', {}, ...vm.reports.map(reportNode))));
   }
   // Coverage caveat is repeated with every result, whatever happened (ADR-0002).
   if (vm.kind !== 'error') body.append(el('p', { class: 'caveat' }, t(lang, 'banner.coverage')));
@@ -228,6 +293,22 @@ function init() {
       showMsg('#route-msg', t(lang, 'route.pickHint'));
     });
   }
+  $('#report-add').addEventListener('click', () => {
+    pickTarget = 'report';
+    map.getCanvas().style.cursor = 'crosshair';
+    showMsg('#report-msg', t(lang, 'reports.pickHint'));
+  });
+  $('#report-cancel').addEventListener('click', () => { reportPos = null; $('#report-form').hidden = true; showMsg('#report-msg', ''); });
+  $('#report-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const draft = { type: e.target.elements.type.value, position: reportPos, note: e.target.elements.note.value.trim() };
+    const bad = validateDraft(draft);
+    if (bad) return showMsg('#report-msg', t(lang, bad), 'bad');
+    const r = await postReport(draft, getClientId(storage));
+    const m = submitMessage('create', r.status);
+    showMsg('#report-msg', t(lang, m.key, { status: r.status ?? '—' }), m.cls);
+    if (r.status === 201) { e.target.reset(); e.target.hidden = true; reportPos = null; loadAreaReports(); }
+  });
   for (const k of ['from', 'to']) $('#route').elements[k].addEventListener('change', drawPoints);
   $('#route').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -245,6 +326,7 @@ function init() {
     showMsg('#route-msg', '');
     renderRestrictions(lastVm);
     drawVm(lastVm);
+    renderReports();
   });
   if ('serviceWorker' in navigator && import.meta.env.PROD) {
     navigator.serviceWorker.register('/sw.js').catch(() => {});

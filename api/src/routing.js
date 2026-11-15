@@ -3,9 +3,10 @@
 // Policy (ADR-0002): any known conflict is AVOIDED whatever its status (avoiding is always the
 // safe direction), but nothing here ever claims a route is safe: absent data is not evidence.
 const { routeShape } = require('./polyline');
+const { directionApplies, thinExclusionRings } = require('./routeGeometry');
 
 const ROUTE_BUFFER_M = 50; // restriction counts as "on the route" within this distance of the shape
-const EXCLUDE_BUFFER_M = 20; // radius of the polygon sent to Valhalla exclude_polygons
+const EXCLUDE_BUFFER_M = 20; // radius of the fallback ("wide") polygon around the restriction (ADR-0011)
 const MAX_REROUTES = 3;
 
 const DISCLAIMER = 'prototype, not for navigation';
@@ -86,12 +87,17 @@ function toPublic(row, reason) {
   return out;
 }
 
-/** Splits rows near the route into conflicts (vehicle violates, active now) and the rest. */
-function classify(rows, vehicle, now = new Date()) {
+/**
+ * Splits rows near the route into conflicts (vehicle violates, active now) and the rest.
+ * With `shape`, LineString restrictions with direction forward/backward that the route traverses the
+ * other way are dropped (ADR-0011); anything undeterminable still applies.
+ */
+function classify(rows, vehicle, now = new Date(), shape = null) {
   const conflicts = [];
   const onRoute = [];
   for (const row of rows) {
     if (row.status === 'expired') continue;
+    if (shape && !directionApplies(row, shape)) continue;
     const reason = isActiveNow(row.time_windows, now) ? violation(row, vehicle) : null;
     if (reason) conflicts.push(toPublic(row, reason));
     else onRoute.push(toPublic(row));
@@ -114,10 +120,13 @@ class RouteError extends Error {
  */
 async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new Date(), maxReroutes = MAX_REROUTES }) {
   const avoided = new Map(); // id -> public conflict
-  const rings = new Map(); // id -> polygon ring
+  // id -> {level: 'thin' | 'wide', rings}. Escalation per conflict (ADR-0011): thin rectangles around the
+  // route edge that passed it -> 20 m polygon around the restriction itself -> no progress -> 409.
+  const exclusions = new Map();
   let attempt = 0;
   for (;;) {
-    const body = rings.size ? { ...baseRequest, exclude_polygons: [...rings.values()] } : baseRequest;
+    const rings = [...exclusions.values()].flatMap((e) => e.rings);
+    const body = rings.length ? { ...baseRequest, exclude_polygons: rings } : baseRequest;
     const r = await callValhalla(body);
     if (!r.ok) {
       if (attempt === 0) {
@@ -134,7 +143,7 @@ async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new D
     if (shape.length === 0) throw new RouteError(502, { error: 'Valhalla response has no route shape; restrictions cannot be checked' });
 
     const rows = await repo.findAlongRoute(shape, ROUTE_BUFFER_M);
-    const { conflicts, onRoute } = classify(rows, vehicle, now);
+    const { conflicts, onRoute } = classify(rows, vehicle, now, shape);
     if (conflicts.length === 0) {
       const verifiedOnRoute = onRoute.filter((x) => x.status === 'verified').length;
       return {
@@ -156,12 +165,29 @@ async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new D
         avoided: [...avoided.values()].filter((a) => !conflicts.some((c) => c.id === a.id)),
       });
     }
-    const fresh = conflicts.filter((c) => !rings.has(c.id));
-    const polys = await repo.exclusionPolygons(fresh.map((c) => c.id), EXCLUDE_BUFFER_M);
-    for (const p of polys) rings.set(p.id, p.ring);
+    let progressed = 0;
+    const needWide = [];
+    for (const c of conflicts) {
+      const prev = exclusions.get(c.id);
+      if (!prev) {
+        const thin = thinExclusionRings(shape, c.geometry);
+        if (thin) { exclusions.set(c.id, { level: 'thin', rings: thin }); progressed += 1; } else needWide.push(c.id);
+      } else if (prev.level === 'thin') {
+        needWide.push(c.id); // thin exclusion did not keep the route off it -> escalate
+      } // 'wide' already: nothing stronger to try
+    }
+    if (needWide.length) {
+      const polys = await repo.exclusionPolygons(needWide, EXCLUDE_BUFFER_M);
+      for (const p of polys) {
+        const prev = exclusions.get(p.id);
+        // Keep the thin rings too: they cover the route edge even if the restriction point is off it.
+        exclusions.set(p.id, { level: 'wide', rings: [...(prev ? prev.rings : []), p.ring] });
+        progressed += 1;
+      }
+    }
     for (const c of conflicts) avoided.set(c.id, c);
-    if (polys.length === 0) {
-      // Conflicts already excluded (Valhalla still routes through them) -> cannot make progress.
+    if (progressed === 0) {
+      // Conflicts already excluded at the widest level (Valhalla still routes through them) -> no progress.
       throw new RouteError(409, { error: 'route still conflicts with TrucksIL restrictions; exclusion had no effect', conflicts });
     }
     attempt += 1;

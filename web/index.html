@@ -61,6 +61,19 @@
         </form>
       </section>
 
+      <section id="reports" aria-labelledby="h-reports">
+        <h2 id="h-reports" data-i18n="reports.heading"></h2>
+        <button type="button" class="secondary" id="report-add" data-i18n="reports.add"></button>
+        <form id="report-form" novalidate hidden>
+          <label><span data-i18n="reports.type"></span><select name="type" id="report-type"></select></label>
+          <label><span data-i18n="reports.note"></span><textarea name="note" maxlength="280" rows="2"></textarea></label>
+          <span class="row"><button type="submit" data-i18n="reports.send"></button><button type="button" class="secondary" id="report-cancel" data-i18n="reports.cancel"></button></span>
+        </form>
+        <div id="report-msg" class="msg" aria-live="polite"></div>
+        <p class="caveat" data-i18n="reports.caveat"></p>
+        <div id="reports-body"></div>
+      </section>
+
       <section id="restr" aria-labelledby="h-restr" aria-live="polite">
         <h2 id="h-restr" data-i18n="restr.heading"></h2>
         <div id="restr-body"></div>
