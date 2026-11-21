@@ -103,7 +103,7 @@ export function routeViewModel(status, body) {
  * we never infer that structures are absent or covered.
  */
 export function structureCoverage(c) {
-  const unknown = { status: 'unknown', key: 'restr.structuresUnknown', n: null, m: null, k: null, noData: [] };
+  const unknown = { status: 'unknown', key: 'restr.structuresUnknown', n: null, m: null, k: null, v: null, noData: [] };
   if (!c || c.status !== 'computed') return unknown;
   const n = c.structuresOnRoute;
   const m = c.structuresWithData;
@@ -112,7 +112,13 @@ export function structureCoverage(c) {
   const noData = c.noDataSegments
     .map((s) => ({ type: s.type === 'tunnel' ? 'tunnel' : 'bridge', wayId: s.wayId ?? null, coordinates: Array.isArray(s.coordinates) && s.coordinates.length >= 2 && s.coordinates.every(pt) ? s.coordinates : [s.from, s.to] }))
     .filter((s) => s.coordinates.every(pt));
-  return { status: 'computed', key: 'restr.structures', n, m, k: n - m, noData };
+  // structuresWithVerifiedData (newer API): how many of the m have VERIFIED data; the rest of m are
+  // only unverified candidates (e.g. imported from OSM, ADR-0006). Missing/invalid -> old wording.
+  const v = c.structuresWithVerifiedData;
+  if (Number.isInteger(v) && v >= 0 && v <= m) {
+    return { status: 'computed', key: 'restr.structuresVerified', n, m, k: n - m, v, noData };
+  }
+  return { status: 'computed', key: 'restr.structures', n, m, k: n - m, v: null, noData };
 }
 
 /** GeoJSON lines for bridge/tunnel segments without TrucksIL data. */

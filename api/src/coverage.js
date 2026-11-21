@@ -9,6 +9,10 @@
 // local osm_underpasses table (migration 004, scripts/load_osm_underpasses.py), matched by the
 // route's own OSM way ids (never by distance alone, which would also catch bridges passing over
 // roads the route uses). OSM maxheight is reported only as an "OSM candidate", never used to route.
+// OSM height limits imported into `restrictions` (scripts/import_osm_maxheight.py, status 'unverified')
+// DO count as "with data" (and are avoided by routing, ADR-0002); *WithVerifiedData counts only
+// structures/underpasses that have at least one status 'verified' restriction, so clients can tell
+// verified data from OSM candidates.
 const { encodePolyline, decodePolyline } = require('./polyline');
 
 const COVERAGE_BUFFER_M = 30;
@@ -82,7 +86,7 @@ function routeWayIds(json) {
  *   {loaded:false} | {loaded:true, rows:[{point:[lon,lat], roadRef, osmMaxheightText, osmMaxheightM, hasData}]}
  */
 async function computeUnderpasses(underpassRepo, wayIds, shape) {
-  const empty = { underpassesOnRoute: null, underpassesWithData: null, noDataUnderpasses: null };
+  const empty = { underpassesOnRoute: null, underpassesWithData: null, underpassesWithVerifiedData: null, noDataUnderpasses: null };
   if (!underpassRepo) return { underpassStatus: 'not_loaded', ...empty };
   let r;
   try {
@@ -101,6 +105,7 @@ async function computeUnderpasses(underpassRepo, wayIds, shape) {
     underpassStatus: 'computed',
     underpassesOnRoute: r.rows.length,
     underpassesWithData: r.rows.length - noData.length,
+    underpassesWithVerifiedData: r.rows.filter((u) => u.hasData && u.hasVerifiedData === true).length,
     noDataUnderpasses: noData,
   };
 }
@@ -114,8 +119,9 @@ async function computeUnderpasses(underpassRepo, wayIds, shape) {
  */
 async function computeCoverage({ callTraceAttributes, repo, underpassRepo, shape, note, bufferM = COVERAGE_BUFFER_M }) {
   const unknown = (reason) => ({
-    status: 'unknown', reason, structuresOnRoute: null, structuresWithData: null, noDataSegments: null, note,
-    underpassStatus: 'unknown', underpassesOnRoute: null, underpassesWithData: null, noDataUnderpasses: null,
+    status: 'unknown', reason, structuresOnRoute: null, structuresWithData: null, structuresWithVerifiedData: null,
+    noDataSegments: null, note, underpassStatus: 'unknown', underpassesOnRoute: null, underpassesWithData: null,
+    underpassesWithVerifiedData: null, noDataUnderpasses: null,
   });
   if (!Array.isArray(shape) || shape.length < 2) return unknown('route shape missing');
   let structures;
@@ -130,9 +136,11 @@ async function computeCoverage({ callTraceAttributes, repo, underpassRepo, shape
   }
   const noDataSegments = [];
   let withData = 0;
+  let withVerified = 0;
   try {
     for (const s of structures) {
       const rows = await repo.findAlongRoute(s.coords, bufferM);
+      if (rows.some((x) => x.status === 'verified')) withVerified += 1;
       if (rows.length) withData += 1;
       else noDataSegments.push({ type: s.type, from: s.coords[0], to: s.coords.at(-1), wayId: s.wayId, wayIds: s.wayIds, coordinates: s.coords });
     }
@@ -144,6 +152,7 @@ async function computeCoverage({ callTraceAttributes, repo, underpassRepo, shape
     status: 'computed',
     structuresOnRoute: structures.length,
     structuresWithData: withData,
+    structuresWithVerifiedData: withVerified,
     noDataSegments,
     ...under,
     note,

@@ -411,3 +411,21 @@ docker run --rm -e JAVA_TOOL_OPTIONS="-Xmx3g" \
 - planetiler 0.10.2: `israel.pmtiles` 96 МБ за 4 мин 18 с (из них 1,5 мин — скачивание вспомогательных данных ~1,4 ГБ в `data/sources/`).
 - Покрытие Тель-Авив → Иерусалим: мостов/тоннелей 17 (было 21 до объединения соседних участков), проездов под мостами на маршруте 35, с данными TrucksIL — 0; `underpassStatus: computed`.
 - Тайлы OpenMapTiles требуют видимой атрибуции «© OpenMapTiles © OpenStreetMap contributors».
+
+## Высотные ограничения из OSM как кандидаты (ADR-0006, дополнение)
+Загружает `maxheight` из OSM в `restrictions` со статусом `unverified` (маршрут их избегает, покрытие считает «с данными», но не «проверено»). Данные ODbL — только локально, не коммитить. Нужны venv с osmium (как выше) и `node` (проверка схемы через Ajv).
+
+```bash
+source .venv/bin/activate
+# 1. импорт (идемпотентен: удаляет только id LIKE 'osm-maxheight-%' и вставляет заново, одна транзакция)
+python3 scripts/import_osm_maxheight.py data/osm/israel-and-palestine-latest.osm.pbf --sql \
+  | docker compose exec -T db sh -c 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
+#    статистика (crossing / way / node / skipped_*) и итог проверки схемы — в stderr
+# 2. проверка количества
+docker compose exec -T db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT GeometryType(geometry), value_source, count(*) FROM restrictions WHERE id LIKE '"'"'osm-maxheight-%'"'"' GROUP BY 1,2 ORDER BY 1,2"'
+# 3. эталонные сценарии и покрытие
+npm run test:e2e
+curl -s -X POST localhost:8080/v1/route -H 'content-type: application/json' -d "$REQ" \
+  | jq '.trucksil.coverage | {structuresOnRoute, structuresWithData, structuresWithVerifiedData, underpassesOnRoute, underpassesWithData, underpassesWithVerifiedData}'
+```
+Ожидаемо (по `docs/OSM_COVERAGE.md`): порядка 684 ways + 98 узлов с высотой, из них до 575 проездов под мостами; после фильтров (мосты, нечисловые, выбросы) записей будет меньше — запишите фактические числа. `structuresWithVerifiedData` / `underpassesWithVerifiedData` останутся 0, пока нет проверенных записей. Если e2e-сценарии изменятся из-за новых объездов (OSM-кандидаты на пути), это ожидаемо — зафиксируйте, какие. Откат: `DELETE FROM restrictions WHERE id LIKE 'osm-maxheight-%';`. Тесты: `python3 -m unittest scripts/test_import_osm_maxheight.py`, `test/api/coverage.test.js`, `web/test/viewModel.test.js`.
