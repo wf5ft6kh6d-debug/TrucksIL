@@ -60,3 +60,9 @@ li.report .votes button { font-size: 12px; padding: 1px 6px; margin-inline-end: 
 #nav-status .next { font-size: 16px; font-weight: 700; color: var(--fg); }
 #nav-status .state-suspect, #nav-status .state-off { color: var(--danger); font-weight: 700; }
 #nav-status .sim { display: inline-block; background: #6a1b9a; color: #fff; padding: 1px 6px; border-radius: 4px; font-size: 11px; }
+/* Shift timer (ADR-0018) */
+#shift-status[data-status="driving"] { color: var(--ok); }
+#shift-status[data-status="break"] { color: #6d4c00; }
+#shift-history ul { padding-inline-start: 18px; margin: 4px 0; font-size: 13px; }
+#shift details { margin: 6px 0; }
+#shift .note { font-size: 12px; }
