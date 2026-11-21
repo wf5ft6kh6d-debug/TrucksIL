@@ -470,6 +470,7 @@ function renderNav() {
       kids.push(el('div', { class: 'next' }, el('bdi', {}, t(lang, 'nav.next', { instruction: m.instruction || m.verbalPre || '—' })), ' ', t(lang, 'nav.inDist', { dist: t(lang, dp.key, { n: dp.n }) })));
     }
     if (p) kids.push(el('div', {}, t(lang, 'nav.remaining', { km: (p.remainingM / 1000).toFixed(1) })));
+    kids.push(el('div', { class: 'reroutes' }, t(lang, 'nav.reroutes', { n: run.reroutes })));
   }
   if (run.msg) kids.push(el('div', { class: run.msgCls || '' }, t(lang, run.msg.key, run.msg.params)));
   box.dataset.state = last ? last.offRoute.state : 'waiting';

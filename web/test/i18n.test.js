@@ -35,7 +35,7 @@ test('i18n: lookup with params, fallback to en, then to key', () => {
   assert.equal(t('en', 'err.other', { status: 418 }), 'Unexpected error (418). No route shown.');
   assert.equal(t('xx', 'banner.prototype'), 'Prototype. Not for navigation.');
   assert.equal(t('he', 'no.such.key'), 'no.such.key');
-  assert.equal(t('en', 'route.summary', { km: '1.0' }), 'Distance 1.0 km, time {min} min, re-routes: {reroutes}');
+  assert.equal(t('en', 'route.summary', { km: '1.0' }), 'Distance 1.0 km, time {min} min, restriction detours: {reroutes}');
 });
 
 test('i18n: safety strings present in every language; posted sign label in ru', () => {

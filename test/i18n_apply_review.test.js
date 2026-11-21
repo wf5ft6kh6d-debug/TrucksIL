@@ -23,7 +23,7 @@ const run = (args) => { try { return { code: 0, out: execFileSync('node', [scrip
 test('applies he/ar reviewed values, skips empty, leaves real file alone', () => {
   const before = fs.readFileSync(real, 'utf8');
   const { target, csv } = setup('banner.prototype,Prototype. Not for navigation.,אב טיפוס. אין להשתמש לניווט.,\r\n' +
-    'route.summary,"Distance {km} km, time {min} min, re-routes: {reroutes}",,"المسافة {km} كم، الوقت {min} دقيقة، it\'s {reroutes}"\r\n' +
+    'route.summary,"Distance {km} km, time {min} min, restriction detours: {reroutes}",,"المسافة {km} كم، الوقت {min} دقيقة، it\'s {reroutes}"\r\n' +
     'lang.label,Language,,\r\n');
   const r = run([csv, '--target', target]);
   assert.strictEqual(r.code, 0, r.out);
