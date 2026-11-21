@@ -430,3 +430,8 @@ curl -s -X POST localhost:8080/v1/route -H 'content-type: application/json' -d "
   | jq '.trucksil.coverage | {structuresOnRoute, structuresWithData, structuresWithVerifiedData, underpassesOnRoute, underpassesWithData, underpassesWithVerifiedData}'
 ```
 Ожидаемо (по `docs/OSM_COVERAGE.md`): порядка 684 ways + 98 узлов с высотой, из них до 575 проездов под мостами; после фильтров (мосты, нечисловые, выбросы) записей будет меньше — запишите фактические числа. `structuresWithVerifiedData` / `underpassesWithVerifiedData` останутся 0, пока нет проверенных записей. Если e2e-сценарии изменятся из-за новых объездов (OSM-кандидаты на пути), это ожидаемо — зафиксируйте, какие. Откат: `DELETE FROM restrictions WHERE id LIKE 'osm-maxheight-%';`. Тесты: `python3 -m unittest scripts/test_import_osm_maxheight.py`, `test/api/coverage.test.js`, `web/test/viewModel.test.js`.
+
+## Проверка на машине владельца (21.11.2026): кандидаты OSM + сопоставление по way_id
+- Импорт: 1034 записи (crossing 559, way 382, node 93), пропущено 60; все прошли схему.
+- До сопоставления по way_id: Тель-Авив → Иерусалим объезжал 8 соседних дорог (тоннель под улицей, подземная парковка и т.п.), e2e 7/11 FAIL, S04 422, S12b/c 409.
+- После (ADR-0016): e2e (относительный режим) 18 PASS, 0 FAIL, 2 SKIP; у всех базовых маршрутов reroutes 0. Сценарии с объездом — 1–2 перестроения.
