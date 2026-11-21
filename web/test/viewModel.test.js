@@ -129,3 +129,19 @@ test('i18n: structure strings in all languages never claim safety', async () => 
   assert.doesNotMatch(STRINGS.en['restr.structures'] + STRINGS.en['restr.structuresUnknown'], /safe/i);
   assert.doesNotMatch(STRINGS.ru['restr.structures'] + STRINGS.ru['restr.structuresUnknown'], /безопас/i);
 });
+
+test('structureCoverage: verified split (structuresWithVerifiedData) -> restr.structuresVerified; old API -> old wording', async () => {
+  const base = { status: 'computed', structuresOnRoute: 5, structuresWithData: 3, noDataSegments: [] };
+  const s = structureCoverage({ ...base, structuresWithVerifiedData: 1 });
+  assert.deepEqual([s.key, s.n, s.m, s.k, s.v], ['restr.structuresVerified', 5, 3, 2, 1]);
+  for (const v of [undefined, null, -1, 4, 1.5, '1']) {
+    const o = structureCoverage({ ...base, structuresWithVerifiedData: v });
+    assert.deepEqual([o.status, o.key, o.v], ['computed', 'restr.structures', null]);
+  }
+  const { LANGS, t } = await import('../src/i18n.js');
+  for (const l of LANGS) {
+    const txt = t(l, 'restr.structuresVerified', s);
+    assert.ok(txt.includes('5') && txt.includes('3') && txt.includes('2') && txt.includes('1') && !/\{/.test(txt), l);
+  }
+  assert.match(t('ru', 'restr.structuresVerified', s), /с данными TrucksIL: 3 \(проверено: 1/);
+});

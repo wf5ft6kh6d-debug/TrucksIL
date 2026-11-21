@@ -3,11 +3,11 @@
 // Policy (ADR-0002): any known conflict is AVOIDED whatever its status (avoiding is always the
 // safe direction), but nothing here ever claims a route is safe: absent data is not evidence.
 const { routeShape } = require('./polyline');
-const { directionApplies, thinExclusionRings } = require('./routeGeometry');
+const { directionApplies, thinExclusionRings, locate } = require('./routeGeometry');
+const { traceAttributesRequest, routeWayIds } = require('./coverage');
 
 const ROUTE_BUFFER_M = 50; // restriction counts as "on the route" within this distance of the shape
 const EXCLUDE_BUFFER_M = 20; // radius of the fallback ("wide") polygon around the restriction (ADR-0011)
-const MAX_REROUTES = 3;
 
 const DISCLAIMER = 'prototype, not for navigation';
 const COVERAGE_NOTE = 'Absence of restrictions in TrucksIL data does not mean the route is safe';
@@ -143,41 +143,217 @@ class RouteError extends Error {
   constructor(status, body) { super(body.error); this.status = status; this.body = body; }
 }
 
+// --- re-route loop configuration (ADR-0016) -----------------------------------------------------
+const DEFAULT_MAX_REROUTES = 8;
+// Valhalla service_limits.max_exclude_polygons_length: "Maximum total perimeter of all exclude_polygons
+// in meters", default 10000 (scripts/valhalla_build_config). Exceeding it is error 167 (HTTP 400,
+// "Exceeded maximum circumference for exclude_polygons"). We stay under it with a 5 % margin.
+const DEFAULT_PERIMETER_BUDGET_M = 10000;
+const PERIMETER_MARGIN = 0.95;
+const PRE_CORRIDOR_M = 3000; // pre-exclusion: conflicts within this distance of the first route
+const DEFAULT_MAX_PRE_EXCLUSIONS = 200;
+const PRE_HALF_M = 6; // half-size of a pre-exclusion square
+const COMPACT_ALONG_M = 8; // thin ring length (+-m) used when the perimeter budget is tight
+const VALHALLA_PERIMETER_ERROR = 167;
+
+const envNum = (name, dflt) => {
+  const v = Number(process.env[name]);
+  return Number.isFinite(v) && v >= 0 && process.env[name] !== '' ? v : dflt;
+};
+const envFlag = (name, dflt) => {
+  const v = process.env[name];
+  if (v === undefined || v === '') return dflt;
+  return !['0', 'false', 'no', 'off'].includes(String(v).toLowerCase());
+};
+/** Effective loop settings; env: MAX_REROUTES, PRE_EXCLUDE, MAX_PRE_EXCLUSIONS, VALHALLA_MAX_EXCLUDE_PERIMETER_M, ROUTE_WAY_MATCH. */
+function routingConfig() {
+  return {
+    maxReroutes: Math.floor(envNum('MAX_REROUTES', DEFAULT_MAX_REROUTES)),
+    preExclude: envFlag('PRE_EXCLUDE', true),
+    maxPreExclusions: Math.floor(envNum('MAX_PRE_EXCLUSIONS', DEFAULT_MAX_PRE_EXCLUSIONS)),
+    perimeterBudgetM: envNum('VALHALLA_MAX_EXCLUDE_PERIMETER_M', DEFAULT_PERIMETER_BUDGET_M) * PERIMETER_MARGIN,
+    wayMatch: envFlag('ROUTE_WAY_MATCH', true),
+  };
+}
+
+const MAX_REROUTES = DEFAULT_MAX_REROUTES;
+
+/** Geodesic-ish perimeter (m) of a [lon,lat] ring (equirectangular, fine at ring scale). */
+function ringPerimeterM(ring) {
+  let p = 0;
+  for (let i = 1; i < ring.length; i += 1) {
+    const [a, b] = [ring[i - 1], ring[i]];
+    const k = Math.cos(((a[1] + b[1]) / 2) * Math.PI / 180);
+    p += Math.hypot((b[0] - a[0]) * k, b[1] - a[1]) * (Math.PI / 180) * 6371008.8;
+  }
+  return p;
+}
+const ringsPerimeterM = (rings) => rings.reduce((s, r) => s + ringPerimeterM(r), 0);
+
+// OSM-derived rows carry road_segment_id 'osm:way:<id>' (scripts/import_osm_maxheight.py). For a
+// LineString (the way itself) and for a "crossing" Point (road <id> passing under a bridge; the point
+// lies on the bridge too) the restriction belongs to that road only. Height nodes stay geometric:
+// a node can be shared by several ways.
+const CROSSING_ID_RE = /-crossing\d+$/;
+function gateWayId(row) {
+  const m = /^osm:way:(\d+)$/.exec(row && row.road_segment_id ? String(row.road_segment_id) : '');
+  if (!m || !row.geometry) return null;
+  if (row.geometry.type === 'LineString' || (row.geometry.type === 'Point' && CROSSING_ID_RE.test(String(row.id)))) return Number(m[1]);
+  return null;
+}
+
 /**
- * Runs the route -> check -> exclude -> re-route loop.
+ * Way match (ADR-0016): drops rows whose OSM road (gateWayId) is not among the route's way ids.
+ * routeWays null (trace unavailable) -> nothing dropped (conservative).
+ */
+function splitByWay(rows, routeWays) {
+  if (!routeWays) return { rows, otherRoad: [] };
+  const keep = [];
+  const otherRoad = [];
+  for (const r of rows) {
+    const w = gateWayId(r);
+    if (w !== null && !routeWays.has(w)) otherRoad.push(r); else keep.push(r);
+  }
+  return { rows: keep, otherRoad };
+}
+
+/** Square ring of half-size h metres around [lon,lat]. */
+function squareRing([lon, lat], h) {
+  const dLat = h / 111320;
+  const dLon = dLat / Math.cos(lat * Math.PI / 180);
+  return [[lon - dLon, lat - dLat], [lon + dLon, lat - dLat], [lon + dLon, lat + dLat], [lon - dLon, lat + dLat], [lon - dLon, lat - dLat]];
+}
+
+/** Point at fraction f of a LineString's length. */
+function lineFraction(coords, f) {
+  const seg = [];
+  let total = 0;
+  for (let i = 1; i < coords.length; i += 1) {
+    const k = Math.cos(coords[i][1] * Math.PI / 180);
+    const d = Math.hypot((coords[i][0] - coords[i - 1][0]) * k, coords[i][1] - coords[i - 1][1]);
+    seg.push(d); total += d;
+  }
+  let t = total * f;
+  for (let i = 0; i < seg.length; i += 1) {
+    if (t <= seg[i] || i === seg.length - 1) {
+      const u = seg[i] ? Math.min(t / seg[i], 1) : 0;
+      return [coords[i][0] + (coords[i + 1][0] - coords[i][0]) * u, coords[i][1] + (coords[i + 1][1] - coords[i][1]) * u];
+    }
+    t -= seg[i];
+  }
+  return coords[coords.length - 1];
+}
+
+/**
+ * Compact pre-exclusion rings for a restriction that is NOT on the current route (ADR-0016).
+ * Point -> one small square. LineString -> squares at 15 % and 85 % of its length, which block the
+ * way's edges near both ends without covering its middle, where a bridge usually crosses it.
+ * Crossing Points are skipped (the square would also cut the bridge road above), as are directional
+ * rows (a square excludes both directions). Returns null when not applicable.
+ */
+function preExclusionRings(row) {
+  const g = row.geometry;
+  if (!g || !Array.isArray(g.coordinates)) return null;
+  if (row.direction === 'forward' || row.direction === 'backward') return null;
+  if (g.type === 'Point') return CROSSING_ID_RE.test(String(row.id)) ? null : [squareRing(g.coordinates, PRE_HALF_M)];
+  if (g.type === 'LineString' && g.coordinates.length >= 2) return [0.15, 0.85].map((f) => squareRing(lineFraction(g.coordinates, f), PRE_HALF_M));
+  return null;
+}
+
+function debugConflict(c, row) {
+  const src = row && row.source && typeof row.source === 'object' ? row.source : {};
+  return {
+    id: c.id, type: c.restrictionType, value: c.value, unit: c.unit, status: c.status, reason: c.reason,
+    sourceName: src.name ?? null, sourceUrl: src.url ?? null, roadSegmentId: row ? row.road_segment_id ?? null : null,
+  };
+}
+
+/**
+ * Runs the route -> check -> exclude -> re-route loop (ADR-0011, ADR-0016).
  * @param {object} p
  * @param {Function} p.callValhalla  async (requestBody) -> {status, ok, json}; throws RouteError for transport errors
+ * @param {Function} [p.callTraceAttributes] async (requestBody) -> {ok, json}; enables the way match
  * @param {object} p.repo            restrictions repository (see restrictionsRepo.js)
  * @param {object} p.baseRequest     Valhalla /route body without exclude_polygons
  * @param {object} p.vehicle
+ * @param {boolean} [p.debug]        adds trucksil.debug (per-iteration conflicts and exclusions)
  * @returns {Promise<{result, trucksil}>}  throws RouteError for non-200 outcomes
  */
-async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new Date(), maxReroutes = MAX_REROUTES }) {
+async function planRoute({
+  callValhalla, callTraceAttributes = null, repo, baseRequest, vehicle, now = new Date(), debug = false, ...opts
+}) {
+  const cfg = { ...routingConfig(), ...Object.fromEntries(Object.entries(opts).filter(([, v]) => v !== undefined)) };
+  const { maxReroutes, perimeterBudgetM, maxPreExclusions } = cfg;
   const avoided = new Map(); // id -> public conflict
   // id -> {level: 'thin' | 'wide', rings}. Escalation per conflict (ADR-0011): thin rectangles around the
   // route edge that passed it -> 20 m polygon around the restriction itself -> no progress -> 409.
+  // Accumulated across iterations: nothing is ever removed, so a revealed conflict stays excluded.
   const exclusions = new Map();
+  let pre = new Map(); // id -> {rings, distM}: soft pre-exclusions (ADR-0016), may be dropped
+  let preDropped = null;
+  let lastAdded = [];
+  const iterations = [];
   let attempt = 0;
+  const mandatoryRings = () => [...exclusions.values()].flatMap((e) => e.rings);
+  const dbg = (extra) => (debug ? { debug: { config: cfg, iterations, preExclusionDropped: preDropped, ...extra } } : {});
+
   for (;;) {
-    const rings = [...exclusions.values()].flatMap((e) => e.rings);
+    const rings = [...mandatoryRings(), ...[...pre.values()].flatMap((e) => e.rings)];
     const body = rings.length ? { ...baseRequest, exclude_polygons: rings } : baseRequest;
+    const it = debug ? { attempt, exclusions: exclusions.size, preExclusions: pre.size, rings: rings.length, perimeterM: Math.round(ringsPerimeterM(rings)) } : null;
+    if (it) iterations.push(it);
     const r = await callValhalla(body);
     if (!r.ok) {
-      if (attempt === 0) {
+      if (attempt === 0 && !rings.length) {
         throw new RouteError(r.status >= 500 ? 502 : r.status, { error: 'Valhalla error', valhalla: r.json });
       }
-      if (r.status >= 500) throw new RouteError(502, { error: 'Valhalla error', valhalla: r.json });
+      if (r.status >= 500) throw new RouteError(502, { error: 'Valhalla error', valhalla: r.json, ...dbg() });
+      if (pre.size) {
+        // Pre-exclusions are an optimisation only: if they cut every path (or the budget), retry without.
+        preDropped = { ids: [...pre.keys()], valhalla: r.json };
+        if (it) it.result = `valhalla ${r.status}; pre-exclusions dropped`;
+        pre = new Map();
+        attempt += 1;
+        if (attempt > maxReroutes) break;
+        continue;
+      }
+      if (r.json && r.json.error_code === VALHALLA_PERIMETER_ERROR) {
+        throw new RouteError(409, {
+          error: 'too many TrucksIL conflicts to exclude: Valhalla exclude_polygons perimeter limit reached (set VALHALLA_MAX_EXCLUDE_PERIMETER_M to the server limit)',
+          conflicts: [...avoided.values()], valhalla: r.json, ...dbg(),
+        });
+      }
       throw new RouteError(422, {
         error: 'no route found that avoids the known TrucksIL restrictions for this vehicle',
         conflicts: [...avoided.values()],
+        // A route existed before the last step, so the exclusions added in it are the ones that cut off
+        // every remaining path (together with the earlier ones).
+        blockingCandidates: lastAdded,
+        exclusions: [...exclusions.entries()].map(([id, e]) => ({ id, level: e.level, rings: e.rings.length })),
         valhalla: r.json,
+        ...dbg(),
       });
     }
     const shape = routeShape(r.json);
     if (shape.length === 0) throw new RouteError(502, { error: 'Valhalla response has no route shape; restrictions cannot be checked' });
 
-    const rows = await repo.findAlongRoute(shape, ROUTE_BUFFER_M);
-    const { conflicts, onRoute } = classify(rows, vehicle, now, shape);
+    const nearRows = await repo.findAlongRoute(shape, ROUTE_BUFFER_M);
+    let routeWays = null;
+    // Trace only when some nearby row can be matched by way (saves a Valhalla call otherwise).
+    if (cfg.wayMatch && callTraceAttributes && nearRows.some((x) => gateWayId(x) !== null)) {
+      try {
+        const t = await callTraceAttributes(traceAttributesRequest(shape));
+        if (t && t.ok && t.json && Array.isArray(t.json.edges)) routeWays = new Set(routeWayIds(t.json));
+      } catch { routeWays = null; }
+    }
+    const { rows: gated, otherRoad } = splitByWay(nearRows, routeWays);
+    const { conflicts, onRoute } = classify(gated, vehicle, now, shape);
+    const rowById = new Map(nearRows.map((x) => [x.id, x]));
+    if (it) {
+      it.conflicts = conflicts.map((c) => debugConflict(c, rowById.get(c.id)));
+      it.otherRoad = otherRoad.map((x) => x.id);
+      it.wayMatch = routeWays ? 'on' : 'off';
+    }
     if (conflicts.length === 0) {
       const verifiedOnRoute = onRoute.filter((x) => x.status === 'verified').length;
       return {
@@ -189,6 +365,7 @@ async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new D
           coverage: { verifiedOnRoute, unverifiedOnRoute: onRoute.length - verifiedOnRoute, note: COVERAGE_NOTE },
           unverifiedCoverage: 'unknown',
           reroutes: attempt,
+          ...dbg({ preExcluded: [...pre.keys()] }),
         },
       };
     }
@@ -197,15 +374,18 @@ async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new D
         error: `route still conflicts with TrucksIL restrictions after ${attempt} re-route attempts`,
         conflicts,
         avoided: [...avoided.values()].filter((a) => !conflicts.some((c) => c.id === a.id)),
+        ...dbg(),
       });
     }
     let progressed = 0;
+    const added = [];
     const needWide = [];
     for (const c of conflicts) {
       const prev = exclusions.get(c.id);
+      pre.delete(c.id); // now a hard (mandatory) exclusion
       if (!prev) {
         const thin = thinExclusionRings(shape, c.geometry);
-        if (thin) { exclusions.set(c.id, { level: 'thin', rings: thin }); progressed += 1; } else needWide.push(c.id);
+        if (thin) { exclusions.set(c.id, { level: 'thin', rings: thin, shape }); progressed += 1; added.push(c.id); } else needWide.push(c.id);
       } else if (prev.level === 'thin') {
         needWide.push(c.id); // thin exclusion did not keep the route off it -> escalate
       } // 'wide' already: nothing stronger to try
@@ -217,18 +397,88 @@ async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new D
         // Keep the thin rings too: they cover the route edge even if the restriction point is off it.
         exclusions.set(p.id, { level: 'wide', rings: [...(prev ? prev.rings : []), p.ring] });
         progressed += 1;
+        added.push(p.id);
       }
     }
     for (const c of conflicts) avoided.set(c.id, c);
     if (progressed === 0) {
       // Conflicts already excluded at the widest level (Valhalla still routes through them) -> no progress.
-      throw new RouteError(409, { error: 'route still conflicts with TrucksIL restrictions; exclusion had no effect', conflicts });
+      throw new RouteError(409, { error: 'route still conflicts with TrucksIL restrictions; exclusion had no effect', conflicts, ...dbg() });
     }
+    // Perimeter budget: shrink newly added thin rings first; mandatory exclusions must fit.
+    if (ringsPerimeterM(mandatoryRings()) > perimeterBudgetM) {
+      for (const id of added) {
+        const e = exclusions.get(id);
+        if (e && e.level === 'thin' && e.shape) {
+          const c = conflicts.find((x) => x.id === id);
+          const compact = thinExclusionRings(e.shape, c.geometry, { alongM: COMPACT_ALONG_M });
+          if (compact) e.rings = compact;
+        }
+      }
+    }
+    const mandatoryM = ringsPerimeterM(mandatoryRings());
+    if (mandatoryM > perimeterBudgetM) {
+      throw new RouteError(409, {
+        error: `too many TrucksIL conflicts to exclude: exclusion perimeter ${Math.round(mandatoryM)} m exceeds the Valhalla limit ${Math.round(perimeterBudgetM)} m`,
+        conflicts: [...avoided.values()],
+        ...dbg(),
+      });
+    }
+    lastAdded = added;
+    // Pre-exclusion (once, after the first conflicting route): exclude up front every other conflict
+    // within PRE_CORRIDOR_M of this route, nearest first, within the remaining budget.
+    if (cfg.preExclude && attempt === 0 && maxPreExclusions > 0) {
+      pre = await buildPreExclusions({
+        repo, shape, vehicle, now, routeWays: null, skip: new Set([...exclusions.keys()]),
+        budgetM: perimeterBudgetM - mandatoryM, maxCount: maxPreExclusions,
+      });
+    }
+    // Keep pre-exclusions within what the grown mandatory set leaves of the budget (drop farthest first).
+    if (pre.size) {
+      let room = perimeterBudgetM - ringsPerimeterM(mandatoryRings());
+      const kept = new Map();
+      for (const [id, e] of [...pre.entries()].sort((a, b) => a[1].distM - b[1].distM)) {
+        const p = ringsPerimeterM(e.rings);
+        if (p <= room) { kept.set(id, e); room -= p; }
+      }
+      pre = kept;
+    }
+    if (it) { it.added = added; it.preAdded = attempt === 0 ? [...pre.keys()] : []; }
     attempt += 1;
   }
+  throw new RouteError(409, {
+    error: `route still conflicts with TrucksIL restrictions after ${attempt} re-route attempts`,
+    conflicts: [...avoided.values()], ...dbg(),
+  });
+}
+
+async function buildPreExclusions({ repo, shape, vehicle, now, skip, budgetM, maxCount }) {
+  const rows = await repo.findAlongRoute(shape, PRE_CORRIDOR_M);
+  // No shape -> no direction filter; preExclusionRings skips directional rows anyway.
+  const { conflicts } = classify(rows.filter((x) => !skip.has(x.id)), vehicle, now, null);
+  const byId = new Map(rows.map((x) => [x.id, x]));
+  const cands = [];
+  for (const c of conflicts) {
+    const row = byId.get(c.id);
+    const rings = preExclusionRings(row);
+    if (!rings) continue;
+    const loc = locate(shape, row.geometry);
+    cands.push({ id: c.id, rings, distM: loc ? loc.distM : Infinity, perimeterM: ringsPerimeterM(rings) });
+  }
+  cands.sort((a, b) => a.distM - b.distM || (a.id < b.id ? -1 : 1));
+  const out = new Map();
+  let used = 0;
+  for (const c of cands) {
+    if (out.size >= maxCount) break;
+    if (used + c.perimeterM > budgetM) continue;
+    used += c.perimeterM;
+    out.set(c.id, { rings: c.rings, distM: c.distM });
+  }
+  return out;
 }
 
 module.exports = {
-  ROUTE_BUFFER_M, EXCLUDE_BUFFER_M, MAX_REROUTES, DISCLAIMER, COVERAGE_NOTE,
+  ROUTE_BUFFER_M, EXCLUDE_BUFFER_M, MAX_REROUTES, DEFAULT_PERIMETER_BUDGET_M, PRE_CORRIDOR_M, routingConfig,
+  ringPerimeterM, gateWayId, splitByWay, preExclusionRings, DISCLAIMER, COVERAGE_NOTE,
   TUNNEL_CATEGORIES, vehicleTunnelCode, tunnelConflict, isActiveNow, violation, classify, planRoute, RouteError,
 };

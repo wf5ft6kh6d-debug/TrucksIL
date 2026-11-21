@@ -156,3 +156,30 @@ test('HTTP: /v1/route calls trace_attributes and returns no-data segments', asyn
     assert.equal(body.trucksil.unverifiedCoverage, undefined);
   } finally { await new Promise((r) => server.close(r)); }
 });
+
+test('coverage: verified split — OSM candidates count as data but not as verified data', async () => {
+  // bridge has only an unverified OSM candidate; tunnel has a verified restriction plus a candidate.
+  const repo = { findAlongRoute: async (c) => (c[0][0] === 34.785
+    ? [{ id: 'osm-maxheight-way10-crossing1', status: 'unverified' }]
+    : [{ id: 'osm-maxheight-way20', status: 'unverified' }, { id: 'mot-1', status: 'verified' }]) };
+  const underpassRepo = { findOnRoute: async () => ({ loaded: true, rows: [
+    { point: [34.79, 32.09], hasData: true, hasVerifiedData: false },
+    { point: [34.80, 32.10], hasData: true, hasVerifiedData: true },
+    { point: [34.80, 32.105], hasData: false },
+  ] }) };
+  const c = await computeCoverage({ callTraceAttributes: ok(trace), repo, underpassRepo, shape });
+  assert.deepEqual([c.structuresOnRoute, c.structuresWithData, c.structuresWithVerifiedData], [2, 2, 1]);
+  assert.deepEqual([c.underpassesOnRoute, c.underpassesWithData, c.underpassesWithVerifiedData], [3, 2, 1]);
+  const u = await computeCoverage({ callTraceAttributes: async () => ({ ok: false, status: 500 }), repo, shape });
+  assert.deepEqual([u.status, u.structuresWithVerifiedData, u.underpassesWithVerifiedData], ['unknown', null, null]);
+  const n = await computeCoverage({ callTraceAttributes: ok(trace), repo, shape });
+  assert.equal(n.underpassesWithVerifiedData, null); // not loaded -> null, never 0
+});
+
+test('underpassesRepo: has_verified_data mapped; SQL checks status verified', async () => {
+  assert.match(ON_ROUTE_SQL, /r\.status = 'verified'[\s\S]*AS has_verified_data/);
+  const db = { query: async (sql) => (sql === PRESENT_SQL ? { rows: [{ present: true }] } : sql === LOADED_SQL ? { rows: [{ loaded: true }] }
+    : { rows: [{ id: 1, osm_road_way_id: '7', osm_bridge_way_id: '9', lon: 34.8, lat: 32.1, has_data: true, has_verified_data: true }] }) };
+  const r = await createUnderpassesRepo(db).findOnRoute([7], shape, 15, 30);
+  assert.deepEqual([r.rows[0].hasData, r.rows[0].hasVerifiedData], [true, true]);
+});

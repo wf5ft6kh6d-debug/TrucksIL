@@ -113,7 +113,7 @@ curl -s -X POST localhost:8080/v1/route \
 
 1. Valhalla строит маршрут; API декодирует `trip.legs[].shape` (polyline6) и ищет в PostGIS ограничения в пределах 50 м от линии маршрута (`status <> 'expired'`, действующие сейчас по `time_windows`, время — Asia/Jerusalem).
 2. Конфликт — ограничение, которое ТС нарушает: `max_height < heightM`, `max_width < widthM`, `max_length < lengthM`, `max_gross_weight < grossWeightT`, `max_axle_weight < axleLoadT` (если `axleLoadT` не указан — тоже конфликт), `truck_prohibited = true`, `hazmat_restriction = true` при наличии `hazmat`. Равенство не считается нарушением.
-3. Конфликты объезжаются **независимо от статуса** (verified/unverified/disputed): объезд — всегда безопасное направление. Исключение строится ступенчато (ADR-0011): сначала узкие прямоугольники (±7 м) вокруг **участка маршрута** в пределах ±30 м от ближайшей к ограничению точки — исключается только реально использованное ребро; если следующий маршрут снова проходит через то же ограничение, добавляется многоугольник радиусом 20 м вокруг самого ограничения (`ST_Buffer` по geography); если и это не помогло — `409`. Всё передаётся в Valhalla как `exclude_polygons`; до 3 перестроений. Без геометрии ограничения сразу используется 20 м.
+3. Конфликты объезжаются **независимо от статуса** (verified/unverified/disputed): объезд — всегда безопасное направление. Исключение строится ступенчато (ADR-0011): сначала узкие прямоугольники (±7 м) вокруг **участка маршрута** в пределах ±30 м от ближайшей к ограничению точки — исключается только реально использованное ребро; если следующий маршрут снова проходит через то же ограничение, добавляется многоугольник радиусом 20 м вокруг самого ограничения (`ST_Buffer` по geography); если и это не помогло — `409`. Всё передаётся в Valhalla как `exclude_polygons`; до `MAX_REROUTES` (8) перестроений, с предисключением конфликтов в 3 км от первого маршрута, сопоставлением OSM-записей по way id маршрута и бюджетом периметра Valhalla (ADR-0016; переменные `MAX_REROUTES`, `PRE_EXCLUDE`, `MAX_PRE_EXCLUSIONS`, `VALHALLA_MAX_EXCLUDE_PERIMETER_M`, `ROUTE_WAY_MATCH`). Диагностика: `POST /v1/route?debug=1` или `node scripts/explain_route.js 34.7818,32.0853 35.2137,31.7683 4.0 40` — какие ограничения избегаются и почему, со ссылками OSM. Без геометрии ограничения сразу используется 20 м.
 4. Если конфликт остаётся — `409` со списком `conflicts`; если Valhalla не находит маршрут в обход — `422`. Небезопасный маршрут как успешный не возвращается.
 5. `onRoute` — ограничения на итоговом маршруте, которые ТС не нарушает (со статусом). Маршрут никогда не объявляется безопасным из-за непроверенных данных, а отсутствие записей ничего не гарантирует: `unverifiedCoverage` остаётся `"unknown"`.
 
@@ -185,9 +185,10 @@ docker compose --profile routing up -d          # дождаться /health -> 
 export DATABASE_URL=postgres://trucksil:<пароль из .env>@localhost:5432/trucksil
 npm run test:e2e                                 # API_URL по умолчанию http://localhost:8080
 E2E_ONLY=S02,S03 npm run test:e2e                # только выбранные сценарии
+E2E_STRICT=1 npm run test:e2e                     # абсолютные ожидания (без учёта базового маршрута)
 ```
 
-Для каждого сценария скрипт `scripts/e2e_routes.js`: строит базовый маршрут через API → вычисляет точки `{"onRouteFraction": f}` по его линии → записывает вымышленные ограничения → вызывает `POST /v1/route` → сверяет ожидания → **всегда** удаляет свои записи (в т. ч. после ошибки; перед запуском удаляются и остатки прерванного прогона). В конце печатается таблица PASS/FAIL/SKIP; при любом FAIL (или если в базе остались строки `e2e-*`) код выхода ненулевой. Сравниваются только засеянные `e2e-*` записи, так что реальные данные в базе не мешают (их число на базовом маршруте выводится в примечании).
+Для каждого сценария скрипт `scripts/e2e_routes.js`: строит базовый маршрут через API → вычисляет точки `{"onRouteFraction": f}` по его линии → записывает вымышленные ограничения → вызывает `POST /v1/route` → сверяет ожидания → **всегда** удаляет свои записи (в т. ч. после ошибки; перед запуском удаляются и остатки прерванного прогона). В конце печатается таблица PASS/FAIL/SKIP; при любом FAIL (или если в базе остались строки `e2e-*`) код выхода ненулевой. Сравниваются только засеянные `e2e-*` записи, а число перестроений — относительно базового маршрута (ADR-0016): для объездов `reroutes ≥ max(minReroutes, базовые)`, для сценариев без объезда — только статус 200 и отсутствие засеянного id в `avoided`. Если базовый маршрут уже не строится из-за реальных данных — SKIP с причиной «baseline blocked by non-test data». `E2E_STRICT=1` — прежняя абсолютная проверка.
 
 ### Что проверяет каждый сценарий
 
@@ -411,3 +412,26 @@ docker run --rm -e JAVA_TOOL_OPTIONS="-Xmx3g" \
 - planetiler 0.10.2: `israel.pmtiles` 96 МБ за 4 мин 18 с (из них 1,5 мин — скачивание вспомогательных данных ~1,4 ГБ в `data/sources/`).
 - Покрытие Тель-Авив → Иерусалим: мостов/тоннелей 17 (было 21 до объединения соседних участков), проездов под мостами на маршруте 35, с данными TrucksIL — 0; `underpassStatus: computed`.
 - Тайлы OpenMapTiles требуют видимой атрибуции «© OpenMapTiles © OpenStreetMap contributors».
+
+## Высотные ограничения из OSM как кандидаты (ADR-0006, дополнение)
+Загружает `maxheight` из OSM в `restrictions` со статусом `unverified` (маршрут их избегает, покрытие считает «с данными», но не «проверено»). Данные ODbL — только локально, не коммитить. Нужны venv с osmium (как выше) и `node` (проверка схемы через Ajv).
+
+```bash
+source .venv/bin/activate
+# 1. импорт (идемпотентен: удаляет только id LIKE 'osm-maxheight-%' и вставляет заново, одна транзакция)
+python3 scripts/import_osm_maxheight.py data/osm/israel-and-palestine-latest.osm.pbf --sql \
+  | docker compose exec -T db sh -c 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
+#    статистика (crossing / way / node / skipped_*) и итог проверки схемы — в stderr
+# 2. проверка количества
+docker compose exec -T db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT GeometryType(geometry), value_source, count(*) FROM restrictions WHERE id LIKE '"'"'osm-maxheight-%'"'"' GROUP BY 1,2 ORDER BY 1,2"'
+# 3. эталонные сценарии и покрытие
+npm run test:e2e
+curl -s -X POST localhost:8080/v1/route -H 'content-type: application/json' -d "$REQ" \
+  | jq '.trucksil.coverage | {structuresOnRoute, structuresWithData, structuresWithVerifiedData, underpassesOnRoute, underpassesWithData, underpassesWithVerifiedData}'
+```
+Ожидаемо (по `docs/OSM_COVERAGE.md`): порядка 684 ways + 98 узлов с высотой, из них до 575 проездов под мостами; после фильтров (мосты, нечисловые, выбросы) записей будет меньше — запишите фактические числа. `structuresWithVerifiedData` / `underpassesWithVerifiedData` останутся 0, пока нет проверенных записей. Если e2e-сценарии изменятся из-за новых объездов (OSM-кандидаты на пути), это ожидаемо — зафиксируйте, какие. Откат: `DELETE FROM restrictions WHERE id LIKE 'osm-maxheight-%';`. Тесты: `python3 -m unittest scripts/test_import_osm_maxheight.py`, `test/api/coverage.test.js`, `web/test/viewModel.test.js`.
+
+## Проверка на машине владельца (21.11.2026): кандидаты OSM + сопоставление по way_id
+- Импорт: 1034 записи (crossing 559, way 382, node 93), пропущено 60; все прошли схему.
+- До сопоставления по way_id: Тель-Авив → Иерусалим объезжал 8 соседних дорог (тоннель под улицей, подземная парковка и т.п.), e2e 7/11 FAIL, S04 422, S12b/c 409.
+- После (ADR-0016): e2e (относительный режим) 18 PASS, 0 FAIL, 2 SKIP; у всех базовых маршрутов reroutes 0. Сценарии с объездом — 1–2 перестроения.

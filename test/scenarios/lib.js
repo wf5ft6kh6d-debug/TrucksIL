@@ -219,7 +219,52 @@ function checkExpectations(scenario, status, body) {
   return fails;
 }
 
+
+/**
+ * Evaluates an e2e run relative to the baseline (same request without the seeded rows), so real
+ * (non-test) data in the database does not break the scenarios (ADR-0016).
+ * base / res: {status, body}. strict: old absolute behaviour (E2E_STRICT=1).
+ * Returns {result: 'PASS'|'FAIL'|'SKIP', fails: string[], notes: string[]}.
+ *  - baseline not 200 -> SKIP "baseline blocked by non-test data" (FAIL when strict);
+ *  - seeded ids (avoided/onRoute/absent/conflicts), status, verified coverage, disclaimer: as checkExpectations;
+ *  - reroutes (relative): scenarios expecting avoidance (minReroutes >= 1) need reroutes >= max(minReroutes,
+ *    baseline reroutes); no-avoid scenarios (maxReroutes 0) only need the seeded ids out of avoided;
+ *    a different reroute count from the baseline is a note, not a failure.
+ */
+function evaluateRelative(scenario, base, res, { strict = false } = {}) {
+  const notes = [];
+  if (!base || base.status !== 200) {
+    const why = `baseline HTTP ${base ? base.status : '?'}${base && base.body && base.body.error ? ` (${base.body.error})` : ''}`;
+    if (strict) return { result: 'FAIL', fails: [`baseline route: ${why}`], notes };
+    return { result: 'SKIP', fails: [], notes: [`baseline blocked by non-test data: ${why}`] };
+  }
+  const bt = base.body.trucksil || {};
+  const baseReroutes = Number.isFinite(bt.reroutes) ? bt.reroutes : 0;
+  const nonTest = [...(bt.avoided || []), ...(bt.onRoute || [])].filter((x) => !String(x.id).startsWith(SEED_PREFIX)).length;
+  if (nonTest || baseReroutes) notes.push(`baseline: reroutes ${baseReroutes}, ${nonTest} non-test restriction(s)`);
+  if (strict) {
+    const fails = checkExpectations(scenario, res.status, res.body);
+    return { result: fails.length ? 'FAIL' : 'PASS', fails, notes };
+  }
+  const e = scenario.expected;
+  const relaxed = { ...scenario, expected: { ...e } };
+  delete relaxed.expected.minReroutes;
+  delete relaxed.expected.maxReroutes;
+  const fails = checkExpectations(relaxed, res.status, res.body);
+  if (res.status === 200 && e.status === 200) {
+    const t = res.body.trucksil || {};
+    if (Number.isFinite(e.minReroutes) && e.minReroutes >= 1) {
+      const need = Math.max(e.minReroutes, baseReroutes);
+      if (!(t.reroutes >= need)) fails.push(`reroutes ${t.reroutes} < ${need} (baseline ${baseReroutes})`);
+    } else if (t.reroutes !== baseReroutes) {
+      notes.push(`reroutes ${t.reroutes} vs baseline ${baseReroutes}`);
+    }
+  }
+  return { result: fails.length ? 'FAIL' : 'PASS', fails, notes };
+}
+
 module.exports = {
+  evaluateRelative,
   SEED_PREFIX, SCENARIO_FILE, loadScenarios, haversineM, pointAtFraction, distanceToShapeM, resolveWhere, resolveGeometry, toRow,
   createMemoryRepo, mockShape, mockValhallaRoute, mockValhallaFetch, checkExpectations, routeShape,
 };
