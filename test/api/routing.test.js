@@ -121,11 +121,14 @@ test('re-route: conflict persists -> 409 with conflicts', async () => {
   await assert.rejects(planRoute({ callValhalla, repo, baseRequest: {}, vehicle: truck, now }), (e) => {
     assert.ok(e instanceof RouteError);
     assert.equal(e.status, 409);
-    assert.equal(e.body.conflicts[0].id, 'low-4');
+    assert.equal(e.body.conflicts[0].id, 'low-9');
     return true;
   });
-  assert.equal(n, 4, 'initial route + 3 re-routes');
-  assert.equal(excl, 3);
+  assert.equal(n, 9, 'initial route + 8 re-routes (default MAX_REROUTES, ADR-0016)');
+  assert.equal(excl, 8);
+  n = 0;
+  await assert.rejects(planRoute({ callValhalla, repo, baseRequest: {}, vehicle: truck, now, maxReroutes: 3 }), (e) => e.status === 409 && e.body.conflicts[0].id === 'low-4');
+  assert.equal(n, 4, 'maxReroutes option still honoured');
 });
 
 test('re-route: Valhalla finds no route once conflicts are excluded -> 422', async () => {

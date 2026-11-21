@@ -11,6 +11,8 @@ const S = require('../test/scenarios/lib');
 
 const API_URL = (process.env.API_URL || 'http://localhost:8080').replace(/\/+$/, '');
 const ACTOR = 'e2e_routes';
+// E2E_STRICT=1: absolute expectations (reroutes ranges, baseline failure = FAIL) as before ADR-0016.
+const STRICT = process.env.E2E_STRICT === '1';
 
 async function postRoute(s) {
   const r = await fetch(`${API_URL}/v1/route`, {
@@ -48,17 +50,17 @@ async function runScenario(db, s) {
   try {
     await deleteSeeded(db, ids); // leftovers from an interrupted run
     const base = await postRoute({ ...s });
-    if (base.status !== 200) return { fails: [`baseline route: HTTP ${base.status} ${base.body.error || ''}`.trim()] };
+    if (base.status !== 200) {
+      const ev = S.evaluateRelative(s, base, null, { strict: STRICT });
+      return { skip: ev.result === 'SKIP', fails: ev.fails, notes: ev.notes };
+    }
     const shape = S.routeShape(base.body);
     if (!shape.length) return { fails: ['baseline route has no shape'] };
-    const baseIds = new Set([...(base.body.trucksil.avoided || []), ...(base.body.trucksil.onRoute || [])].map((x) => x.id));
     for (const r of s.restrictions) await seed(db, r, S.resolveGeometry(r.where, shape));
     const res = await postRoute(s);
-    const fails = S.checkExpectations(s, res.status, res.body);
-    // Real data near the route can change the baseline; flag it so a failure is easier to read.
+    const ev = S.evaluateRelative(s, base, res, { strict: STRICT });
     const t = res.body.trucksil || {};
-    const notes = baseIds.size ? [`${baseIds.size} non-test restriction(s) already on baseline`] : [];
-    return { fails, notes, status: res.status, reroutes: t.reroutes };
+    return { fails: ev.fails, notes: ev.notes, status: res.status, reroutes: t.reroutes };
   } finally {
     await deleteSeeded(db, ids);
   }
@@ -71,6 +73,7 @@ async function main() {
   const rows = [];
   try {
     const h = await fetch(`${API_URL}/health`).then((r) => r.json()).catch((e) => ({ error: e.message }));
+    console.log(`mode: ${STRICT ? 'STRICT (absolute)' : 'relative to baseline (E2E_STRICT=1 for absolute)'}`);
     console.log(`API ${API_URL} health: ${JSON.stringify(h)}`);
     for (const s of S.loadScenarios()) {
       if (only && !only.has(s.id)) continue;
@@ -78,7 +81,7 @@ async function main() {
       let r;
       try { r = await runScenario(db, s); } catch (e) { r = { fails: [`error: ${e.message}`] }; }
       const extra = [r.status !== undefined ? `HTTP ${r.status}` : null, r.reroutes !== undefined ? `reroutes ${r.reroutes}` : null, ...(r.notes || [])].filter(Boolean);
-      rows.push({ id: s.id, result: r.fails.length ? 'FAIL' : 'PASS', detail: [...r.fails, ...extra].join('; '), description: s.description });
+      rows.push({ id: s.id, result: r.skip ? 'SKIP' : r.fails.length ? 'FAIL' : 'PASS', detail: [...r.fails, ...extra].join('; '), description: s.description });
     }
     const left = await db.query("SELECT count(*)::int AS n FROM restrictions WHERE id LIKE 'e2e-%'");
     if (left.rows[0].n) rows.push({ id: 'cleanup', result: 'FAIL', detail: `${left.rows[0].n} e2e-* row(s) left in restrictions` });

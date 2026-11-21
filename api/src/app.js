@@ -119,7 +119,7 @@ function createHandler({
     send(res, 200, { type: 'FeatureCollection', features: rows.map(rowToFeature) });
   }
 
-  async function route(req, res) {
+  async function route(req, res, url) {
     let body;
     try { body = await readJson(req); } catch (e) { return send(res, e.status || 400, { error: e.message }); }
     const v = validateRouteRequest(body, validateVehicle);
@@ -146,9 +146,27 @@ function createHandler({
       return { ok: r.ok, status: r.status, json };
     }
 
+    // trace_attributes for the same shape is asked by the way match (routing.js) and by structure
+    // coverage (coverage.js); memoised per request so the final route is traced once.
+    const traceMemo = new Map();
+    async function memoTrace(b) {
+      const key = JSON.stringify(b);
+      if (!traceMemo.has(key)) {
+        let r;
+        try { r = await callValhalla(b, 'trace_attributes'); } catch (e) { r = { ok: false, status: e.status || 503 }; }
+        traceMemo.set(key, r);
+      }
+      return traceMemo.get(key);
+    }
+
     let planned;
     try {
-      planned = await planRoute({ callValhalla, repo, baseRequest: buildValhallaRouteRequest(body), vehicle: body.vehicle });
+      // ?debug=1 (or header x-trucksil-debug: 1): per-iteration conflicts and exclusions (ADR-0016).
+      const debug = ['1', 'true'].includes(String(url.searchParams.get('debug') || req.headers['x-trucksil-debug'] || ''));
+      const callTraceAttributes = memoTrace;
+      planned = await planRoute({
+        callValhalla, callTraceAttributes, repo, baseRequest: buildValhallaRouteRequest(body), vehicle: body.vehicle, debug,
+      });
     } catch (e) {
       if (e instanceof RouteError) return send(res, e.status, { ...e.body, trucksil: TRUCKSIL_NOTICE });
       // Anything else here is a repository (PostGIS) failure: never return an unchecked route.
@@ -164,9 +182,7 @@ function createHandler({
     // failure gives coverage.status 'unknown', never a claim of full coverage.
     const { unverifiedCoverage: _legacy, ...ts } = planned.trucksil;
     const structural = await computeCoverage({
-      callTraceAttributes: async (b) => {
-        try { return await callValhalla(b, 'trace_attributes'); } catch (e) { return { ok: false, status: e.status || 503 }; }
-      },
+      callTraceAttributes: memoTrace,
       repo, underpassRepo, shape: coords, note: ts.coverage && ts.coverage.note,
     });
     send(res, 200, { ...planned.result, trucksil: { ...ts, coverage: { ...ts.coverage, ...structural }, reports: nearby } });
