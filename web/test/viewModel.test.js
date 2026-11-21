@@ -88,3 +88,44 @@ test('api: requestRoute posts JSON to same-origin /api and handles network failu
   assert.deepEqual(await requestRoute({}, async () => { throw new TypeError('offline'); }), { status: null, body: null });
   assert.deepEqual(await requestRoute({}, async () => ({ status: 502, json: async () => { throw new Error('html'); } })), { status: 502, body: null });
 });
+
+// --- bridge/tunnel coverage (ADR-0014) ---
+import { structureCoverage, noDataGeoJSON } from '../src/viewModel.js';
+
+test('structureCoverage: computed block -> counts and no-data lines', () => {
+  const s = structureCoverage({ status: 'computed', structuresOnRoute: 3, structuresWithData: 1, noDataSegments: [
+    { type: 'bridge', from: [34.79, 32.09], to: [34.795, 32.095], wayId: 10, coordinates: [[34.79, 32.09], [34.792, 32.092], [34.795, 32.095]] },
+    { type: 'tunnel', from: [34.8, 32.1], to: [34.81, 32.11], wayId: 20 },
+  ] });
+  assert.deepEqual([s.status, s.key, s.n, s.m, s.k], ['computed', 'restr.structures', 3, 1, 2]);
+  const g = noDataGeoJSON({ structures: s });
+  assert.equal(g.features.length, 2);
+  assert.equal(g.features[0].geometry.coordinates.length, 3);
+  assert.deepEqual(g.features[1].geometry.coordinates, [[34.8, 32.1], [34.81, 32.11]]);
+});
+
+test('structureCoverage: missing/unknown/malformed -> unknown, never computed', () => {
+  for (const c of [undefined, null, { verifiedOnRoute: 1 }, { status: 'unknown' }, { status: 'computed', structuresOnRoute: 1, structuresWithData: 2, noDataSegments: [] }, { status: 'computed', structuresOnRoute: 1, structuresWithData: 0 }]) {
+    const s = structureCoverage(c);
+    assert.equal(s.status, 'unknown');
+    assert.equal(s.key, 'restr.structuresUnknown');
+    assert.deepEqual(s.noData, []);
+  }
+});
+
+test('routeViewModel: 200 carries structures; conflicts/errors do not', () => {
+  assert.equal(routeViewModel(200, ok200).structures.status, 'unknown'); // fixture has no structure block
+  assert.equal(routeViewModel(422, { conflicts: [] }).structures, null);
+  assert.equal(routeViewModel(503, {}).structures, null);
+});
+
+test('i18n: structure strings in all languages never claim safety', async () => {
+  const { STRINGS, LANGS, t } = await import('../src/i18n.js');
+  for (const l of LANGS) {
+    for (const k of ['restr.structures', 'restr.structuresUnknown', 'legend.noData']) assert.ok(STRINGS[l][k], `${l} ${k}`);
+    const txt = t(l, 'restr.structures', { n: 3, m: 1, k: 2 });
+    assert.ok(txt.includes('3') && txt.includes('1') && txt.includes('2') && !/\{/.test(txt));
+  }
+  assert.doesNotMatch(STRINGS.en['restr.structures'] + STRINGS.en['restr.structuresUnknown'], /safe/i);
+  assert.doesNotMatch(STRINGS.ru['restr.structures'] + STRINGS.ru['restr.structuresUnknown'], /безопас/i);
+});

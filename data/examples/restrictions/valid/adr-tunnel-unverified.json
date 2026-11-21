@@ -1,0 +1,1 @@
+{"id":"FICTIONAL-T-0001","roadSegmentId":"FICTIONAL-SEG-T1","geometry":{"type":"LineString","coordinates":[[34.6,31.6],[34.61,31.6]]},"restrictionType":"adr_tunnel","value":"C","unit":"adr_tunnel_category","valueSource":"regulation","status":"unverified","source":{"name":"Fictional test source","reference":"FIXTURE-T1"},"observedAt":"2026-01-01T00:00:00Z"}

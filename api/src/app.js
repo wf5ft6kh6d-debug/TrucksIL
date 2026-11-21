@@ -6,12 +6,15 @@ const {
 } = require('./lib');
 const { planRoute, RouteError } = require('./routing');
 const { createRestrictionsRepo } = require('./restrictionsRepo');
+const { createReportsRepo, createReportsRoutes, reportsForRoute } = require('./reports');
+const { routeShape } = require('./polyline');
+const { computeCoverage } = require('./coverage');
 
 const MAX_BODY = 64 * 1024;
 
 const RESTRICTIONS_SQL = `
 SELECT id, road_segment_id, ST_AsGeoJSON(geometry)::json AS geometry, value_source, direction,
-       restriction_type, value_numeric, value_boolean, unit, time_windows, status, source,
+       restriction_type, value_numeric, value_boolean, value_text, unit, time_windows, status, source,
        observed_at, verified_by, verified_at, review_due_at
 FROM restrictions
 WHERE geometry IS NOT NULL
@@ -27,7 +30,7 @@ function rowToFeature(r) {
     valueSource: r.value_source,
     direction: r.direction,
     restrictionType: r.restriction_type,
-    value: r.unit === 'boolean' ? r.value_boolean : r.value_numeric,
+    value: r.unit === 'boolean' ? r.value_boolean : r.unit === 'adr_tunnel_category' ? r.value_text : r.value_numeric,
     unit: r.unit,
     timeWindows: r.time_windows,
     status: r.status,
@@ -71,11 +74,16 @@ function readJson(req) {
  * @param {Function} [deps.fetch]           fetch implementation
  * @param {number} [deps.timeoutMs]
  * @param {object} [deps.repo]            restrictions repository (default: PostGIS via db)
+ * @param {object} [deps.reportsRepo]     driver reports repository (default: PostGIS via db)
+ * @param {object} [deps.reports]         options for createReportsRoutes (salt, moderatorToken, now, limiter)
  */
 function createHandler({
   db, valhallaUrl, fetch = globalThis.fetch, timeoutMs = 15000, validateVehicle = loadVehicleValidator(),
   repo = db ? createRestrictionsRepo(db) : null,
+  reportsRepo = db ? createReportsRepo(db) : null, reports = {},
 } = {}) {
+  const reportsRoute = createReportsRoutes({ repo: reportsRepo, ...reports });
+  const reportsNow = reports.now || (() => new Date());
   const base = valhallaUrl ? valhallaUrl.replace(/\/+$/, '') : '';
 
   async function checkDb() {
@@ -118,10 +126,10 @@ function createHandler({
     }
     if (!repo) return send(res, 503, { error: 'database unavailable: TrucksIL restrictions cannot be checked', trucksil: TRUCKSIL_NOTICE });
 
-    async function callValhalla(reqBody) {
+    async function callValhalla(reqBody, endpoint = 'route') {
       let r;
       try {
-        r = await fetch(`${base}/route`, {
+        r = await fetch(`${base}/${endpoint}`, {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(reqBody),
@@ -144,7 +152,21 @@ function createHandler({
       console.error('route check failed:', e.message);
       return send(res, 503, { error: 'database unavailable: TrucksIL restrictions cannot be checked', trucksil: TRUCKSIL_NOTICE });
     }
-    send(res, 200, { ...planned.result, trucksil: planned.trucksil });
+    // Driver reports near the final route (ADR-0012): informational, unverified, never part of the
+    // safety check. Attached after planRoute so routing.js stays unaware of them; null = lookup failed.
+    let coords = [];
+    try { coords = routeShape(planned.result); } catch { coords = []; }
+    const nearby = await reportsForRoute(reportsRepo, coords, reportsNow());
+    // Structure coverage (ADR-0014): bridges/tunnels without any TrucksIL data. Informational; a
+    // failure gives coverage.status 'unknown', never a claim of full coverage.
+    const { unverifiedCoverage: _legacy, ...ts } = planned.trucksil;
+    const structural = await computeCoverage({
+      callTraceAttributes: async (b) => {
+        try { return await callValhalla(b, 'trace_attributes'); } catch (e) { return { ok: false, status: e.status || 503 }; }
+      },
+      repo, shape: coords, note: ts.coverage && ts.coverage.note,
+    });
+    send(res, 200, { ...planned.result, trucksil: { ...ts, coverage: { ...ts.coverage, ...structural }, reports: nearby } });
   }
 
   return async function handler(req, res) {
@@ -153,6 +175,7 @@ function createHandler({
       if (req.method === 'GET' && url.pathname === '/health') return await health(req, res, url);
       if (req.method === 'GET' && url.pathname === '/v1/restrictions') return await restrictions(req, res, url);
       if (req.method === 'POST' && url.pathname === '/v1/route') return await route(req, res, url);
+      if (url.pathname.startsWith('/v1/reports') && await reportsRoute(req, res, url, { send, readJson })) return;
       if (['/health', '/v1/restrictions', '/v1/route'].includes(url.pathname)) return send(res, 405, { error: 'method not allowed' });
       send(res, 404, { error: 'not found' });
     } catch (e) {

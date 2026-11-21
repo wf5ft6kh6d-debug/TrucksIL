@@ -105,17 +105,17 @@ test('route: valhalla unreachable -> 503', async () => {
 
 test('route: proxies to valhalla with truck costing and adds trucksil block', async () => {
   let sent;
-  const fakeFetch = async (url, init) => { sent = { url, body: JSON.parse(init.body) }; return jsonResponse(200, { trip }); };
+  const fakeFetch = async (url, init) => { if (!sent) sent = { url, body: JSON.parse(init.body) }; return jsonResponse(200, { trip }); };
   await withServer({ db: okDb, valhallaUrl: 'http://valhalla:8002', fetch: fakeFetch }, async (base) => {
     const r = await call(base, '/v1/route', post({ from: [34.78, 32.08], to: [35.21, 31.77], vehicle: truck }));
     assert.equal(r.status, 200);
     assert.deepEqual(r.body.trip, trip);
     assert.equal(r.body.trucksil.disclaimer, 'prototype, not for navigation');
-    assert.equal(r.body.trucksil.unverifiedCoverage, 'unknown');
+    assert.equal(r.body.trucksil.coverage.status, 'unknown'); // mock has no trace_attributes edges
     assert.deepEqual(r.body.trucksil.avoided, []);
     assert.equal(sent.url, 'http://valhalla:8002/route');
     assert.equal(sent.body.costing, 'truck');
-    assert.deepEqual(sent.body.costing_options.truck, { height: 3.8, width: 2.5, length: 10, weight: 18 });
+    assert.deepEqual(sent.body.costing_options.truck, { height: 3.8, width: 2.5, length: 10, weight: 18, hgv_no_access_penalty: 43200 });
   });
 });
 

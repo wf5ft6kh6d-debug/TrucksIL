@@ -3,9 +3,10 @@
 // Policy (ADR-0002): any known conflict is AVOIDED whatever its status (avoiding is always the
 // safe direction), but nothing here ever claims a route is safe: absent data is not evidence.
 const { routeShape } = require('./polyline');
+const { directionApplies, thinExclusionRings } = require('./routeGeometry');
 
 const ROUTE_BUFFER_M = 50; // restriction counts as "on the route" within this distance of the shape
-const EXCLUDE_BUFFER_M = 20; // radius of the polygon sent to Valhalla exclude_polygons
+const EXCLUDE_BUFFER_M = 20; // radius of the fallback ("wide") polygon around the restriction (ADR-0011)
 const MAX_REROUTES = 3;
 
 const DISCLAIMER = 'prototype, not for navigation';
@@ -52,6 +53,38 @@ const NUMERIC_LIMITS = {
   max_axle_weight: 'axleLoadT',
 };
 
+// ADR tunnel categories, least to most restrictive (A = no restriction, not stored). ADR 1.9.5.2.2.
+const TUNNEL_CATEGORIES = ['B', 'C', 'D', 'E'];
+
+/**
+ * Most restrictive tunnel category the vehicle may NOT enter, as a letter B..E, or null if unrestricted.
+ * Simplification (ADR-0013): a code's first letter is the first forbidden category (B -> B..E forbidden,
+ * D -> D and E). Combination codes (B1000C, B/D, C5000D, D/E, ...) are reduced to their first letter, i.e.
+ * the strictest reading, because the exemption depends on load/tank details we do not model. A vehicle
+ * with hazmat but no code is treated as code B (conservative). No hazmat -> null. '-' -> null.
+ */
+function vehicleTunnelCode(vehicle) {
+  if (!vehicle || !vehicle.hazmat) return null;
+  const code = vehicle.hazmat.adrTunnelCode;
+  if (code === '-') return null;
+  const letter = typeof code === 'string' ? code.charAt(0) : '';
+  return TUNNEL_CATEGORIES.includes(letter) ? letter : 'B';
+}
+
+/**
+ * Reason string if a vehicle with tunnel code `vehicleCode` (B..E or null) may not pass a tunnel of
+ * `category`, else null. Forbidden when category >= code. An unknown/garbled category on a hazmat vehicle
+ * is treated as E (most restrictive) -> conflict.
+ */
+function tunnelConflict(category, vehicleCode) {
+  if (!vehicleCode) return null;
+  let cat = TUNNEL_CATEGORIES.indexOf(category);
+  if (cat < 0) cat = TUNNEL_CATEGORIES.length - 1;
+  return cat >= TUNNEL_CATEGORIES.indexOf(vehicleCode)
+    ? `ADR tunnel category ${TUNNEL_CATEGORIES[cat]} forbidden for tunnel code ${vehicleCode}`
+    : null;
+}
+
 /** Returns null if the vehicle does not violate the restriction, otherwise a short reason. */
 function violation(row, vehicle) {
   const field = NUMERIC_LIMITS[row.restriction_type];
@@ -68,6 +101,7 @@ function violation(row, vehicle) {
   if (row.restriction_type === 'hazmat_restriction') {
     return row.value_boolean === true && vehicle.hazmat ? 'hazmat prohibited and vehicle carries hazmat' : null;
   }
+  if (row.restriction_type === 'adr_tunnel') return tunnelConflict(row.value_text, vehicleTunnelCode(vehicle));
   return null;
 }
 
@@ -75,7 +109,8 @@ function toPublic(row, reason) {
   const out = {
     id: row.id,
     restrictionType: row.restriction_type,
-    value: row.unit === 'boolean' ? row.value_boolean : Number(row.value_numeric),
+    value: row.unit === 'boolean' ? row.value_boolean
+      : row.unit === 'adr_tunnel_category' ? row.value_text ?? null : Number(row.value_numeric),
     unit: row.unit,
     status: row.status,
     valueSource: row.value_source ?? null,
@@ -86,12 +121,17 @@ function toPublic(row, reason) {
   return out;
 }
 
-/** Splits rows near the route into conflicts (vehicle violates, active now) and the rest. */
-function classify(rows, vehicle, now = new Date()) {
+/**
+ * Splits rows near the route into conflicts (vehicle violates, active now) and the rest.
+ * With `shape`, LineString restrictions with direction forward/backward that the route traverses the
+ * other way are dropped (ADR-0011); anything undeterminable still applies.
+ */
+function classify(rows, vehicle, now = new Date(), shape = null) {
   const conflicts = [];
   const onRoute = [];
   for (const row of rows) {
     if (row.status === 'expired') continue;
+    if (shape && !directionApplies(row, shape)) continue;
     const reason = isActiveNow(row.time_windows, now) ? violation(row, vehicle) : null;
     if (reason) conflicts.push(toPublic(row, reason));
     else onRoute.push(toPublic(row));
@@ -114,10 +154,13 @@ class RouteError extends Error {
  */
 async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new Date(), maxReroutes = MAX_REROUTES }) {
   const avoided = new Map(); // id -> public conflict
-  const rings = new Map(); // id -> polygon ring
+  // id -> {level: 'thin' | 'wide', rings}. Escalation per conflict (ADR-0011): thin rectangles around the
+  // route edge that passed it -> 20 m polygon around the restriction itself -> no progress -> 409.
+  const exclusions = new Map();
   let attempt = 0;
   for (;;) {
-    const body = rings.size ? { ...baseRequest, exclude_polygons: [...rings.values()] } : baseRequest;
+    const rings = [...exclusions.values()].flatMap((e) => e.rings);
+    const body = rings.length ? { ...baseRequest, exclude_polygons: rings } : baseRequest;
     const r = await callValhalla(body);
     if (!r.ok) {
       if (attempt === 0) {
@@ -134,7 +177,7 @@ async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new D
     if (shape.length === 0) throw new RouteError(502, { error: 'Valhalla response has no route shape; restrictions cannot be checked' });
 
     const rows = await repo.findAlongRoute(shape, ROUTE_BUFFER_M);
-    const { conflicts, onRoute } = classify(rows, vehicle, now);
+    const { conflicts, onRoute } = classify(rows, vehicle, now, shape);
     if (conflicts.length === 0) {
       const verifiedOnRoute = onRoute.filter((x) => x.status === 'verified').length;
       return {
@@ -156,12 +199,29 @@ async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new D
         avoided: [...avoided.values()].filter((a) => !conflicts.some((c) => c.id === a.id)),
       });
     }
-    const fresh = conflicts.filter((c) => !rings.has(c.id));
-    const polys = await repo.exclusionPolygons(fresh.map((c) => c.id), EXCLUDE_BUFFER_M);
-    for (const p of polys) rings.set(p.id, p.ring);
+    let progressed = 0;
+    const needWide = [];
+    for (const c of conflicts) {
+      const prev = exclusions.get(c.id);
+      if (!prev) {
+        const thin = thinExclusionRings(shape, c.geometry);
+        if (thin) { exclusions.set(c.id, { level: 'thin', rings: thin }); progressed += 1; } else needWide.push(c.id);
+      } else if (prev.level === 'thin') {
+        needWide.push(c.id); // thin exclusion did not keep the route off it -> escalate
+      } // 'wide' already: nothing stronger to try
+    }
+    if (needWide.length) {
+      const polys = await repo.exclusionPolygons(needWide, EXCLUDE_BUFFER_M);
+      for (const p of polys) {
+        const prev = exclusions.get(p.id);
+        // Keep the thin rings too: they cover the route edge even if the restriction point is off it.
+        exclusions.set(p.id, { level: 'wide', rings: [...(prev ? prev.rings : []), p.ring] });
+        progressed += 1;
+      }
+    }
     for (const c of conflicts) avoided.set(c.id, c);
-    if (polys.length === 0) {
-      // Conflicts already excluded (Valhalla still routes through them) -> cannot make progress.
+    if (progressed === 0) {
+      // Conflicts already excluded at the widest level (Valhalla still routes through them) -> no progress.
       throw new RouteError(409, { error: 'route still conflicts with TrucksIL restrictions; exclusion had no effect', conflicts });
     }
     attempt += 1;
@@ -170,5 +230,5 @@ async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new D
 
 module.exports = {
   ROUTE_BUFFER_M, EXCLUDE_BUFFER_M, MAX_REROUTES, DISCLAIMER, COVERAGE_NOTE,
-  isActiveNow, violation, classify, planRoute, RouteError,
+  TUNNEL_CATEGORIES, vehicleTunnelCode, tunnelConflict, isActiveNow, violation, classify, planRoute, RouteError,
 };

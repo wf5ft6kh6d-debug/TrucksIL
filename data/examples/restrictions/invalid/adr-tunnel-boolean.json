@@ -1,0 +1,1 @@
+{"id":"FICTIONAL-T-0003","roadSegmentId":"FICTIONAL-SEG-T3","restrictionType":"adr_tunnel","value":true,"unit":"boolean","status":"unverified","source":{"name":"Fictional test source","reference":"FIXTURE-T3"},"observedAt":"2026-01-01T00:00:00Z"}
