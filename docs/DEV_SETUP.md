@@ -360,3 +360,54 @@ curl -s localhost:8002/trace_attributes -H 'content-type: application/json' -d '
 - `npm run test:e2e`: 18 PASS, 0 FAIL, 2 SKIP (S10, S12e — только в имитации). S02 и S11a — по 1 перестроению (узкое исключение сработало без эскалации до 20 м); S11b — 0 перестроений (ограничение другого направления); S12a–d прошли.
 - Покрытие Тель-Авив → Иерусалим: `status: computed`, 21 сооружение (мосты и тоннели), с данными TrucksIL — 0; `trace_attributes` Valhalla 3.9.2 вернул ожидаемый формат.
 - Замечание: соседние тоннели/мосты из разных OSM way считаются отдельными сооружениями (например, тоннели у въезда в Иерусалим дали 4 записи). Можно объединять смежные участки одного типа.
+
+## Проезды под мостами в покрытии маршрута (ADR-0014, миграция 004)
+Объединение смежных мостов/тоннелей работает сразу. Чтобы считались проезды ПОД мостами, нужно один раз загрузить их из OSM-выгрузки в локальную БД (данные ODbL — только локально, не коммитить):
+
+```bash
+# 1. миграция (идемпотентна; на новой БД применяется автоматически)
+docker compose exec -T db sh -c 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < db/migrations/004_route_structures.sql
+# 2. загрузка (venv с osmium, как для osm_bridge_clearance.py; Python-драйвер БД не нужен)
+source .venv/bin/activate && pip install osmium
+python3 scripts/load_osm_underpasses.py data/osm/israel-and-palestine-latest.osm.pbf --sql \
+  | docker compose exec -T db sh -c 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
+#    (или, если psql установлен на хосте: python3 scripts/load_osm_underpasses.py <pbf> "$DATABASE_URL")
+# 3. проверка
+curl -s -X POST localhost:8080/v1/route -H 'content-type: application/json' -d "$REQ" | jq .trucksil.coverage  # REQ — запрос Тель-Авив→Иерусалим (см. выше)
+```
+Повторный запуск загрузки заменяет таблицу целиком (TRUNCATE + COPY в одной транзакции). Ожидается `underpassStatus: "computed"`, `underpassesOnRoute`, `underpassesWithData`, `noDataUnderpasses[]` (`osmMaxheightCandidate` — только подсказка из OSM). Пустая/отсутствующая таблица → `underpassStatus: "not_loaded"`. Путь к .pbf подставьте свой. Тесты: `test/api/coverage.test.js`, `python3 -m unittest scripts/test_load_osm_underpasses.py`.
+
+## Офлайн-карта (ADR-0015) / Offline map
+
+Файл карты собирается один раз на машине владельца (WSL2, Docker) из того же `.osm.pbf`, что и Valhalla:
+
+```bash
+mkdir -p data/tiles
+docker run --rm -e JAVA_TOOL_OPTIONS="-Xmx3g" \
+  -v "$PWD/data:/data" ghcr.io/onthegomap/planetiler:0.10.2 \
+  --osm-path=/data/osm/israel-and-palestine-latest.osm.pbf \
+  --output=/data/tiles/israel.pmtiles \
+  --download --only-layers= --languages=he,ar,ru,en --force
+```
+
+- `--download` скачивает только вспомогательные наборы (Natural Earth, water polygons, ~1 ГБ, один раз в `data/sources/` — добавьте `data/sources/` в .gitignore или удалите после сборки).
+- Ожидаемо: 5–15 минут, 2–4 ГБ RAM, результат ~80–150 МБ (z0–14). Цифры оценочные — запишите фактические.
+- Глифы (шрифты подписей), без CDN: из репозитория `protomaps/basemaps-assets` скопируйте папку `fonts/Noto Sans Regular` в `data/tiles/fonts/` (должны появиться файлы `data/tiles/fonts/Noto Sans Regular/0-255.pbf` и т.д.); запишите хеш коммита в `data/tiles/SOURCES.txt`. Проверьте подписи на иврите и арабском — если какой-то диапазон отсутствует, подписи этого письма не отобразятся.
+- `docker compose up -d --build web` — nginx монтирует `./data/tiles` в `/srv/tiles` и отдаёт `/tiles/israel.pmtiles` с Range. Проверка: `curl -sI -H 'Range: bytes=0-7' http://localhost:8081/tiles/israel.pmtiles` → `206`. В dev (`npm run dev`) то же отдаёт плагин в `web/vite.config.js`.
+- Без файла клиент показывает онлайн-тайлы OSM и предупреждение «Файл офлайн-карты не установлен» (только для разработки).
+- Кеш SW: просмотренные районы + тайлы вдоль маршрута, до 200 МБ (LRU); пересборка файла (новый ETag) сбрасывает кеш.
+
+## Голос, навигация, симуляция (ADR-0015) / Voice & navigation
+
+- Раздел «Навигация (тестовый режим)»: «Старт по GPS» (браузер спросит разрешение; нужен HTTPS или localhost), «Симуляция поездки» (скорость и смещение от маршрута — для проверки за столом), «Голосовые подсказки».
+- Язык инструкций Valhalla = язык UI на момент запроса (he-IL / ru-RU / ar-SA / en-US). Наличие голоса зависит от устройства: в Windows/Android голос иврита/арабского может отсутствовать — тогда подсказки беззвучны и показано сообщение.
+- Проверка схода за столом: смещение 200 м, скорость 60 → через ~10 с «Сход с маршрута», затем автоматическое перестроение (не чаще раза в 30 с) от текущей (симулированной) точки.
+- Офлайн: без сети последний маршрут показывается с плашкой «Офлайн: маршрут от <время>, ограничения могут быть устаревшими»; перестроение офлайн невозможно.
+- Приватность: позиция не сохраняется; отправляется только как точка старта запроса маршрута.
+- Тесты: `npm test` (web/test/nav.test.js, swPolicy.test.js, style.test.js), `cd web && npm run build && cd .. && npm run test:web-smoke`.
+
+## Проверка на машине владельца (21.11.2026): проезды под мостами и PMTiles
+- Миграция 004 применена; `load_osm_underpasses.py` загрузил 3 493 проезда (совпадает с замером `osm_bridge_clearance.py`).
+- planetiler 0.10.2: `israel.pmtiles` 96 МБ за 4 мин 18 с (из них 1,5 мин — скачивание вспомогательных данных ~1,4 ГБ в `data/sources/`).
+- Покрытие Тель-Авив → Иерусалим: мостов/тоннелей 17 (было 21 до объединения соседних участков), проездов под мостами на маршруте 35, с данными TrucksIL — 0; `underpassStatus: computed`.
+- Тайлы OpenMapTiles требуют видимой атрибуции «© OpenMapTiles © OpenStreetMap contributors».

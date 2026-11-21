@@ -8,7 +8,8 @@
     "test": "node --test test/schemas.test.js test/mot-bridges.test.js test/api/*.test.js web/test/*.test.js test/i18n_apply_review.test.js",
     "test:web-smoke": "node web/smoke/smoke.cjs",
     "start": "node api/src/server.js",
-    "test:e2e": "node scripts/e2e_routes.js"
+    "test:e2e": "node scripts/e2e_routes.js",
+    "test:py": "python3 -m unittest scripts/test_osm_bridge_clearance.py scripts/test_load_osm_underpasses.py scripts/test_rail_bridges_reconcile.py"
   },
   "engines": {
     "node": ">=20"

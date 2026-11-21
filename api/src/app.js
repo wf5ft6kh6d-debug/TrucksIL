@@ -6,6 +6,7 @@ const {
 } = require('./lib');
 const { planRoute, RouteError } = require('./routing');
 const { createRestrictionsRepo } = require('./restrictionsRepo');
+const { createUnderpassesRepo } = require('./underpassesRepo');
 const { createReportsRepo, createReportsRoutes, reportsForRoute } = require('./reports');
 const { routeShape } = require('./polyline');
 const { computeCoverage } = require('./coverage');
@@ -74,12 +75,14 @@ function readJson(req) {
  * @param {Function} [deps.fetch]           fetch implementation
  * @param {number} [deps.timeoutMs]
  * @param {object} [deps.repo]            restrictions repository (default: PostGIS via db)
+ * @param {object} [deps.underpassRepo]   osm_underpasses repository (default: PostGIS via db; null -> not_loaded)
  * @param {object} [deps.reportsRepo]     driver reports repository (default: PostGIS via db)
  * @param {object} [deps.reports]         options for createReportsRoutes (salt, moderatorToken, now, limiter)
  */
 function createHandler({
   db, valhallaUrl, fetch = globalThis.fetch, timeoutMs = 15000, validateVehicle = loadVehicleValidator(),
   repo = db ? createRestrictionsRepo(db) : null,
+  underpassRepo = db ? createUnderpassesRepo(db) : null,
   reportsRepo = db ? createReportsRepo(db) : null, reports = {},
 } = {}) {
   const reportsRoute = createReportsRoutes({ repo: reportsRepo, ...reports });
@@ -164,7 +167,7 @@ function createHandler({
       callTraceAttributes: async (b) => {
         try { return await callValhalla(b, 'trace_attributes'); } catch (e) { return { ok: false, status: e.status || 503 }; }
       },
-      repo, shape: coords, note: ts.coverage && ts.coverage.note,
+      repo, underpassRepo, shape: coords, note: ts.coverage && ts.coverage.note,
     });
     send(res, 200, { ...planned.result, trucksil: { ...ts, coverage: { ...ts.coverage, ...structural }, reports: nearby } });
   }

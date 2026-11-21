@@ -1,7 +1,8 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { computeCoverage, structuresFromTrace, traceAttributesRequest, COVERAGE_BUFFER_M } = require('../../api/src/coverage');
+const { computeCoverage, structuresFromTrace, traceAttributesRequest, routeWayIds, COVERAGE_BUFFER_M, UNDERPASS_NEAR_M } = require('../../api/src/coverage');
+const { createUnderpassesRepo, PRESENT_SQL, LOADED_SQL, ON_ROUTE_SQL } = require('../../api/src/underpassesRepo');
 const { encodePolyline, decodePolyline } = require('../../api/src/polyline');
 const { createHandler } = require('../../api/src/app');
 const http = require('node:http');
@@ -28,7 +29,74 @@ test('traceAttributesRequest: edge_walk with bridge/tunnel attributes', () => {
 
 test('structuresFromTrace merges consecutive edges of one way', () => {
   const s = structuresFromTrace(trace, shape);
-  assert.deepEqual(s.map((x) => [x.type, x.wayId, x.coords.length]), [['bridge', 10, 3], ['tunnel', 20, 2]]);
+  assert.deepEqual(s.map((x) => [x.type, x.wayId, x.wayIds, x.coords.length]), [['bridge', 10, [10], 3], ['tunnel', 20, [20], 2]]);
+});
+
+test('structuresFromTrace merges adjacent structures of different ways (contiguous or < 20 m gap)', () => {
+  // points 0..3 ~5 m apart, then a 1 km jump
+  const sh = [[35.2, 31.78], [35.20005, 31.78], [35.2001, 31.78], [35.20015, 31.78], [35.21, 31.78], [35.211, 31.78]];
+  const t = { shape: encodePolyline(sh), edges: [
+    { way_id: 1, tunnel: true, begin_shape_index: 0, end_shape_index: 1 },
+    { way_id: 2, tunnel: true, begin_shape_index: 1, end_shape_index: 2 }, // contiguous index
+    { way_id: 3, tunnel: true, begin_shape_index: 3, end_shape_index: 3 }, // ~5 m gap
+    { way_id: 4, tunnel: true, begin_shape_index: 4, end_shape_index: 5 }, // ~900 m gap -> new
+    { way_id: 5, bridge: true, begin_shape_index: 5, end_shape_index: 5 }, // other type -> new
+  ] };
+  const s = structuresFromTrace(t, sh);
+  assert.deepEqual(s.map((x) => [x.type, x.wayId, x.wayIds, x.coords.length]),
+    [['tunnel', 1, [1, 2, 3], 4], ['tunnel', 4, [4], 2], ['bridge', 5, [5], 1]]);
+});
+
+test('routeWayIds: every edge way id, unique', () => {
+  assert.deepEqual(routeWayIds(trace).sort((a, b) => a - b), [1, 2, 10, 20]);
+  assert.deepEqual(routeWayIds({ edges: [{}, { way_id: null }] }), []);
+});
+
+test('underpasses: matched by route way ids; no data / OSM candidate; with data', async () => {
+  const seen = [];
+  const underpassRepo = { findOnRoute: async (ids, sh, near, buf) => {
+    seen.push([ids.sort((a, b) => a - b), near, buf]);
+    return { loaded: true, rows: [
+      { point: [34.79, 32.09], roadRef: '1', osmMaxheightText: '4.2', osmMaxheightM: 4.2, hasData: false },
+      { point: [34.80, 32.10], roadRef: null, osmMaxheightText: null, hasData: true },
+    ] };
+  } };
+  const c = await computeCoverage({ callTraceAttributes: ok(trace), repo: { findAlongRoute: async () => [] }, underpassRepo, shape });
+  assert.deepEqual(seen, [[[1, 2, 10, 20], UNDERPASS_NEAR_M, COVERAGE_BUFFER_M]]);
+  assert.equal(c.underpassStatus, 'computed');
+  assert.equal(c.underpassesOnRoute, 2);
+  assert.equal(c.underpassesWithData, 1);
+  assert.deepEqual(c.noDataUnderpasses, [{ point: [34.79, 32.09], roadRef: '1',
+    osmMaxheightCandidate: { text: '4.2', metres: 4.2, note: 'OSM candidate, not used for routing' } }]);
+});
+
+test('underpasses: missing/empty table or no repo -> not_loaded (never zero); failure -> unknown', async () => {
+  const base = { callTraceAttributes: ok(trace), repo: { findAlongRoute: async () => [] }, shape };
+  for (const underpassRepo of [undefined, { findOnRoute: async () => ({ loaded: false }) }]) {
+    const c = await computeCoverage({ ...base, underpassRepo });
+    assert.deepEqual([c.status, c.underpassStatus, c.underpassesOnRoute, c.noDataUnderpasses], ['computed', 'not_loaded', null, null]);
+  }
+  const c = await computeCoverage({ ...base, underpassRepo: { findOnRoute: async () => { throw new Error('db'); } } });
+  assert.deepEqual([c.status, c.underpassStatus, c.underpassesOnRoute], ['computed', 'unknown', null]);
+});
+
+test('underpassesRepo: table absent/empty -> loaded:false; query passes way ids', async () => {
+  const mk = (present, loaded, rows = []) => { const q = []; return { q, db: { query: async (sql, p) => {
+    q.push([sql, p]);
+    if (sql === PRESENT_SQL) return { rows: [{ present }] };
+    if (sql === LOADED_SQL) return { rows: [{ loaded }] };
+    return { rows };
+  } } }; };
+  let m = mk(false, false);
+  assert.deepEqual(await createUnderpassesRepo(m.db).findOnRoute([1], shape, 15, 30), { loaded: false });
+  assert.equal(m.q.length, 1);
+  m = mk(true, false);
+  assert.deepEqual(await createUnderpassesRepo(m.db).findOnRoute([1], shape, 15, 30), { loaded: false });
+  m = mk(true, true, [{ id: 1, osm_road_way_id: '7', osm_bridge_way_id: '9', bridge_kind: 'rail', road_ref: '4', road_class: 'primary', osm_maxheight_text: null, osm_maxheight_m: null, lon: 34.8, lat: 32.1, has_data: false }]);
+  const r = await createUnderpassesRepo(m.db).findOnRoute([7, 8], shape, 15, 30);
+  assert.equal(m.q[2][0], ON_ROUTE_SQL);
+  assert.deepEqual(m.q[2][1][0], ['7', '8']);
+  assert.deepEqual([r.loaded, r.rows[0].roadWayId, r.rows[0].point, r.rows[0].hasData], [true, 7, [34.8, 32.1], false]);
 });
 
 test('coverage: counts structures with/without TrucksIL data', async () => {
@@ -84,6 +152,7 @@ test('HTTP: /v1/route calls trace_attributes and returns no-data segments', asyn
     assert.equal(body.trucksil.coverage.structuresOnRoute, 2);
     assert.equal(body.trucksil.coverage.noDataSegments.length, 2);
     assert.equal(body.trucksil.coverage.verifiedOnRoute, 0);
+    assert.equal(body.trucksil.coverage.underpassStatus, 'not_loaded');
     assert.equal(body.trucksil.unverifiedCoverage, undefined);
   } finally { await new Promise((r) => server.close(r)); }
 });
