@@ -16,7 +16,10 @@ Sources (needs `pip install osmium`; crossings reuse scripts/osm_bridge_clearanc
       Height nodes near a crossing are covered by (c), not duplicated as (a).
 Values: maxheight preferred, else maxheight:physical (only one is stored). Metres, "4.2 m",
 feet/inches -> metres. Non-numeric (default, none, below_default...) and outliers (< 2 m, > 7 m)
-are skipped and counted (stats on stderr). valueSource: posted_sign if source:maxheight=sign or
+are skipped and counted (stats on stderr). Parking aisles, driveways and drive-throughs
+(highway=service + service=parking_aisle|driveway|drive-through) are skipped with their crossings,
+and so are nodes that lie only on such ways (skipped_service_parking): underground car parks are not
+on truck routes and only caused false detours (ADR-0016). valueSource: posted_sign if source:maxheight=sign or
 maxheight:signed=yes, measured if maxheight:physical was used, else unknown. status: unverified.
 
 Every record is validated against data/restrictions.schema.json with Ajv via
@@ -40,6 +43,7 @@ ID_PREFIX = "osm-maxheight-"
 MIN_M, MAX_M = 2.0, 7.0
 STAGE_COLUMNS = ("id", "road_segment_id", "geom_json", "value_source", "direction",
                  "value_numeric", "source", "observed_at")
+PARKING_SERVICE = ("parking_aisle", "driveway", "drive-through")
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -71,6 +75,11 @@ def choose_height(tags, stats=None):
     if reason:
         stats["skipped_" + reason] += 1
     return None
+
+
+def is_service_parking(tags):
+    """highway=service way that is a parking aisle, driveway or drive-through."""
+    return tags.get("highway") == "service" and tags.get("service") in PARKING_SERVICE
 
 
 def direction_of(tags):
@@ -112,13 +121,16 @@ def _pt(p):
     return {"type": "Point", "coordinates": [round(p[0], 7), round(p[1], 7)]}
 
 
-def build_records(ways, nodes, crossings, extract_iso):
+def build_records(ways, nodes, crossings, extract_iso, parking_way_ids=()):
     """ways: {id: {"tags", "coords", "bridge": bool}} highway ways carrying a height tag.
     nodes: {id: {"tags", "loc", "way_ids": [highway way ids]}} nodes carrying a height tag.
     crossings: {(bridge_id, road_id): (lon, lat)} from obc.find_crossings.
+    parking_way_ids: ids of ALL highway ways that are parking aisles/driveways/drive-throughs
+    (a node lying only on such ways is skipped; height-tagged ways are also checked by their tags).
     Returns (records, stats)."""
     stats = Counter()
     records = []
+    parking = set(parking_way_ids)
     crossing_by_road = {}
     for (bk, rk), p in crossings.items():
         crossing_by_road.setdefault(rk, []).append((bk, p))
@@ -126,6 +138,9 @@ def build_records(ways, nodes, crossings, extract_iso):
         w = ways[wid]
         if w.get("bridge"):
             stats["skipped_bridge_way"] += 1
+            continue
+        if is_service_parking(w["tags"]):
+            stats["skipped_service_parking"] += 1
             continue
         h = choose_height(w["tags"], stats)
         if h is None:
@@ -146,6 +161,9 @@ def build_records(ways, nodes, crossings, extract_iso):
         n = nodes[nid]
         if not n.get("way_ids"):
             stats["skipped_node_not_on_highway"] += 1
+            continue
+        if parking and all(x in parking for x in n["way_ids"]):
+            stats["skipped_service_parking"] += 1
             continue
         h = choose_height(n["tags"], stats)
         if h is None:
@@ -219,6 +237,7 @@ def _make_handler():
             self.ts = 0
             self.nodes = {}
             self.ways = {}
+            self.parking_way_ids = set()
 
         def _ts(self, o):
             t = int(o.timestamp.timestamp()) if o.timestamp else 0
@@ -236,6 +255,8 @@ def _make_handler():
             hw = w.tags.get("highway")
             if hw is None or hw in obc.EXCLUDED:
                 return
+            if is_service_parking(w.tags):
+                self.parking_way_ids.add(w.id)
             for nr in w.nodes:
                 if nr.ref in self.nodes:
                     self.nodes[nr.ref]["way_ids"].append(w.id)
@@ -262,7 +283,7 @@ def load(pbf):
     extract = datetime.datetime.fromtimestamp(ts, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ") if ts else None
     if not extract:
         sys.exit("extract has no timestamps; observedAt cannot be set")
-    return build_records(h.ways, h.nodes, crossings, extract)
+    return build_records(h.ways, h.nodes, crossings, extract, h.parking_way_ids)
 
 
 def main(argv):

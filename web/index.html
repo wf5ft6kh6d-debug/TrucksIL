@@ -80,6 +80,43 @@
         <div id="nav-status" class="msg" aria-live="polite"></div>
       </section>
 
+      <section id="shift" aria-labelledby="h-shift">
+        <h2 id="h-shift" data-i18n="shift.heading"></h2>
+        <p class="caveat" data-i18n="shift.disclaimer"></p>
+        <p><strong id="shift-status" aria-live="polite"></strong></p>
+        <span class="row">
+          <button type="button" id="shift-start" data-i18n="shift.start"></button>
+          <button type="button" id="shift-break" class="secondary" data-i18n="shift.break"></button>
+          <button type="button" id="shift-resume" class="secondary" data-i18n="shift.resume"></button>
+          <button type="button" id="shift-end" class="secondary" data-i18n="shift.end"></button>
+        </span>
+        <div id="shift-totals" class="msg"></div>
+        <div id="shift-next" class="msg"></div>
+        <div id="shift-alert" class="msg warn" role="alert" hidden></div>
+        <details>
+          <summary data-i18n="shift.settings"></summary>
+          <form id="shift-settings" novalidate>
+            <div class="grid">
+              <label><span data-i18n="shift.limitShift"></span><input id="shift-limit" type="number" min="0.5" max="24" step="0.25" dir="ltr"></label>
+              <label><span data-i18n="shift.limitDriving"></span><input id="shift-drive-limit" type="number" min="0.5" max="24" step="0.25" dir="ltr"></label>
+              <label><span data-i18n="shift.limitBreak"></span><input id="shift-break-reminder" type="number" min="0" max="24" step="0.25" dir="ltr"></label>
+            </div>
+            <p class="caveat" data-i18n="shift.limitsNote"></p>
+            <button type="submit" data-i18n="shift.save"></button>
+            <div id="shift-settings-msg" class="msg good" aria-live="polite"></div>
+          </form>
+          <button type="button" id="shift-notify" class="secondary" data-i18n="shift.notify" hidden></button>
+          <div id="shift-notify-msg" class="msg"></div>
+        </details>
+        <h3 data-i18n="shift.history"></h3>
+        <p class="note" data-i18n="shift.privacy"></p>
+        <div id="shift-history"></div>
+        <span class="row">
+          <button type="button" id="shift-export" class="secondary" data-i18n="shift.export"></button>
+          <button type="button" id="shift-clear" class="secondary" data-i18n="shift.clear"></button>
+        </span>
+      </section>
+
       <section id="reports" aria-labelledby="h-reports">
         <h2 id="h-reports" data-i18n="reports.heading"></h2>
         <button type="button" class="secondary" id="report-add" data-i18n="reports.add"></button>

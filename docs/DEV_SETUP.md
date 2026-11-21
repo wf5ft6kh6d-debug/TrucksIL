@@ -5,7 +5,7 @@
 | Сервис | Образ | Порт (только localhost) | Назначение |
 |---|---|---|---|
 | `db` | `postgis/postgis:16-3.5` | 5432 | PostgreSQL + PostGIS, таблицы `restrictions` и `restriction_events` |
-| `api` | собирается из `api/Dockerfile` (Node 22) | 8080 | HTTP API: `/health`, `/v1/restrictions`, `/v1/route` |
+| `api` | собирается из `api/Dockerfile` (Node 22) | 8080 | HTTP API: `/health`, `/v1/restrictions`, `/v1/route`, `/v1/poi` |
 | `valhalla` | `ghcr.io/valhalla/valhalla-scripted:3.9.2` | 8002 | Маршрутизатор (профиль `truck`, ADR-0009). Только с профилем `routing` |
 
 > **Прототип, не для навигации.** Каждый ответ `/v1/route` содержит блок `trucksil` с этим предупреждением. Отсутствие ограничения в базе не означает, что дорога подходит (ADR-0002).
@@ -429,9 +429,37 @@ npm run test:e2e
 curl -s -X POST localhost:8080/v1/route -H 'content-type: application/json' -d "$REQ" \
   | jq '.trucksil.coverage | {structuresOnRoute, structuresWithData, structuresWithVerifiedData, underpassesOnRoute, underpassesWithData, underpassesWithVerifiedData}'
 ```
-Ожидаемо (по `docs/OSM_COVERAGE.md`): порядка 684 ways + 98 узлов с высотой, из них до 575 проездов под мостами; после фильтров (мосты, нечисловые, выбросы) записей будет меньше — запишите фактические числа. `structuresWithVerifiedData` / `underpassesWithVerifiedData` останутся 0, пока нет проверенных записей. Если e2e-сценарии изменятся из-за новых объездов (OSM-кандидаты на пути), это ожидаемо — зафиксируйте, какие. Откат: `DELETE FROM restrictions WHERE id LIKE 'osm-maxheight-%';`. Тесты: `python3 -m unittest scripts/test_import_osm_maxheight.py`, `test/api/coverage.test.js`, `web/test/viewModel.test.js`.
+Ожидаемо (по `docs/OSM_COVERAGE.md`): порядка 684 ways + 98 узлов с высотой, из них до 575 проездов под мостами; после фильтров (мосты, нечисловые, выбросы, а с ADR-0017 — ещё и `skipped_service_parking`: `service=parking_aisle|driveway|drive-through`, их проезды под мостами и узлы только на таких way) записей будет меньше, чем 1034 из прошлого импорта (ниже) — запишите фактические числа, в том числе `skipped_service_parking`. `structuresWithVerifiedData` / `underpassesWithVerifiedData` останутся 0, пока нет проверенных записей. Если e2e-сценарии изменятся из-за новых объездов (OSM-кандидаты на пути), это ожидаемо — зафиксируйте, какие. Откат: `DELETE FROM restrictions WHERE id LIKE 'osm-maxheight-%';`. Тесты: `python3 -m unittest scripts/test_import_osm_maxheight.py`, `test/api/coverage.test.js`, `web/test/viewModel.test.js`.
 
 ## Проверка на машине владельца (21.11.2026): кандидаты OSM + сопоставление по way_id
 - Импорт: 1034 записи (crossing 559, way 382, node 93), пропущено 60; все прошли схему.
 - До сопоставления по way_id: Тель-Авив → Иерусалим объезжал 8 соседних дорог (тоннель под улицей, подземная парковка и т.п.), e2e 7/11 FAIL, S04 422, S12b/c 409.
 - После (ADR-0016): e2e (относительный режим) 18 PASS, 0 FAIL, 2 SKIP; у всех базовых маршрутов reroutes 0. Сценарии с объездом — 1–2 перестроения.
+
+## Таймер смены (US-06, ADR-0018) / Shift timer
+Панель «Таймер смены» в PWA: начать / перерыв / продолжить / завершить, суммы вождения, перерывов и смены, следующее напоминание. **Это напоминание, не юридическое подтверждение соблюдения режима труда и отдыха.**
+- Лимиты настраиваются (по умолчанию смена 12 ч, вождение 9 ч, напоминание о перерыве после 4,5 ч непрерывного вождения; пустое поле — выкл.). Напоминания за 2 ч, 1 ч, 30 мин и в момент лимита, каждое один раз за смену.
+- Каналы: сообщение на экране; голос — если включён «Голос» в навигации; системное уведомление — после нажатия «Включить уведомления».
+- Данные только в `localStorage` (`trucksil.shift.v1`, `trucksil.shift.settings.v1`, `trucksil.shift.history.v1`); история — последние 7 смен, экспорт CSV в браузере, кнопка «Очистить историю».
+- Логика: `web/src/shift/timer.js` (тесты `web/test/shift.test.js`), UI: `web/src/shift/ui.js`. Smoke (`npm run test:web-smoke`) проверяет start → напоминание → перерыв → продолжение → перезагрузку → завершение → CSV с поддельными часами Playwright.
+- Переводы he/ar — машинные, нужна проверка носителем.
+
+## Грузовые данные OSM: скорости, полосы, стоянки (ADR-0017) / OSM truck data
+Только для показа, всегда «OSM, не проверено» (ODbL, только локальная БД, не коммитить). На маршрут не влияют. Отображение в веб-клиенте — отдельный шаг.
+```bash
+# 1. миграция 005 (идемпотентна; на новом томе применяется автоматически)
+docker compose exec -T db sh -c 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < db/migrations/005_truck_poi.sql
+# 2. импорт стоянок/площадок отдыха/АЗС для грузовиков (venv с osmium, как выше; повторяемо: DELETE + вставка в одной транзакции)
+python3 scripts/import_osm_truck_poi.py data/osm/israel-and-palestine-latest.osm.pbf --sql \
+  | docker compose exec -T db sh -c 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
+#    статистика (parking / rest_area / fuel_hgv / skipped_no_geometry) — в stderr
+# 3. повторный импорт высот с фильтром парковок (см. раздел выше), затем пересчёт e2e
+# 4. проверка
+docker compose exec -T db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT kind, count(*) FROM truck_poi GROUP BY 1 ORDER BY 1"'
+curl -s 'http://localhost:8080/v1/poi?bbox=34.7,31.7,35.3,32.2&kind=parking,rest_area' | head -c 600; echo
+docker compose restart api   # новые поля маршрута
+curl -s -X POST localhost:8080/v1/route -H 'content-type: application/json' \
+  -d '{"from":[34.78,32.08],"to":[35.21,31.77],"vehicle":{"profileName":"t","heightM":3.8,"widthM":2.5,"lengthM":10,"grossWeightT":18}}' \
+  | jq '{speed: (.trucksil.speedLimits|length), first: .trucksil.speedLimits[0:3], lanes: .trucksil.lanes, poi: (.trucksil.poiNearRoute|length)}'
+```
+Поля ответа `/v1/route`: `trucksil.speedLimits` (`[{fromIndex,toIndex,kmh,truckKmh?,source:'osm',status:'unverified'}]`, индексы — точки формы; пробелы = неизвестно; `null` — trace не удался), `trucksil.lanes` (сводка; сами массивы — `trip.legs[].maneuvers[].lanes`, запрос с `turn_lanes: true`), `trucksil.poiNearRoute` (до 50 в 500 м; `null` — таблица пуста/нет). Запишите: число отрезков скорости и есть ли `truckKmh` (т. е. `maxspeed:hgv`), число манёвров с полосами, число POI на маршруте. `maxspeed:hgv` Valhalla уже учитывает во времени пути (`truckcost.cc`). Откат: `DELETE FROM truck_poi;` (или `DROP TABLE truck_poi;` — API вернёт `poiNearRoute: null`). Тесты: `test/api/osmExtras.test.js`, `python3 -m unittest scripts/test_import_osm_truck_poi.py scripts/test_import_osm_maxheight.py`.

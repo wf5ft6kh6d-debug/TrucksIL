@@ -58,6 +58,42 @@ class Parsing(unittest.TestCase):
         self.assertEqual(m.direction_of({}), "both")
 
 
+PARKING_WAYS = {
+    20: {"tags": {"highway": "service", "service": "parking_aisle", "maxheight": "2.3", "tunnel": "building_passage"},
+         "coords": [(34.6, 32.0), (34.61, 32.0)], "bridge": False},
+    21: {"tags": {"highway": "service", "service": "driveway", "maxheight": "3.0"},
+         "coords": [(34.6, 32.1), (34.61, 32.1)], "bridge": False},
+    22: {"tags": {"highway": "service", "service": "drive-through", "maxheight": "2.6"},
+         "coords": [(34.6, 32.2), (34.61, 32.2)], "bridge": False},
+    23: {"tags": {"highway": "service", "service": "alley", "maxheight": "3.2"},
+         "coords": [(34.6, 32.3), (34.61, 32.3)], "bridge": False},
+}
+PARKING_NODES = {
+    600: {"tags": {"maxheight": "2.1"}, "loc": (34.6, 32.0), "way_ids": [20, 30]},  # 30: untagged parking aisle
+    601: {"tags": {"maxheight": "3.5"}, "loc": (34.62, 32.0), "way_ids": [20, 7]},  # also on a real road
+}
+
+
+class ServiceParking(unittest.TestCase):
+    def test_predicate(self):
+        self.assertTrue(m.is_service_parking({"highway": "service", "service": "parking_aisle"}))
+        self.assertTrue(m.is_service_parking({"highway": "service", "service": "drive-through"}))
+        self.assertFalse(m.is_service_parking({"highway": "service", "service": "alley"}))
+        self.assertFalse(m.is_service_parking({"highway": "service"}))
+        self.assertFalse(m.is_service_parking({"highway": "residential", "service": "driveway"}))
+
+    def test_skipped_with_crossings_and_nodes(self):
+        crossings = {(200, 20): (34.605, 32.0), (201, 23): (34.605, 32.3)}
+        recs, stats = m.build_records(PARKING_WAYS, PARKING_NODES, crossings, EXTRACT, {20, 21, 22, 30})
+        ids = sorted(r["id"] for r in recs)
+        self.assertEqual(ids, ["osm-maxheight-node601", "osm-maxheight-way23-crossing201"])
+        self.assertEqual(stats["skipped_service_parking"], 4)  # ways 20, 21, 22 + node 600
+        # without the way-id set, node 600 is kept (ways are still filtered by their own tags)
+        recs2, stats2 = m.build_records(PARKING_WAYS, PARKING_NODES, crossings, EXTRACT)
+        self.assertIn("osm-maxheight-node600", [r["id"] for r in recs2])
+        self.assertEqual(stats2["skipped_service_parking"], 3)
+
+
 class Records(unittest.TestCase):
     def setUp(self):
         self.recs, self.stats = m.build_records(WAYS, NODES, CROSSINGS, EXTRACT)

@@ -92,6 +92,8 @@ function buildValhallaRouteRequest({ from, to, vehicle, language }) {
     costing_options: { truck: vehicleToTruckCosting(vehicle) },
     units: 'kilometers',
     language: NARRATIVE_LANGUAGES.includes(language) ? language : 'en-US',
+    // Lane guidance from OSM turn:lanes (Valhalla directions option; maneuvers[].lanes). ADR-0017.
+    turn_lanes: true,
   };
 }
 

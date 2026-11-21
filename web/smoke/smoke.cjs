@@ -173,6 +173,50 @@ async function main() {
     await page.waitForSelector('#reports-body li.report');
     assert.match(await page.textContent('#reports-body'), /сообщение водителя, не проверено/);
 
+    // Shift timer (US-06, ADR-0018) with a fake clock: start -> alert -> break -> resume -> reload.
+    {
+      const ctx = await browser.newContext({ locale: 'ru-RU' });
+      const sp = await ctx.newPage();
+      sp.on('pageerror', (e) => errors.push(`shift: ${e.message}`));
+      await sp.addInitScript(() => {
+        window.__spoken = [];
+        const synth = { getVoices: () => [{ lang: 'ru-RU', name: 'ru-mock', localService: true }], speak(u) { window.__spoken.push(u.text); setTimeout(() => u.onend && u.onend(), 5); }, cancel() {}, onvoiceschanged: null };
+        Object.defineProperty(window, 'speechSynthesis', { value: synth, configurable: true });
+        window.SpeechSynthesisUtterance = function Utterance(text) { this.text = text; };
+      });
+      await sp.clock.install({ time: new Date('2026-11-21T06:00:00Z') });
+      await sp.route('https://tile.openstreetmap.org/**', (r) => r.fulfill({ status: 200, contentType: 'image/png', body: blankTile() }));
+      await sp.goto(base);
+      assert.match(await sp.textContent('#shift'), /Напоминание, не юридическое подтверждение соблюдения режима труда и отдыха/);
+      await sp.check('#nav-voice');
+      await sp.click('#shift summary');
+      await sp.fill('#shift-drive-limit', '3');
+      await sp.click('#shift-settings button[type=submit]');
+      await sp.click('#shift-start');
+      assert.equal(await sp.getAttribute('#shift-status', 'data-status'), 'driving');
+      await sp.clock.runFor('01:00:05');
+      await sp.waitForFunction(() => !document.querySelector('#shift-alert').hidden);
+      assert.match(await sp.textContent('#shift-alert'), /До лимита вождения осталось 2:00/);
+      assert.ok((await sp.evaluate(() => window.__spoken)).some((x) => /лимита вождения/.test(x)));
+      await sp.click('#shift-break');
+      await sp.clock.runFor('00:15:00');
+      await sp.click('#shift-resume');
+      await sp.clock.runFor('00:10:00');
+      assert.match(await sp.textContent('#shift-totals'), /Вождение 1:10 · перерывы 0:15 · смена 1:25/);
+      await sp.reload();
+      assert.equal(await sp.getAttribute('#shift-status', 'data-status'), 'driving', 'state survives reload');
+      assert.match(await sp.textContent('#shift-totals'), /Вождение 1:10/);
+      await sp.click('#shift-end');
+      assert.equal(await sp.getAttribute('#shift-status', 'data-status'), 'idle');
+      assert.equal(await sp.locator('#shift-history li').count(), 1);
+      const [dl] = await Promise.all([sp.waitForEvent('download'), sp.click('#shift-export')]);
+      assert.match(dl.suggestedFilename(), /^trucksil-shifts-2026-11-21\.csv$/);
+      sp.once('dialog', (d) => d.accept());
+      await sp.click('#shift-clear');
+      assert.equal(await sp.locator('#shift-history li').count(), 0);
+      await ctx.close();
+    }
+
     // Manifest + service worker are served.
     const man = await (await page.request.get(`${base}/manifest.webmanifest`)).json();
     assert.equal(man.display, 'standalone');

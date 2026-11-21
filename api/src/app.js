@@ -9,7 +9,9 @@ const { createRestrictionsRepo } = require('./restrictionsRepo');
 const { createUnderpassesRepo } = require('./underpassesRepo');
 const { createReportsRepo, createReportsRoutes, reportsForRoute } = require('./reports');
 const { routeShape } = require('./polyline');
-const { computeCoverage } = require('./coverage');
+const { computeCoverage, traceAttributesRequest } = require('./coverage');
+const { createPoiRepo, parseKinds, poiToFeature, POI_LABEL } = require('./poiRepo');
+const { computeSpeedLimits, laneGuidanceInfo, poiNearRoute, SPEED_NOTE } = require('./osmExtras');
 
 const MAX_BODY = 64 * 1024;
 
@@ -77,6 +79,7 @@ function readJson(req) {
  * @param {object} [deps.repo]            restrictions repository (default: PostGIS via db)
  * @param {object} [deps.underpassRepo]   osm_underpasses repository (default: PostGIS via db; null -> not_loaded)
  * @param {object} [deps.reportsRepo]     driver reports repository (default: PostGIS via db)
+ * @param {object} [deps.poiRepo]       truck_poi repository (default: PostGIS via db; ADR-0017)
  * @param {object} [deps.reports]         options for createReportsRoutes (salt, moderatorToken, now, limiter)
  */
 function createHandler({
@@ -84,6 +87,7 @@ function createHandler({
   repo = db ? createRestrictionsRepo(db) : null,
   underpassRepo = db ? createUnderpassesRepo(db) : null,
   reportsRepo = db ? createReportsRepo(db) : null, reports = {},
+  poiRepo = db ? createPoiRepo(db) : null,
 } = {}) {
   const reportsRoute = createReportsRoutes({ repo: reportsRepo, ...reports });
   const reportsNow = reports.now || (() => new Date());
@@ -117,6 +121,19 @@ function createHandler({
     try { ({ rows } = await db.query(RESTRICTIONS_SQL, [minLon, minLat, maxLon, maxLat])); }
     catch { return send(res, 503, { error: 'database unavailable' }); }
     send(res, 200, { type: 'FeatureCollection', features: rows.map(rowToFeature) });
+  }
+
+  // Truck parking / rest areas / HGV fuel from OSM (ADR-0017): display only, always unverified.
+  async function poi(_req, res, url) {
+    const bbox = parseBbox(url.searchParams.get('bbox'));
+    if (!bbox.ok) return send(res, 400, { error: bbox.error });
+    const kinds = parseKinds(url.searchParams.get('kind'));
+    if (!kinds.ok) return send(res, 400, { error: kinds.error });
+    if (!poiRepo) return send(res, 503, { error: 'database unavailable' });
+    let r;
+    try { r = await poiRepo.inBbox(bbox.value, kinds.value); } catch { return send(res, 503, { error: 'database unavailable' }); }
+    const meta = { label: POI_LABEL, status: 'unverified', source: 'OpenStreetMap contributors', license: 'ODbL-1.0', loaded: r.loaded };
+    send(res, 200, { type: 'FeatureCollection', features: r.loaded ? r.rows.map(poiToFeature) : [], trucksil: meta });
   }
 
   async function route(req, res, url) {
@@ -185,7 +202,16 @@ function createHandler({
       callTraceAttributes: memoTrace,
       repo, underpassRepo, shape: coords, note: ts.coverage && ts.coverage.note,
     });
-    send(res, 200, { ...planned.result, trucksil: { ...ts, coverage: { ...ts.coverage, ...structural }, reports: nearby } });
+    // OSM extras (ADR-0017): informational, unverified; the trace call is the memoised one above.
+    const speedLimits = coords.length >= 2 ? await computeSpeedLimits(memoTrace, traceAttributesRequest(coords)) : null;
+    const poiNear = await poiNearRoute(poiRepo, coords);
+    send(res, 200, {
+      ...planned.result,
+      trucksil: {
+        ...ts, coverage: { ...ts.coverage, ...structural }, reports: nearby,
+        speedLimits, speedLimitsNote: SPEED_NOTE, lanes: laneGuidanceInfo(planned.result), poiNearRoute: poiNear,
+      },
+    });
   }
 
   return async function handler(req, res) {
@@ -194,8 +220,9 @@ function createHandler({
       if (req.method === 'GET' && url.pathname === '/health') return await health(req, res, url);
       if (req.method === 'GET' && url.pathname === '/v1/restrictions') return await restrictions(req, res, url);
       if (req.method === 'POST' && url.pathname === '/v1/route') return await route(req, res, url);
+      if (req.method === 'GET' && url.pathname === '/v1/poi') return await poi(req, res, url);
       if (url.pathname.startsWith('/v1/reports') && await reportsRoute(req, res, url, { send, readJson })) return;
-      if (['/health', '/v1/restrictions', '/v1/route'].includes(url.pathname)) return send(res, 405, { error: 'method not allowed' });
+      if (['/health', '/v1/restrictions', '/v1/route', '/v1/poi'].includes(url.pathname)) return send(res, 405, { error: 'method not allowed' });
       send(res, 404, { error: 'not found' });
     } catch (e) {
       console.error(e);

@@ -21,6 +21,7 @@ import { createSpeechQueue, SPEECH_LANG } from './nav/speech.js';
 import { simulateFixes } from './nav/simulate.js';
 import { saveLastRoute, loadLastRoute, staleViewModel, formatSavedAt } from './nav/offline.js';
 import { tilesAlongRoute } from './nav/tiles.js';
+import { initShift } from './shift/ui.js';
 import { REPORT_TYPES, getClientId, reportItems, reportsGeoJSON, validateDraft, submitMessage, postReport, fetchReports, voteReport } from './reports.js';
 
 const LANG_KEY = 'trucksil.lang';
@@ -606,3 +607,11 @@ function initNav() {
 
 init();
 initNav();
+// Shift timer (US-06, ADR-0018): reminders through the same speech queue as navigation.
+const shift = initShift({
+  storage,
+  speech,
+  t: (key, params) => t(lang, key, params),
+  prepareVoice: () => { if (!run) speech.setLang(SPEECH_LANG[lang]); },
+});
+$('#lang').addEventListener('change', () => shift.render());

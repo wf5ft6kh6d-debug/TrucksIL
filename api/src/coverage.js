@@ -18,7 +18,9 @@ const { encodePolyline, decodePolyline } = require('./polyline');
 const COVERAGE_BUFFER_M = 30;
 const MERGE_GAP_M = 20;        // adjacent structure edges closer than this are one structure
 const UNDERPASS_NEAR_M = 15;   // crossing point must be this close to the route line
-const ATTRIBUTES = ['edge.bridge', 'edge.tunnel', 'edge.way_id', 'edge.begin_shape_index', 'edge.end_shape_index', 'shape'];
+// edge.speed_limit / edge.truck_speed feed trucksil.speedLimits (speedLimits.js, ADR-0017) from the same call.
+const ATTRIBUTES = ['edge.bridge', 'edge.tunnel', 'edge.way_id', 'edge.begin_shape_index', 'edge.end_shape_index',
+  'edge.speed_limit', 'edge.truck_speed', 'shape'];
 
 /** Valhalla /trace_attributes request for an exact route shape ([[lon,lat],...]). */
 function traceAttributesRequest(coords) {
