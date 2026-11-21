@@ -246,7 +246,7 @@ def _make_handler():
             flat = array("d", [v for xy in coords for v in xy])
             self.roads[w.id] = {"flat": flat, "nodes": array("q", nodes), "class": hclass(hw),
                                 "layer": parse_layer(tags.get("layer"), 0),
-                                "mh": mh, "mh_nodes": hn}
+                                "mh": mh, "mh_nodes": hn, "ref": tags.get("ref")}
 
     return H()
 

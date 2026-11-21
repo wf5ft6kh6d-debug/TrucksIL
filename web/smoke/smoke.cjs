@@ -19,7 +19,11 @@ async function fixtures() {
   const low = { id: 'test-low-bridge', restrictionType: 'max_height', value: 3.8, unit: 'm', status: 'unverified', valueSource: 'posted_sign', reason: 'heightM 4 > limit 3.8 m', geometry: { type: 'Point', coordinates: [34.79, 32.085] } };
   const ok = { id: 'test-tall-bridge', restrictionType: 'max_height', value: 4.5, unit: 'm', status: 'verified', valueSource: 'posted_sign', geometry: { type: 'Point', coordinates: [34.81, 32.11] } };
   return {
-    200: { trip: { legs: [{ shape: encodePolyline([[34.78, 32.08], [34.795, 32.095], [34.80, 32.10], [34.82, 32.12]]) }], summary: { length: 5.1, time: 540 } },
+    200: { trip: { legs: [{ shape: encodePolyline([[34.78, 32.08], [34.795, 32.095], [34.80, 32.10], [34.82, 32.12]]), maneuvers: [
+      { type: 1, begin_shape_index: 0, instruction: 'Двигайтесь на северо-восток.', verbal_pre_transition_instruction: 'Двигайтесь на северо-восток по Тестовой улице.', verbal_post_transition_instruction: 'Продолжайте движение 3 километра.' },
+      { type: 10, begin_shape_index: 2, instruction: 'Поверните направо.', verbal_transition_alert_instruction: 'Поверните направо.', verbal_pre_transition_instruction: 'Поверните направо на Мостовую улицу.' },
+      { type: 4, begin_shape_index: 3, instruction: 'Вы прибыли в пункт назначения.', verbal_pre_transition_instruction: 'Вы прибыли в пункт назначения.' },
+    ] }], summary: { length: 5.1, time: 540 } },
       trucksil: { disclaimer: 'prototype, not for navigation', avoided: [low], onRoute: [ok], coverage: { verifiedOnRoute: 1, unverifiedOnRoute: 0, note: 'Absence of restrictions in TrucksIL data does not mean the route is safe', status: 'computed', structuresOnRoute: 2, structuresWithData: 1, noDataSegments: [{ type: 'bridge', from: [34.80, 32.10], to: [34.82, 32.12], wayId: 123, coordinates: [[34.80, 32.10], [34.82, 32.12]] }] }, reroutes: 1 } },
     422: { error: 'no route found that avoids the known TrucksIL restrictions for this vehicle', conflicts: [low], trucksil: { disclaimer: 'prototype, not for navigation' } },
   };
@@ -55,7 +59,14 @@ async function main() {
     const page = await browser.newPage({ viewport: { width: 1280, height: 820 }, deviceScaleFactor: 2, locale: 'ru-RU' });
     const errors = [];
     page.on('pageerror', (e) => errors.push(e.message));
-    page.on('console', (m) => { if (m.type() === 'error' && !/status of 422/.test(m.text())) errors.push(m.text()); });
+    page.on('console', (m) => { if (m.type() === 'error' && !/status of 422|ERR_INTERNET_DISCONNECTED|tiles\/israel\.pmtiles/.test(m.text())) errors.push(m.text()); });
+    // Mock Web Speech API: record what would be spoken (ADR-0015 voice guidance).
+    await page.addInitScript(() => {
+      window.__spoken = [];
+      const synth = { getVoices: () => [{ lang: 'ru-RU', name: 'ru-mock', localService: true }], speak(u) { window.__spoken.push(u.text); setTimeout(() => u.onend && u.onend(), 5); }, cancel() {}, onvoiceschanged: null };
+      Object.defineProperty(window, 'speechSynthesis', { value: synth, configurable: true });
+      window.SpeechSynthesisUtterance = function Utterance(text) { this.text = text; };
+    });
     await page.route('https://tile.openstreetmap.org/**', (r) => r.fulfill({ status: 200, contentType: 'image/png', body: blankTile() }));
     await page.goto(base);
 
@@ -63,6 +74,11 @@ async function main() {
     assert.equal(await page.getAttribute('html', 'dir'), 'ltr');
     assert.match(await page.textContent('.banner'), /Прототип\. Не для навигации\./);
     assert.match(await page.textContent('.banner'), /Отсутствие ограничений ≠ безопасно/);
+
+    // No data/tiles/israel.pmtiles in this test: OSM raster fallback with a visible dev notice.
+    assert.equal(await page.getAttribute('#map', 'data-basemap'), 'osm-raster');
+    assert.match(await page.textContent('#map-notice'), /Файл офлайн-карты не установлен/);
+    assert.equal(await page.isDisabled('#nav-sim'), true, 'navigation needs a route');
 
     // Hebrew -> rtl.
     await page.selectOption('#lang', 'he');
@@ -113,6 +129,45 @@ async function main() {
     const routeReqs = requests.filter((r) => r.path === '/api/v1/route');
     assert.deepEqual(routeReqs.at(-1).body.from, [34.78, 32.08]);
     assert.equal(routeReqs.at(-1).body.vehicle.heightM, 4);
+
+    assert.equal(routeReqs.at(-1).body.language, 'ru-RU', 'Valhalla narrative in UI language');
+
+    // Simulated drive (ADR-0015): voice on, fast replay to arrival; maneuvers + TrucksIL warning spoken.
+    await page.check('#nav-voice');
+    await page.fill('#nav-speed', '3000');
+    await page.click('#nav-sim');
+    await page.waitForFunction(() => /Вы прибыли/.test(document.querySelector('#nav-status').textContent), null, { timeout: 20000 });
+    assert.match(await page.textContent('#nav-status'), /СИМУЛЯЦИЯ/);
+    const spoken = await page.evaluate(() => window.__spoken);
+    assert.equal(spoken[0], 'Двигайтесь на северо-восток по Тестовой улице.');
+    assert.ok(spoken.some((x) => /мост без данных TrucksIL\. Проверьте знаки\./.test(x)), spoken.join(' | '));
+    assert.ok(spoken.includes('Поверните направо на Мостовую улицу.'), spoken.join(' | '));
+    assert.ok(spoken.includes('Вы прибыли в пункт назначения.'), spoken.join(' | '));
+    await page.click('#nav-stop');
+
+    // Off-route: simulate 200 m beside the line -> after 10 s off route -> automatic reroute from
+    // the (simulated) current position, same destination and vehicle.
+    const before = requests.filter((r) => r.path === '/api/v1/route').length;
+    await page.fill('#nav-speed', '60');
+    await page.fill('#nav-offset', '200');
+    await page.click('#nav-sim');
+    await page.waitForFunction(() => document.querySelector('#nav-status').dataset.reroutes === '1', null, { timeout: 25000 });
+    const rr = requests.filter((r) => r.path === '/api/v1/route');
+    assert.equal(rr.length, before + 1);
+    const [fx, fy] = rr.at(-1).body.from; // first route segment is lat = 32.08 + (lon - 34.78); sim is 200 m north of it
+    assert.ok(Math.abs(fy - (32.08 + (fx - 34.78)) - 200 / 111320) < 0.0002, JSON.stringify(rr.at(-1).body.from));
+    assert.deepEqual(rr.at(-1).body.to, [34.82, 32.12]);
+    assert.equal(rr.at(-1).body.vehicle.heightM, 4);
+    await page.click('#nav-stop');
+    await page.fill('#nav-offset', '0');
+
+    // Offline: the API is unreachable -> last route shown, flagged as outdated (never "valid").
+    await page.route('**/api/v1/route', (r) => r.abort('internetdisconnected'));
+    await page.click('#route button[type=submit]');
+    await page.waitForSelector('#restr-body .offline-route');
+    assert.match(await page.textContent('#restr-body .offline-route'), /Офлайн: маршрут от .+, ограничения могут быть устаревшими\./);
+    assert.equal(await routeFeatureCount(page), 4);
+    await page.unroute('**/api/v1/route');
 
     // Driver reports panel: distinct item, always labelled unverified.
     await page.waitForSelector('#reports-body li.report');

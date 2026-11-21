@@ -78,7 +78,11 @@ function vehicleToTruckCosting(v) {
   return truck;
 }
 
-function buildValhallaRouteRequest({ from, to, vehicle }) {
+// Narrative languages offered by the PWA (Valhalla locales/: he-IL, ru-RU, ar-SA, en-US exist).
+// Anything else -> en-US. Only affects instruction text, never costing.
+const NARRATIVE_LANGUAGES = ['en-US', 'he-IL', 'ru-RU', 'ar-SA'];
+
+function buildValhallaRouteRequest({ from, to, vehicle, language }) {
   return {
     locations: [
       { lon: from[0], lat: from[1] },
@@ -87,7 +91,7 @@ function buildValhallaRouteRequest({ from, to, vehicle }) {
     costing: 'truck',
     costing_options: { truck: vehicleToTruckCosting(vehicle) },
     units: 'kilometers',
-    language: 'en-US',
+    language: NARRATIVE_LANGUAGES.includes(language) ? language : 'en-US',
   };
 }
 
@@ -99,4 +103,5 @@ module.exports = {
   HGV_NO_ACCESS_PENALTY_S,
   vehicleToTruckCosting,
   buildValhallaRouteRequest,
+  NARRATIVE_LANGUAGES,
 };

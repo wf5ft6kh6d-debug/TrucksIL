@@ -83,6 +83,10 @@ services:
       - api
     ports:
       - "127.0.0.1:${WEB_PORT:-8081}:80"
+    volumes:
+      # Offline map (ADR-0015): israel.pmtiles + fonts/ built per docs/DEV_SETUP.md. Optional:
+      # without it the client falls back to online OSM raster tiles (dev only).
+      - ./data/tiles:/srv/tiles:ro
 
 volumes:
   db-data:

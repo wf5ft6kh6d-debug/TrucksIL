@@ -25,6 +25,7 @@
           <option value="en">English</option>
         </select>
       </div>
+      <div id="map-notice" class="msg warn" role="status" hidden></div>
 
       <section aria-labelledby="h-profile">
         <h2 id="h-profile" data-i18n="profile.heading"></h2>
@@ -59,6 +60,24 @@
           <button type="submit" data-i18n="route.submit"></button>
           <div id="route-msg" class="msg" aria-live="polite"></div>
         </form>
+      </section>
+
+      <section id="nav" aria-labelledby="h-nav">
+        <h2 id="h-nav" data-i18n="nav.heading"></h2>
+        <p class="caveat" data-i18n="nav.privacy"></p>
+        <span class="row">
+          <button type="button" id="nav-start" data-i18n="nav.start"></button>
+          <button type="button" id="nav-sim" class="secondary" data-i18n="nav.simulate"></button>
+          <button type="button" id="nav-stop" class="secondary" data-i18n="nav.stop" disabled></button>
+        </span>
+        <div class="grid">
+          <label><span data-i18n="nav.speed"></span><input id="nav-speed" type="number" min="5" max="3000" value="60" dir="ltr"></label>
+          <label><span data-i18n="nav.offset"></span><input id="nav-offset" type="number" min="0" max="2000" value="0" dir="ltr"></label>
+        </div>
+        <label class="chk"><input type="checkbox" id="nav-voice"> <span data-i18n="nav.voice"></span></label>
+        <p class="caveat" data-i18n="nav.voiceNote"></p>
+        <div id="voice-msg" class="msg" aria-live="polite"></div>
+        <div id="nav-status" class="msg" aria-live="polite"></div>
       </section>
 
       <section id="reports" aria-labelledby="h-reports">
