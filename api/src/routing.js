@@ -53,6 +53,38 @@ const NUMERIC_LIMITS = {
   max_axle_weight: 'axleLoadT',
 };
 
+// ADR tunnel categories, least to most restrictive (A = no restriction, not stored). ADR 1.9.5.2.2.
+const TUNNEL_CATEGORIES = ['B', 'C', 'D', 'E'];
+
+/**
+ * Most restrictive tunnel category the vehicle may NOT enter, as a letter B..E, or null if unrestricted.
+ * Simplification (ADR-0013): a code's first letter is the first forbidden category (B -> B..E forbidden,
+ * D -> D and E). Combination codes (B1000C, B/D, C5000D, D/E, ...) are reduced to their first letter, i.e.
+ * the strictest reading, because the exemption depends on load/tank details we do not model. A vehicle
+ * with hazmat but no code is treated as code B (conservative). No hazmat -> null. '-' -> null.
+ */
+function vehicleTunnelCode(vehicle) {
+  if (!vehicle || !vehicle.hazmat) return null;
+  const code = vehicle.hazmat.adrTunnelCode;
+  if (code === '-') return null;
+  const letter = typeof code === 'string' ? code.charAt(0) : '';
+  return TUNNEL_CATEGORIES.includes(letter) ? letter : 'B';
+}
+
+/**
+ * Reason string if a vehicle with tunnel code `vehicleCode` (B..E or null) may not pass a tunnel of
+ * `category`, else null. Forbidden when category >= code. An unknown/garbled category on a hazmat vehicle
+ * is treated as E (most restrictive) -> conflict.
+ */
+function tunnelConflict(category, vehicleCode) {
+  if (!vehicleCode) return null;
+  let cat = TUNNEL_CATEGORIES.indexOf(category);
+  if (cat < 0) cat = TUNNEL_CATEGORIES.length - 1;
+  return cat >= TUNNEL_CATEGORIES.indexOf(vehicleCode)
+    ? `ADR tunnel category ${TUNNEL_CATEGORIES[cat]} forbidden for tunnel code ${vehicleCode}`
+    : null;
+}
+
 /** Returns null if the vehicle does not violate the restriction, otherwise a short reason. */
 function violation(row, vehicle) {
   const field = NUMERIC_LIMITS[row.restriction_type];
@@ -69,6 +101,7 @@ function violation(row, vehicle) {
   if (row.restriction_type === 'hazmat_restriction') {
     return row.value_boolean === true && vehicle.hazmat ? 'hazmat prohibited and vehicle carries hazmat' : null;
   }
+  if (row.restriction_type === 'adr_tunnel') return tunnelConflict(row.value_text, vehicleTunnelCode(vehicle));
   return null;
 }
 
@@ -76,7 +109,8 @@ function toPublic(row, reason) {
   const out = {
     id: row.id,
     restrictionType: row.restriction_type,
-    value: row.unit === 'boolean' ? row.value_boolean : Number(row.value_numeric),
+    value: row.unit === 'boolean' ? row.value_boolean
+      : row.unit === 'adr_tunnel_category' ? row.value_text ?? null : Number(row.value_numeric),
     unit: row.unit,
     status: row.status,
     valueSource: row.value_source ?? null,
@@ -196,5 +230,5 @@ async function planRoute({ callValhalla, repo, baseRequest, vehicle, now = new D
 
 module.exports = {
   ROUTE_BUFFER_M, EXCLUDE_BUFFER_M, MAX_REROUTES, DISCLAIMER, COVERAGE_NOTE,
-  isActiveNow, violation, classify, planRoute, RouteError,
+  TUNNEL_CATEGORIES, vehicleTunnelCode, tunnelConflict, isActiveNow, violation, classify, planRoute, RouteError,
 };

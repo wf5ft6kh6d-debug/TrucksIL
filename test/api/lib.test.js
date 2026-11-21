@@ -32,7 +32,7 @@ test('route request validation', () => {
 });
 
 test('vehicle maps to Valhalla truck costing', () => {
-  assert.deepEqual(vehicleToTruckCosting(truck), { height: 4.0, width: 2.55, length: 16.5, weight: 40, axle_load: 11.5 });
+  assert.deepEqual(vehicleToTruckCosting(truck), { height: 4.0, width: 2.55, length: 16.5, weight: 40, axle_load: 11.5, hgv_no_access_penalty: 43200 });
   const { axleLoadT, ...noAxle } = truck;
   assert.equal('axle_load' in vehicleToTruckCosting(noAxle), false);
   assert.equal(vehicleToTruckCosting({ ...truck, hazmat: { adrClasses: ['3'] } }).hazmat, true);

@@ -8,12 +8,13 @@ const { planRoute, RouteError } = require('./routing');
 const { createRestrictionsRepo } = require('./restrictionsRepo');
 const { createReportsRepo, createReportsRoutes, reportsForRoute } = require('./reports');
 const { routeShape } = require('./polyline');
+const { computeCoverage } = require('./coverage');
 
 const MAX_BODY = 64 * 1024;
 
 const RESTRICTIONS_SQL = `
 SELECT id, road_segment_id, ST_AsGeoJSON(geometry)::json AS geometry, value_source, direction,
-       restriction_type, value_numeric, value_boolean, unit, time_windows, status, source,
+       restriction_type, value_numeric, value_boolean, value_text, unit, time_windows, status, source,
        observed_at, verified_by, verified_at, review_due_at
 FROM restrictions
 WHERE geometry IS NOT NULL
@@ -29,7 +30,7 @@ function rowToFeature(r) {
     valueSource: r.value_source,
     direction: r.direction,
     restrictionType: r.restriction_type,
-    value: r.unit === 'boolean' ? r.value_boolean : r.value_numeric,
+    value: r.unit === 'boolean' ? r.value_boolean : r.unit === 'adr_tunnel_category' ? r.value_text : r.value_numeric,
     unit: r.unit,
     timeWindows: r.time_windows,
     status: r.status,
@@ -125,10 +126,10 @@ function createHandler({
     }
     if (!repo) return send(res, 503, { error: 'database unavailable: TrucksIL restrictions cannot be checked', trucksil: TRUCKSIL_NOTICE });
 
-    async function callValhalla(reqBody) {
+    async function callValhalla(reqBody, endpoint = 'route') {
       let r;
       try {
-        r = await fetch(`${base}/route`, {
+        r = await fetch(`${base}/${endpoint}`, {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(reqBody),
@@ -156,7 +157,16 @@ function createHandler({
     let coords = [];
     try { coords = routeShape(planned.result); } catch { coords = []; }
     const nearby = await reportsForRoute(reportsRepo, coords, reportsNow());
-    send(res, 200, { ...planned.result, trucksil: { ...planned.trucksil, reports: nearby } });
+    // Structure coverage (ADR-0014): bridges/tunnels without any TrucksIL data. Informational; a
+    // failure gives coverage.status 'unknown', never a claim of full coverage.
+    const { unverifiedCoverage: _legacy, ...ts } = planned.trucksil;
+    const structural = await computeCoverage({
+      callTraceAttributes: async (b) => {
+        try { return await callValhalla(b, 'trace_attributes'); } catch (e) { return { ok: false, status: e.status || 503 }; }
+      },
+      repo, shape: coords, note: ts.coverage && ts.coverage.note,
+    });
+    send(res, 200, { ...planned.result, trucksil: { ...ts, coverage: { ...ts.coverage, ...structural }, reports: nearby } });
   }
 
   return async function handler(req, res) {

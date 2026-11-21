@@ -50,3 +50,6 @@ li.restr.avoided, li.restr.conflict { list-style-type: square; }
 li.report { margin: 4px 0; list-style-type: circle; }
 .badge.report { color: #4a148c; background: #f3e5f5; border-color: #8e24aa; border-style: dashed; }
 li.report .votes button { font-size: 12px; padding: 1px 6px; margin-inline-end: 4px; }
+.structures.unknown { color: #b26a00; font-weight: 600; }
+.legend-nodata { font-size: 13px; display: flex; align-items: center; gap: 6px; }
+.swatch-nodata { display: inline-block; width: 28px; height: 0; border-top: 4px dashed #ff8f00; }

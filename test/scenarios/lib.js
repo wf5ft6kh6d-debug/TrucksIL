@@ -114,10 +114,11 @@ function toRow(r, where) {
   const geometry = Array.isArray(where) ? { type: 'Point', coordinates: where } : where;
   const point = geometryPoint(geometry);
   const bool = r.unit === 'boolean';
+  const text = r.unit === 'adr_tunnel_category';
   return {
     geometry,
     id: r.id, road_segment_id: 'e2e-fictional', value_source: r.valueSource ?? null, direction: r.direction ?? 'both',
-    restriction_type: r.type, value_numeric: bool ? null : r.value, value_boolean: bool ? r.value : null,
+    restriction_type: r.type, value_numeric: bool || text ? null : r.value, value_boolean: bool ? r.value : null, value_text: text ? r.value : null,
     unit: r.unit, time_windows: r.timeWindows ?? null, status: r.status,
     verified_at: r.status === 'verified' ? new Date('2026-01-01T00:00:00Z') : null, review_due_at: null, point,
   };

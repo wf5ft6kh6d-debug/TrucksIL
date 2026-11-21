@@ -331,3 +331,26 @@ curl -s -X POST localhost:8080/v1/reports/<id>/moderate -H 'content-type: applic
 **Веб-клиент:** кнопка «Сообщить» → клик по карте (или долгое нажатие / правый клик) → тип и комментарий. Сообщения показываются отдельным фиолетовым слоем и списком с пометкой «сообщение водителя, не проверено», с кнопками «Всё ещё там» / «Уже нет».
 
 **Ограничения прототипа:** лимит частоты хранится в памяти процесса (сбрасывается при перезапуске, не общий для нескольких экземпляров); новые сообщения сразу видимы (без премодерации); интерфейса модератора нет — только эндпоинт.
+
+## Покрытие маршрута: мосты/тоннели без данных (ADR-0014) / Route coverage
+После построения маршрута API вызывает у Valhalla `POST /trace_attributes` (`edge_walk`) и отдаёт в `trucksil.coverage`: `status` (`computed`/`unknown`), `structuresOnRoute`, `structuresWithData`, `noDataSegments`. Сооружение «с данными», если ограничение TrucksIL лежит в пределах 30 м. Ошибка `trace_attributes` → `status: "unknown"` (маршрут всё равно возвращается). Проезды ПОД мостами не учитываются (ограничение подхода).
+
+Проверка на настоящей Valhalla (нужно владельцу):
+```sh
+curl -s localhost:8002/trace_attributes -H 'content-type: application/json' -d '{"encoded_polyline":"<shape из /route>","shape_match":"edge_walk","costing":"truck","filters":{"attributes":["edge.bridge","edge.tunnel","edge.way_id","edge.begin_shape_index","edge.end_shape_index","shape"],"action":"include"}}' | jq '.edges[] | select(.bridge or .tunnel)'
+```
+Ожидается: `edges[]` с `bridge`/`tunnel` (bool), `way_id`, индексами формы и строка `shape`. Тесты: `test/api/coverage.test.js`, `web/test/viewModel.test.js`.
+
+## Грузовой профиль и тоннели ADR (ADR-0013)
+
+- Профиль ТС (`data/vehicle-profile.schema.json`) получил необязательные `axleCount` (→ Valhalla `axle_count`) и `hazmat.adrTunnelCode` (код тоннеля из документа ADR: `B`, `B1000C`, `C/D`, `D/E`, `E`, `-` …). Старые профили остаются валидными.
+- В каждый запрос к Valhalla добавляется `hgv_no_access_penalty: 43200` — дороги без доступа грузовиков фактически запрещены.
+- Ограничение `restrictionType: "adr_tunnel"` (`unit: "adr_tunnel_category"`, `value` `B`..`E`) хранится в колонке `value_text`. Применить миграцию на существующей БД:
+
+  ```bash
+  docker compose exec -T db sh -c 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < db/migrations/003_adr_tunnels.sql
+  ```
+
+  (миграцию можно запускать повторно; на новой БД она применяется автоматически, если `db/migrations` смонтирован в `docker-entrypoint-initdb.d`.)
+- Шаблон записи тоннеля: `data/examples/tunnels/` (только вымышленные данные).
+- Эталонные сценарии S12a–S12e (`test/scenarios/routes.json`) проверяют тоннели; S12e — только с mock.

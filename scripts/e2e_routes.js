@@ -31,15 +31,16 @@ async function deleteSeeded(db, ids) {
 
 async function seed(db, r, geometry) {
   const bool = r.unit === 'boolean';
+  const text = r.unit === 'adr_tunnel_category';
   const verified = r.status === 'verified';
   await db.query("SELECT set_config('trucksil.actor', $1, false)", [ACTOR]);
   await db.query(`
     INSERT INTO restrictions (id, road_segment_id, geometry, value_source, restriction_type, value_numeric, value_boolean,
-                              unit, time_windows, status, source, observed_at, verified_by, verified_at, direction)
-    VALUES ($1, 'e2e-fictional', ST_SetSRID(ST_GeomFromGeoJSON($2), 4326), $3, $4, $5, $6, $7, $8::jsonb, $9,
+                              value_text, unit, time_windows, status, source, observed_at, verified_by, verified_at, direction)
+    VALUES ($1, 'e2e-fictional', ST_SetSRID(ST_GeomFromGeoJSON($2), 4326), $3, $4, $5, $6, $13, $7, $8::jsonb, $9,
             '{"name":"e2e-fictional","reference":"FICTIONAL test data, scripts/e2e_routes.js"}', now(), $10, $11, $12)`,
-  [r.id, JSON.stringify(geometry), r.valueSource ?? null, r.type, bool ? null : r.value, bool ? r.value : null, r.unit,
-    r.timeWindows ? JSON.stringify(r.timeWindows) : null, r.status, verified ? 'e2e-fictional' : null, verified ? new Date() : null, r.direction ?? 'both']);
+  [r.id, JSON.stringify(geometry), r.valueSource ?? null, r.type, bool || text ? null : r.value, bool ? r.value : null, r.unit,
+    r.timeWindows ? JSON.stringify(r.timeWindows) : null, r.status, verified ? 'e2e-fictional' : null, verified ? new Date() : null, r.direction ?? 'both', text ? r.value : null]);
 }
 
 async function runScenario(db, s) {

@@ -168,8 +168,10 @@ test('HTTP: avoided restriction appears in response; exclude_polygons sent', asy
     const r = await postRoute(base);
     assert.equal(r.status, 200);
     assert.deepEqual(r.body.trucksil.avoided.map((a) => a.id), ['low-bridge']);
-    assert.deepEqual(r.body.trucksil.coverage, { verifiedOnRoute: 0, unverifiedOnRoute: 0, note: COVERAGE_NOTE });
-    assert.equal(r.body.trucksil.unverifiedCoverage, 'unknown');
+    // Mock answers trace_attributes with a trip (no edges) -> structure coverage unknown (ADR-0014).
+    const { verifiedOnRoute, unverifiedOnRoute, note, status } = r.body.trucksil.coverage;
+    assert.deepEqual({ verifiedOnRoute, unverifiedOnRoute, note, status }, { verifiedOnRoute: 0, unverifiedOnRoute: 0, note: COVERAGE_NOTE, status: 'unknown' });
+    assert.equal(r.body.trucksil.unverifiedCoverage, undefined);
     assert.equal(bodies[1].costing, 'truck');
     assert.equal(bodies[1].exclude_polygons.length, 1);
   });

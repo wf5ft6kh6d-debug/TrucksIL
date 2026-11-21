@@ -12,7 +12,8 @@
     "rigid39": { "profileName": "Fictional rigid 3.9 m / 18 t", "heightM": 3.9, "widthM": 2.5, "lengthM": 10, "grossWeightT": 18, "axleLoadT": 10 },
     "semi40": { "profileName": "Fictional semi 4.0 m / 40 t", "heightM": 4.0, "widthM": 2.55, "lengthM": 16.5, "grossWeightT": 40, "axleLoadT": 11.5 },
     "tankerHazmat": { "profileName": "Fictional ADR tanker", "heightM": 3.8, "widthM": 2.55, "lengthM": 12, "grossWeightT": 26, "axleLoadT": 10, "hazmat": { "adrClasses": ["3"] } },
-    "tankerEmpty": { "profileName": "Fictional tanker, no dangerous goods", "heightM": 3.8, "widthM": 2.55, "lengthM": 12, "grossWeightT": 26, "axleLoadT": 10 }
+    "tankerEmpty": { "profileName": "Fictional tanker, no dangerous goods", "heightM": 3.8, "widthM": 2.55, "lengthM": 12, "grossWeightT": 26, "axleLoadT": 10 },
+    "tankerTunnelDE": { "profileName": "Fictional ADR tanker, tunnel code D/E", "heightM": 3.8, "widthM": 2.55, "lengthM": 12, "grossWeightT": 26, "axleLoadT": 10, "axleCount": 4, "hazmat": { "adrClasses": ["3"], "adrTunnelCode": "D/E" } }
   },
   "scenarios": [
     {
@@ -84,6 +85,37 @@
     {"id": "S11a", "description": "Directional 3.8 m limit (forward), line digitized along travel direction -> applies, avoided", "from": "telAviv", "to": "jerusalem", "vehicle": "semi45", "restrictions": [{"id": "s11a-oneway-bridge", "type": "max_height", "value": 3.8, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "direction": "forward", "where": {"onRouteFraction": 0.5, "lineM": 40, "reversed": false}}], "expected": {"status": 200, "avoidedIds": ["s11a-oneway-bridge"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3}},
     {"id": "S11b", "description": "Directional 3.8 m limit (forward), line digitized against travel direction -> other carriageway, ignored", "from": "telAviv", "to": "jerusalem", "vehicle": "semi45", "restrictions": [{"id": "s11b-oneway-bridge", "type": "max_height", "value": 3.8, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "direction": "forward", "where": {"onRouteFraction": 0.5, "lineM": 40, "reversed": true}}], "expected": {"status": 200, "avoidedIds": [], "onRouteIds": [], "absentIds": ["s11b-oneway-bridge"], "minReroutes": 0, "maxReroutes": 0}},
     {"id": "S11c", "description": "Directional 3.8 m limit (backward), line digitized against travel direction -> applies, avoided", "from": "telAviv", "to": "jerusalem", "vehicle": "semi45", "restrictions": [{"id": "s11c-oneway-bridge", "type": "max_height", "value": 3.8, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "direction": "backward", "where": {"onRouteFraction": 0.5, "lineM": 40, "reversed": true}}], "expected": {"status": 200, "avoidedIds": ["s11c-oneway-bridge"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3}},
-    {"id": "S11d", "description": "3.8 m limit on a line with direction both, digitized against travel direction -> applies, avoided", "from": "telAviv", "to": "jerusalem", "vehicle": "semi45", "restrictions": [{"id": "s11d-oneway-bridge", "type": "max_height", "value": 3.8, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "direction": "both", "where": {"onRouteFraction": 0.5, "lineM": 40, "reversed": true}}], "expected": {"status": 200, "avoidedIds": ["s11d-oneway-bridge"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3}}
+    {"id": "S11d", "description": "3.8 m limit on a line with direction both, digitized against travel direction -> applies, avoided", "from": "telAviv", "to": "jerusalem", "vehicle": "semi45", "restrictions": [{"id": "s11d-oneway-bridge", "type": "max_height", "value": 3.8, "unit": "m", "status": "unverified", "valueSource": "posted_sign", "direction": "both", "where": {"onRouteFraction": 0.5, "lineM": 40, "reversed": true}}], "expected": {"status": 200, "avoidedIds": ["s11d-oneway-bridge"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3}},
+    {
+      "id": "S12a", "description": "FICTIONAL ADR tunnel category C, tanker code D/E -> allowed, reported on route",
+      "from": "haifa", "to": "telAviv", "vehicle": "tankerTunnelDE",
+      "restrictions": [{ "id": "s12a-tunnel", "type": "adr_tunnel", "value": "C", "unit": "adr_tunnel_category", "status": "unverified", "valueSource": "regulation", "where": { "onRouteFraction": 0.5, "lineM": 200 } }],
+      "expected": { "status": 200, "avoidedIds": [], "onRouteIds": ["s12a-tunnel"], "minReroutes": 0, "maxReroutes": 0 }
+    },
+    {
+      "id": "S12b", "description": "FICTIONAL ADR tunnel category D, tanker code D/E -> forbidden, avoided",
+      "from": "haifa", "to": "telAviv", "vehicle": "tankerTunnelDE",
+      "restrictions": [{ "id": "s12b-tunnel", "type": "adr_tunnel", "value": "D", "unit": "adr_tunnel_category", "status": "unverified", "valueSource": "regulation", "where": { "onRouteFraction": 0.5, "lineM": 200 } }],
+      "expected": { "status": 200, "avoidedIds": ["s12b-tunnel"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3 }
+    },
+    {
+      "id": "S12c", "description": "FICTIONAL ADR tunnel category B, hazmat without tunnel code (treated as code B) -> avoided",
+      "from": "haifa", "to": "telAviv", "vehicle": "tankerHazmat",
+      "restrictions": [{ "id": "s12c-tunnel", "type": "adr_tunnel", "value": "B", "unit": "adr_tunnel_category", "status": "unverified", "valueSource": "regulation", "where": { "onRouteFraction": 0.5, "lineM": 200 } }],
+      "expected": { "status": 200, "avoidedIds": ["s12c-tunnel"], "onRouteIds": [], "minReroutes": 1, "maxReroutes": 3 }
+    },
+    {
+      "id": "S12d", "description": "FICTIONAL ADR tunnel category E, no dangerous goods -> irrelevant, reported on route",
+      "from": "haifa", "to": "telAviv", "vehicle": "tankerEmpty",
+      "restrictions": [{ "id": "s12d-tunnel", "type": "adr_tunnel", "value": "E", "unit": "adr_tunnel_category", "status": "unverified", "valueSource": "regulation", "where": { "onRouteFraction": 0.5, "lineM": 200 } }],
+      "expected": { "status": 200, "avoidedIds": [], "onRouteIds": ["s12d-tunnel"], "minReroutes": 0, "maxReroutes": 0 }
+    },
+    {
+      "id": "S12e", "description": "FICTIONAL ADR tunnel category E, tanker D/E, no detour (mock) -> 422 with the tunnel as conflict",
+      "mockOnly": true, "mock": { "noDetour": true },
+      "from": "haifa", "to": "telAviv", "vehicle": "tankerTunnelDE",
+      "restrictions": [{ "id": "s12e-tunnel", "type": "adr_tunnel", "value": "E", "unit": "adr_tunnel_category", "status": "unverified", "valueSource": "regulation", "where": { "onRouteFraction": 0.5, "lineM": 200 } }],
+      "expected": { "status": 422, "conflictIds": ["s12e-tunnel"] }
+    }
   ]
 }

@@ -9,7 +9,7 @@ import schema from '../../data/vehicle-profile.schema.json';
 import { LANGS, resolveLang, t, applyLang } from './i18n.js';
 import { ADR_CLASSES, createVehicleValidator, profileFromForm, parseLonLat } from './validation.js';
 import { loadProfiles, saveProfile, deleteProfile } from './storage.js';
-import { routeViewModel, markersGeoJSON } from './viewModel.js';
+import { routeViewModel, markersGeoJSON, noDataGeoJSON } from './viewModel.js';
 import { requestRoute } from './api.js';
 import { REPORT_TYPES, getClientId, reportItems, reportsGeoJSON, validateDraft, submitMessage, postReport, fetchReports, voteReport } from './reports.js';
 
@@ -109,6 +109,9 @@ const EMPTY = { type: 'FeatureCollection', features: [] };
 map.on('load', () => {
   map.addSource('route', { type: 'geojson', data: EMPTY });
   map.addLayer({ id: 'route', type: 'line', source: 'route', paint: { 'line-color': '#1565c0', 'line-width': 5 } });
+  // Bridges/tunnels without TrucksIL data (ADR-0014): dashed amber over the route.
+  map.addSource('nodata', { type: 'geojson', data: EMPTY });
+  map.addLayer({ id: 'nodata', type: 'line', source: 'nodata', paint: { 'line-color': '#ff8f00', 'line-width': 7, 'line-dasharray': [1.5, 1] } });
   map.addSource('points', { type: 'geojson', data: EMPTY });
   map.addLayer({ id: 'points', type: 'circle', source: 'points', paint: { 'circle-radius': 6, 'circle-color': '#222', 'circle-stroke-color': '#fff', 'circle-stroke-width': 2 } });
   map.addSource('restr', { type: 'geojson', data: EMPTY });
@@ -154,10 +157,12 @@ function drawPoints() {
 function drawVm(vm) {
   // Number of route vertices currently drawn (0 = no route); also read by the smoke test.
   $('#map').dataset.routePoints = String(vm.route ? vm.route.length : 0);
+  $('#map').dataset.noDataSegments = String(vm.structures ? vm.structures.noData.length : 0);
   if (!map.getSource('route')) return;
   // Only a 'route' view model carries geometry; conflicts/errors clear any previous route.
   map.getSource('route').setData(vm.route ? { type: 'Feature', geometry: { type: 'LineString', coordinates: vm.route }, properties: {} } : EMPTY);
   map.getSource('restr').setData(markersGeoJSON(vm));
+  if (map.getSource('nodata')) map.getSource('nodata').setData(vm.route ? noDataGeoJSON(vm) : EMPTY);
   const pts = vm.route || [...vm.conflicts, ...vm.avoided].map((x) => x.position).filter(Boolean);
   if (pts.length) {
     const b = pts.reduce((acc, p) => acc.extend(p), new maplibregl.LngLatBounds(pts[0], pts[0]));
@@ -250,6 +255,10 @@ function renderRestrictions(vm) {
     if (vm.summary) body.append(el('p', { class: 'summary' }, t(lang, 'route.summary', vm.summary)));
     body.append(listSection('restr.avoided', vm.avoided), listSection('restr.onRoute', vm.onRoute));
     if (vm.coverage) body.append(el('p', { class: 'coverage' }, t(lang, 'restr.coverage', vm.coverage)));
+    if (vm.structures) {
+      body.append(el('p', { class: `coverage structures ${vm.structures.status}` }, t(lang, vm.structures.key, vm.structures)));
+      if (vm.structures.noData.length) body.append(el('p', { class: 'legend-nodata' }, el('span', { class: 'swatch-nodata', 'aria-hidden': 'true' }), ' ', t(lang, 'legend.noData')));
+    }
     if (vm.reports.length) body.append(el('div', { class: 'list' }, el('h3', {}, t(lang, 'reports.nearRoute')), el('ul', {}, ...vm.reports.map(reportNode))));
   }
   // Coverage caveat is repeated with every result, whatever happened (ADR-0002).

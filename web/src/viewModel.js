@@ -51,7 +51,7 @@ const list = (a, kind) => (Array.isArray(a) ? a.map((r) => restrictionItem(r, ki
  */
 export function routeViewModel(status, body) {
   const b = body && typeof body === 'object' ? body : {};
-  const base = { route: null, summary: null, avoided: [], onRoute: [], conflicts: [], reports: [], coverage: null, error: null };
+  const base = { route: null, summary: null, avoided: [], onRoute: [], conflicts: [], reports: [], coverage: null, structures: null, error: null };
   if (status === 200) {
     const ts = b.trucksil || {};
     let coords = [];
@@ -75,6 +75,7 @@ export function routeViewModel(status, body) {
         unverified: ts.coverage.unverifiedOnRoute ?? 0,
         note: ts.coverage.note || null,
       } : null,
+      structures: structureCoverage(ts.coverage),
     };
   }
   const message = typeof b.error === 'string' ? b.error : null;
@@ -95,6 +96,29 @@ export function routeViewModel(status, body) {
     kind: 'error',
     error: { key, status: status ?? null, message, details: Array.isArray(b.details) ? b.details.map(String) : [] },
   };
+}
+
+/**
+ * Bridge/tunnel coverage (ADR-0014). Anything but a well-formed 'computed' block is 'unknown':
+ * we never infer that structures are absent or covered.
+ */
+export function structureCoverage(c) {
+  const unknown = { status: 'unknown', key: 'restr.structuresUnknown', n: null, m: null, k: null, noData: [] };
+  if (!c || c.status !== 'computed') return unknown;
+  const n = c.structuresOnRoute;
+  const m = c.structuresWithData;
+  if (!Number.isInteger(n) || !Number.isInteger(m) || m < 0 || m > n || !Array.isArray(c.noDataSegments)) return unknown;
+  const pt = (p) => Array.isArray(p) && p.length >= 2 && Number.isFinite(p[0]) && Number.isFinite(p[1]);
+  const noData = c.noDataSegments
+    .map((s) => ({ type: s.type === 'tunnel' ? 'tunnel' : 'bridge', wayId: s.wayId ?? null, coordinates: Array.isArray(s.coordinates) && s.coordinates.length >= 2 && s.coordinates.every(pt) ? s.coordinates : [s.from, s.to] }))
+    .filter((s) => s.coordinates.every(pt));
+  return { status: 'computed', key: 'restr.structures', n, m, k: n - m, noData };
+}
+
+/** GeoJSON lines for bridge/tunnel segments without TrucksIL data. */
+export function noDataGeoJSON(vm) {
+  const segs = vm.structures ? vm.structures.noData : [];
+  return { type: 'FeatureCollection', features: segs.map((s) => ({ type: 'Feature', geometry: { type: 'LineString', coordinates: s.coordinates }, properties: { type: s.type, wayId: s.wayId } })) };
 }
 
 /** GeoJSON FeatureCollection of marker points for a view model. */

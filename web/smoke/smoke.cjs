@@ -20,7 +20,7 @@ async function fixtures() {
   const ok = { id: 'test-tall-bridge', restrictionType: 'max_height', value: 4.5, unit: 'm', status: 'verified', valueSource: 'posted_sign', geometry: { type: 'Point', coordinates: [34.81, 32.11] } };
   return {
     200: { trip: { legs: [{ shape: encodePolyline([[34.78, 32.08], [34.795, 32.095], [34.80, 32.10], [34.82, 32.12]]) }], summary: { length: 5.1, time: 540 } },
-      trucksil: { disclaimer: 'prototype, not for navigation', avoided: [low], onRoute: [ok], coverage: { verifiedOnRoute: 1, unverifiedOnRoute: 0, note: 'Absence of restrictions in TrucksIL data does not mean the route is safe' }, unverifiedCoverage: 'unknown', reroutes: 1 } },
+      trucksil: { disclaimer: 'prototype, not for navigation', avoided: [low], onRoute: [ok], coverage: { verifiedOnRoute: 1, unverifiedOnRoute: 0, note: 'Absence of restrictions in TrucksIL data does not mean the route is safe', status: 'computed', structuresOnRoute: 2, structuresWithData: 1, noDataSegments: [{ type: 'bridge', from: [34.80, 32.10], to: [34.82, 32.12], wayId: 123, coordinates: [[34.80, 32.10], [34.82, 32.12]] }] }, reroutes: 1 } },
     422: { error: 'no route found that avoids the known TrucksIL restrictions for this vehicle', conflicts: [low], trucksil: { disclaimer: 'prototype, not for navigation' } },
   };
 }
@@ -106,6 +106,10 @@ async function main() {
     assert.match(txt, /4\.5 m/);
     assert.match(txt, /проверено/);
     assert.equal(await routeFeatureCount(page), 4);
+    // Bridge/tunnel coverage (ADR-0014): count line + dashed no-data layer with legend.
+    assert.match(txt, /Мостов\/тоннелей на маршруте: 2, с данными TrucksIL: 1 — 1 без данных \(проверьте знаки\)/);
+    assert.match(txt, /мост\/тоннель без данных TrucksIL/);
+    assert.equal(await page.getAttribute('#map', 'data-no-data-segments'), '1');
     const routeReqs = requests.filter((r) => r.path === '/api/v1/route');
     assert.deepEqual(routeReqs.at(-1).body.from, [34.78, 32.08]);
     assert.equal(routeReqs.at(-1).body.vehicle.heightM, 4);
