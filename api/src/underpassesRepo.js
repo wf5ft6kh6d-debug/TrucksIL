@@ -23,7 +23,7 @@ SELECT u.id, u.osm_road_way_id, u.osm_bridge_way_id, u.bridge_kind, u.road_ref, 
        ) AS has_data,
        EXISTS (
          SELECT 1 FROM restrictions r
-         WHERE r.restriction_type = 'max_height' AND r.status = 'verified' AND r.geometry IS NOT NULL
+         WHERE r.restriction_type = 'max_height' AND r.status = 'verified' AND (r.review_due_at IS NULL OR r.review_due_at >= now()) AND r.geometry IS NOT NULL
            AND r.geometry && ST_Expand(u.geom, $4::float8 / 50000.0)
            AND ST_DWithin(r.geometry::geography, u.geom::geography, $4::float8)
        ) AS has_verified_data
