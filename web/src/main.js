@@ -281,6 +281,8 @@ function renderRestrictions(vm) {
     if (vm.stale) body.append(el('p', { class: 'offline-route', role: 'alert' }, t(lang, 'offline.route', { time: formatSavedAt(vm.stale.savedAt, lang) })));
     if (vm.summary) body.append(el('p', { class: 'summary' }, t(lang, 'route.summary', vm.summary)));
     body.append(listSection('restr.avoided', vm.avoided), listSection('restr.onRoute', vm.onRoute));
+    if (vm.expiredWarnings.length) body.append(el('div', { class: 'list expired-warning', role: 'alert' }, el('h3', {}, t(lang, 'restr.expired')), el('ul', {}, ...vm.expiredWarnings.map(itemNode))));
+    if (vm.expiredCheck === 'unavailable') body.append(el('p', { class: 'coverage' }, t(lang, 'restr.expiredUnavailable')));
     if (vm.coverage) body.append(el('p', { class: 'coverage' }, t(lang, 'restr.coverage', vm.coverage)));
     if (vm.structures) {
       body.append(el('p', { class: `coverage structures ${vm.structures.status}` }, t(lang, vm.structures.key, vm.structures)));

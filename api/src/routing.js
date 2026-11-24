@@ -150,6 +150,23 @@ const DEFAULT_MAX_REROUTES = 8;
 // "Exceeded maximum circumference for exclude_polygons"). We stay under it with a 5 % margin.
 const DEFAULT_PERIMETER_BUDGET_M = 10000;
 const PERIMETER_MARGIN = 0.95;
+/**
+ * Expired restrictions (ADR-0002, ADR-0020): never avoided or rerouted, but when the vehicle would
+ * violate one that applies now, the route response carries a warning so an out-of-date limit is not
+ * silently dropped. Same direction rules as classify (ADR-0011).
+ */
+function staleWarnings(rows, vehicle, now = new Date(), shape = null) {
+  const out = [];
+  for (const row of rows) {
+    if (row.status !== 'expired') continue;
+    if (shape && !directionApplies(row, shape)) continue;
+    if (!isActiveNow(row.time_windows, now)) continue;
+    const reason = violation(row, vehicle);
+    if (reason) out.push(toPublic(row, reason));
+  }
+  return out;
+}
+
 const PRE_CORRIDOR_M = 3000; // pre-exclusion: conflicts within this distance of the first route
 const DEFAULT_MAX_PRE_EXCLUSIONS = 200;
 const PRE_HALF_M = 6; // half-size of a pre-exclusion square
@@ -355,6 +372,15 @@ async function planRoute({
       it.wayMatch = routeWays ? 'on' : 'off';
     }
     if (conflicts.length === 0) {
+      // Expired rows: warn only. A failed lookup is reported as 'unavailable', never as 'none'.
+      let expiredWarnings = [];
+      let expiredCheck = 'ok';
+      if (typeof repo.findExpiredAlongRoute === 'function') {
+        try {
+          const expRows = await repo.findExpiredAlongRoute(shape, ROUTE_BUFFER_M);
+          expiredWarnings = staleWarnings(splitByWay(expRows, routeWays).rows, vehicle, now, shape);
+        } catch { expiredCheck = 'unavailable'; }
+      } else expiredCheck = 'unavailable';
       const verifiedOnRoute = onRoute.filter((x) => x.status === 'verified').length;
       return {
         result: r.json,
@@ -362,6 +388,8 @@ async function planRoute({
           disclaimer: DISCLAIMER,
           avoided: [...avoided.values()],
           onRoute,
+          expiredWarnings,
+          expiredCheck,
           coverage: { verifiedOnRoute, unverifiedOnRoute: onRoute.length - verifiedOnRoute, note: COVERAGE_NOTE },
           unverifiedCoverage: 'unknown',
           reroutes: attempt,
@@ -480,5 +508,5 @@ async function buildPreExclusions({ repo, shape, vehicle, now, skip, budgetM, ma
 module.exports = {
   ROUTE_BUFFER_M, EXCLUDE_BUFFER_M, MAX_REROUTES, DEFAULT_PERIMETER_BUDGET_M, PRE_CORRIDOR_M, routingConfig,
   ringPerimeterM, gateWayId, splitByWay, preExclusionRings, DISCLAIMER, COVERAGE_NOTE,
-  TUNNEL_CATEGORIES, vehicleTunnelCode, tunnelConflict, isActiveNow, violation, classify, planRoute, RouteError,
+  TUNNEL_CATEGORIES, vehicleTunnelCode, tunnelConflict, isActiveNow, violation, classify, staleWarnings, planRoute, RouteError,
 };
