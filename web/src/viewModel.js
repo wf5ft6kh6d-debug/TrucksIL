@@ -51,7 +51,7 @@ const list = (a, kind) => (Array.isArray(a) ? a.map((r) => restrictionItem(r, ki
  */
 export function routeViewModel(status, body) {
   const b = body && typeof body === 'object' ? body : {};
-  const base = { route: null, summary: null, avoided: [], onRoute: [], expiredWarnings: [], expiredCheck: null, conflicts: [], reports: [], coverage: null, structures: null, error: null };
+  const base = { route: null, summary: null, avoided: [], onRoute: [], expiredWarnings: [], expiredCheck: null, alternativeStatus: null, conflicts: [], reports: [], coverage: null, structures: null, error: null };
   if (status === 200) {
     const ts = b.trucksil || {};
     let coords = [];
@@ -71,6 +71,7 @@ export function routeViewModel(status, body) {
       // Out-of-date restrictions the vehicle would violate: warning only, never routed around (ADR-0020).
       expiredWarnings: list(ts.expiredWarnings, 'expired'),
       expiredCheck: ts.expiredCheck ?? null,
+      alternativeStatus: ts.alternativeStatus ?? null,
       // Unverified driver reports near the route (informational only, ADR-0012).
       reports: reportItems(ts.reports),
       coverage: ts.coverage ? {

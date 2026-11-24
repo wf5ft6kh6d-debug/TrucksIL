@@ -126,11 +126,11 @@ function toPublic(row, reason) {
  * With `shape`, LineString restrictions with direction forward/backward that the route traverses the
  * other way are dropped (ADR-0011); anything undeterminable still applies.
  */
-function classify(rows, vehicle, now = new Date(), shape = null) {
+function classify(rows, vehicle, now = new Date(), shape = null, { includeExpired = false } = {}) {
   const conflicts = [];
   const onRoute = [];
   for (const row of rows) {
-    if (row.status === 'expired') continue;
+    if (row.status === 'expired' && !includeExpired) continue;
     if (shape && !directionApplies(row, shape)) continue;
     const reason = isActiveNow(row.time_windows, now) ? violation(row, vehicle) : null;
     if (reason) conflicts.push(toPublic(row, reason));
@@ -354,7 +354,10 @@ async function planRoute({
     const shape = routeShape(r.json);
     if (shape.length === 0) throw new RouteError(502, { error: 'Valhalla response has no route shape; restrictions cannot be checked' });
 
-    const nearRows = await repo.findAlongRoute(shape, ROUTE_BUFFER_M);
+    let nearRows = await repo.findAlongRoute(shape, ROUTE_BUFFER_M);
+    // Alternative-route mode (ADR-0020): out-of-date restrictions are treated like any other for
+    // THIS search only, so the alternative avoids them. The default route never does this.
+    if (cfg.includeExpired) nearRows = nearRows.concat(await repo.findExpiredAlongRoute(shape, ROUTE_BUFFER_M));
     let routeWays = null;
     // Trace only when some nearby row can be matched by way (saves a Valhalla call otherwise).
     if (cfg.wayMatch && callTraceAttributes && nearRows.some((x) => gateWayId(x) !== null)) {
@@ -364,7 +367,7 @@ async function planRoute({
       } catch { routeWays = null; }
     }
     const { rows: gated, otherRoad } = splitByWay(nearRows, routeWays);
-    const { conflicts, onRoute } = classify(gated, vehicle, now, shape);
+    const { conflicts, onRoute } = classify(gated, vehicle, now, shape, { includeExpired: cfg.includeExpired === true });
     const rowById = new Map(nearRows.map((x) => [x.id, x]));
     if (it) {
       it.conflicts = conflicts.map((c) => debugConflict(c, rowById.get(c.id)));
@@ -381,6 +384,18 @@ async function planRoute({
           expiredWarnings = staleWarnings(splitByWay(expRows, routeWays).rows, vehicle, now, shape);
         } catch { expiredCheck = 'unavailable'; }
       } else expiredCheck = 'unavailable';
+      // Offer (never impose) a route that also avoids the out-of-date restrictions; the driver chooses.
+      let alternative = null;
+      let alternativeStatus = 'not_needed';
+      if (expiredWarnings.length && !cfg.includeExpired) {
+        try {
+          const alt = await planRoute({ callValhalla, callTraceAttributes, repo, baseRequest, vehicle, now, debug: false, ...opts, includeExpired: true });
+          alternative = { result: alt.result, trucksil: alt.trucksil };
+          alternativeStatus = 'found';
+        } catch (e) {
+          alternativeStatus = e instanceof RouteError && e.status < 500 ? 'none' : 'unavailable';
+        }
+      }
       const verifiedOnRoute = onRoute.filter((x) => x.status === 'verified').length;
       return {
         result: r.json,
@@ -390,6 +405,8 @@ async function planRoute({
           onRoute,
           expiredWarnings,
           expiredCheck,
+          alternativeStatus,
+          alternative,
           coverage: { verifiedOnRoute, unverifiedOnRoute: onRoute.length - verifiedOnRoute, note: COVERAGE_NOTE },
           unverifiedCoverage: 'unknown',
           reroutes: attempt,

@@ -264,6 +264,28 @@ function listSection(titleKey, items) {
     items.length ? el('ul', {}, ...items.map(itemNode)) : el('p', { class: 'none' }, t(lang, 'restr.none')));
 }
 
+// Out-of-date restrictions (ADR-0020): the driver, not the app, chooses between the default route and
+// the alternative that avoids them. Switching never happens automatically.
+let originalBody = null; // body of the default route while the alternative is shown
+let switchingRoute = false; // true only while the driver's own switch is being drawn
+function alternativeControl(vm) {
+  const alt = lastBody && lastBody.trucksil && lastBody.trucksil.alternative;
+  if (originalBody) {
+    return el('button', { type: 'button', class: 'alt-route', onclick: () => { const b = originalBody; originalBody = null; switchingRoute = true; showRoute(lastRequest, 200, b); switchingRoute = false; } }, t(lang, 'restr.backToOriginal'));
+  }
+  if (vm.alternativeStatus === 'found' && alt) {
+    return el('button', { type: 'button', class: 'alt-route', onclick: () => {
+      const orig = lastBody;
+      switchingRoute = true;
+      showRoute(lastRequest, 200, { ...alt.result, trucksil: { ...alt.trucksil, expiredWarnings: vm.expiredWarnings.map((w) => ({ ...w })) } });
+      switchingRoute = false;
+      originalBody = orig;
+      renderRestrictions(lastVm);
+    } }, t(lang, 'restr.useAlternative'));
+  }
+  return el('p', { class: 'coverage' }, t(lang, vm.alternativeStatus === 'none' ? 'restr.noAlternative' : 'restr.alternativeUnavailable'));
+}
+
 function renderRestrictions(vm) {
   const body = $('#restr-body');
   body.replaceChildren();
@@ -282,6 +304,7 @@ function renderRestrictions(vm) {
     if (vm.summary) body.append(el('p', { class: 'summary' }, t(lang, 'route.summary', vm.summary)));
     body.append(listSection('restr.avoided', vm.avoided), listSection('restr.onRoute', vm.onRoute));
     if (vm.expiredWarnings.length) body.append(el('div', { class: 'list expired-warning', role: 'alert' }, el('h3', {}, t(lang, 'restr.expired')), el('ul', {}, ...vm.expiredWarnings.map(itemNode))));
+    if (vm.expiredWarnings.length) body.append(alternativeControl(vm));
     if (vm.expiredCheck === 'unavailable') body.append(el('p', { class: 'coverage' }, t(lang, 'restr.expiredUnavailable')));
     if (vm.coverage) body.append(el('p', { class: 'coverage' }, t(lang, 'restr.coverage', vm.coverage)));
     if (vm.structures) {
@@ -376,6 +399,7 @@ let lastBody = null;
 let prefetchToken = 0;
 
 function showRoute(request, status, body, { fit = true } = {}) {
+  if (!switchingRoute) originalBody = null; // any new route request forgets the stored default
   if (status === null) {
     // Network failure: show the last stored route, explicitly flagged as outdated. Never a "valid" route.
     const saved = loadLastRoute(storage);

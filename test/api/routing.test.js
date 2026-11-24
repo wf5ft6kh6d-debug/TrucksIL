@@ -120,6 +120,8 @@ test('re-route: conflict on first route, clean second route', async () => {
     avoided: [{ id: 'low-bridge', restrictionType: 'max_height', value: 3.5, unit: 'm', status: 'verified', valueSource: 'posted_sign', reason: 'heightM 4 > limit 3.5 m' }],
     onRoute: [{ id: 'tall-bridge', restrictionType: 'max_height', value: 4.5, unit: 'm', status: 'unverified', valueSource: 'posted_sign' }],
     expiredWarnings: [],
+    alternativeStatus: 'not_needed',
+    alternative: null,
     expiredCheck: 'unavailable', // fake repo has no expired lookup: reported as unavailable, never as 'none'
     coverage: { verifiedOnRoute: 0, unverifiedOnRoute: 1, note: COVERAGE_NOTE },
     unverifiedCoverage: 'unknown',
@@ -139,10 +141,37 @@ test('expired restriction on the final route: warning, no reroute; lookup failur
   assert.equal(ok.trucksil.reroutes, 0);
   assert.deepEqual(ok.trucksil.avoided, []);
   assert.equal(ok.trucksil.expiredCheck, 'ok');
+  assert.equal(ok.trucksil.alternativeStatus, 'none'); // this fake always reports the same expired row, so no alternative exists
   assert.deepEqual(ok.trucksil.expiredWarnings.map((w) => w.id), ['old-bridge']);
   const bad = await planRoute({ callValhalla, repo: mk(() => { throw new Error('db'); }), baseRequest: {}, vehicle: truck, now });
   assert.equal(bad.trucksil.expiredCheck, 'unavailable');
   assert.deepEqual(bad.trucksil.expiredWarnings, []);
+});
+
+test('expired on the default route: warn, and offer (not impose) an alternative that avoids it', async () => {
+  const exp = row('max_height', 3.5, { id: 'old-bridge', status: 'expired' });
+  const repo = {
+    async findAlongRoute() { return []; },
+    async findExpiredAlongRoute(coords) { return encodePolyline(coords) === shapeA ? [exp] : []; },
+    async exclusionPolygons(ids) { return ids.map((id) => ({ id, ring })); },
+  };
+  const sent = [];
+  const callValhalla = async (b) => { sent.push(b); return okTrip(b.exclude_polygons ? shapeB : shapeA); };
+  const r = await planRoute({ callValhalla, repo, baseRequest: {}, vehicle: truck, now });
+  assert.equal(r.result.trip.legs[0].shape, shapeA, 'default route is unchanged');
+  assert.equal(r.trucksil.reroutes, 0);
+  assert.deepEqual(r.trucksil.expiredWarnings.map((w) => w.id), ['old-bridge']);
+  assert.equal(r.trucksil.alternativeStatus, 'found');
+  assert.equal(r.trucksil.alternative.result.trip.legs[0].shape, shapeB);
+  assert.deepEqual(r.trucksil.alternative.trucksil.avoided.map((a) => a.id), ['old-bridge']);
+  assert.deepEqual(r.trucksil.alternative.trucksil.expiredWarnings, []);
+  assert.equal(r.trucksil.alternative.trucksil.alternative, null);
+  // No alternative possible: the warning stays, the status says so, nothing is invented.
+  const callNoAlt = async (b) => (b.exclude_polygons ? { ok: false, status: 400, json: { error: 'no path' } } : okTrip(shapeA));
+  const n = await planRoute({ callValhalla: callNoAlt, repo, baseRequest: {}, vehicle: truck, now });
+  assert.equal(n.trucksil.alternativeStatus, 'none');
+  assert.equal(n.trucksil.alternative, null);
+  assert.equal(n.trucksil.expiredWarnings.length, 1);
 });
 
 test('re-route: conflict persists -> 409 with conflicts', async () => {
