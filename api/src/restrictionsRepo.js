@@ -3,13 +3,16 @@
 //   findAlongRoute(coords [[lon,lat],...], bufferM) -> Promise<row[]>
 //   exclusionPolygons(ids string[], bufferM)       -> Promise<[{id, ring:[[lon,lat],...]}]>
 
-// Rows within bufferM metres of the route line. 'expired' is never applied. The bbox prefilter
+// Rows within bufferM metres of the route line. 'expired' is never applied. A 'verified' row whose review is
+// overdue (review_due_at in the past) is returned as 'unverified' (ADR-0021): still avoided, never counted as verified. The bbox prefilter
 // (geometry && expanded envelope, in degrees, generous for Israel's latitudes) lets the GiST index
 // work; ST_DWithin on geography then does the exact metre-based test.
 const ALONG_ROUTE_SQL = `
 WITH route AS (SELECT ST_SetSRID(ST_GeomFromGeoJSON($1), 4326) AS g)
 SELECT r.id, r.road_segment_id, r.value_source, r.direction, r.restriction_type, r.value_numeric,
-       r.value_boolean, r.value_text, r.unit, r.time_windows, r.status, r.verified_at, r.review_due_at, r.source,
+       r.value_boolean, r.value_text, r.unit, r.time_windows,
+       CASE WHEN r.status = 'verified' AND r.review_due_at IS NOT NULL AND r.review_due_at < now() THEN 'unverified' ELSE r.status END AS status,
+       r.verified_at, r.review_due_at, r.source,
        ST_AsGeoJSON(r.geometry, 7)::json AS geometry
 FROM restrictions r, route
 WHERE r.geometry IS NOT NULL
