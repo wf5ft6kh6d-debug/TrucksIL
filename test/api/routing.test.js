@@ -2,7 +2,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { decodePolyline, encodePolyline, routeShape } = require('../../api/src/polyline');
-const { violation, classify, isActiveNow, planRoute, RouteError, COVERAGE_NOTE } = require('../../api/src/routing');
+const { violation, classify, staleWarnings, isActiveNow, planRoute, RouteError, COVERAGE_NOTE } = require('../../api/src/routing');
 const { createServer } = require('../../api/src/app');
 const { createRestrictionsRepo, ALONG_ROUTE_SQL, EXCLUSION_SQL } = require('../../api/src/restrictionsRepo');
 
@@ -52,11 +52,26 @@ test('conflict detection: each restriction type', () => {
   assert.ok(violation(row('hazmat_restriction', true), { ...truck, hazmat: { adrClasses: ['3'] } }));
 });
 
-test('conflicts are avoided regardless of status; expired is ignored', () => {
+test('conflicts are avoided regardless of status; expired is not a conflict', () => {
   const rows = ['verified', 'unverified', 'disputed', 'expired'].map((status) => row('max_height', 3.5, { id: status, status }));
   const { conflicts, onRoute } = classify(rows, truck, now);
   assert.deepEqual(conflicts.map((c) => c.id), ['verified', 'unverified', 'disputed']);
   assert.deepEqual(onRoute, []);
+});
+
+test('expired: never a conflict, but warns when the vehicle would violate it (ADR-0020)', () => {
+  const rows = [
+    row('max_height', 3.5, { id: 'exp-low', status: 'expired' }),
+    row('max_height', 4.5, { id: 'exp-ok', status: 'expired' }),
+    row('max_height', 3.5, { id: 'live', status: 'verified' }),
+  ];
+  assert.deepEqual(classify(rows, truck, now).conflicts.map((c) => c.id), ['live']);
+  const w = staleWarnings(rows, truck, now);
+  assert.deepEqual(w.map((x) => x.id), ['exp-low']);
+  assert.equal(w[0].status, 'expired');
+  assert.ok(w[0].reason);
+  const night = row('max_height', 3.5, { id: 'exp-win', status: 'expired', time_windows: [{ days: ['sat'] }] });
+  assert.deepEqual(staleWarnings([night], truck, now), []);
 });
 
 test('time windows', () => {
@@ -104,10 +119,59 @@ test('re-route: conflict on first route, clean second route', async () => {
     disclaimer: 'prototype, not for navigation',
     avoided: [{ id: 'low-bridge', restrictionType: 'max_height', value: 3.5, unit: 'm', status: 'verified', valueSource: 'posted_sign', reason: 'heightM 4 > limit 3.5 m' }],
     onRoute: [{ id: 'tall-bridge', restrictionType: 'max_height', value: 4.5, unit: 'm', status: 'unverified', valueSource: 'posted_sign' }],
+    expiredWarnings: [],
+    alternativeStatus: 'not_needed',
+    alternative: null,
+    expiredCheck: 'unavailable', // fake repo has no expired lookup: reported as unavailable, never as 'none'
     coverage: { verifiedOnRoute: 0, unverifiedOnRoute: 1, note: COVERAGE_NOTE },
     unverifiedCoverage: 'unknown',
     reroutes: 1,
   });
+});
+
+test('expired restriction on the final route: warning, no reroute; lookup failure is reported', async () => {
+  const exp = row('max_height', 3.5, { id: 'old-bridge', status: 'expired' });
+  const mk = (expired) => ({
+    async findAlongRoute() { return []; },
+    async findExpiredAlongRoute() { return expired(); },
+    async exclusionPolygons() { return []; },
+  });
+  const callValhalla = async () => okTrip(shapeA);
+  const ok = await planRoute({ callValhalla, repo: mk(() => [exp]), baseRequest: {}, vehicle: truck, now });
+  assert.equal(ok.trucksil.reroutes, 0);
+  assert.deepEqual(ok.trucksil.avoided, []);
+  assert.equal(ok.trucksil.expiredCheck, 'ok');
+  assert.equal(ok.trucksil.alternativeStatus, 'none'); // this fake always reports the same expired row, so no alternative exists
+  assert.deepEqual(ok.trucksil.expiredWarnings.map((w) => w.id), ['old-bridge']);
+  const bad = await planRoute({ callValhalla, repo: mk(() => { throw new Error('db'); }), baseRequest: {}, vehicle: truck, now });
+  assert.equal(bad.trucksil.expiredCheck, 'unavailable');
+  assert.deepEqual(bad.trucksil.expiredWarnings, []);
+});
+
+test('expired on the default route: warn, and offer (not impose) an alternative that avoids it', async () => {
+  const exp = row('max_height', 3.5, { id: 'old-bridge', status: 'expired' });
+  const repo = {
+    async findAlongRoute() { return []; },
+    async findExpiredAlongRoute(coords) { return encodePolyline(coords) === shapeA ? [exp] : []; },
+    async exclusionPolygons(ids) { return ids.map((id) => ({ id, ring })); },
+  };
+  const sent = [];
+  const callValhalla = async (b) => { sent.push(b); return okTrip(b.exclude_polygons ? shapeB : shapeA); };
+  const r = await planRoute({ callValhalla, repo, baseRequest: {}, vehicle: truck, now });
+  assert.equal(r.result.trip.legs[0].shape, shapeA, 'default route is unchanged');
+  assert.equal(r.trucksil.reroutes, 0);
+  assert.deepEqual(r.trucksil.expiredWarnings.map((w) => w.id), ['old-bridge']);
+  assert.equal(r.trucksil.alternativeStatus, 'found');
+  assert.equal(r.trucksil.alternative.result.trip.legs[0].shape, shapeB);
+  assert.deepEqual(r.trucksil.alternative.trucksil.avoided.map((a) => a.id), ['old-bridge']);
+  assert.deepEqual(r.trucksil.alternative.trucksil.expiredWarnings, []);
+  assert.equal(r.trucksil.alternative.trucksil.alternative, null);
+  // No alternative possible: the warning stays, the status says so, nothing is invented.
+  const callNoAlt = async (b) => (b.exclude_polygons ? { ok: false, status: 400, json: { error: 'no path' } } : okTrip(shapeA));
+  const n = await planRoute({ callValhalla: callNoAlt, repo, baseRequest: {}, vehicle: truck, now });
+  assert.equal(n.trucksil.alternativeStatus, 'none');
+  assert.equal(n.trucksil.alternative, null);
+  assert.equal(n.trucksil.expiredWarnings.length, 1);
 });
 
 test('re-route: conflict persists -> 409 with conflicts', async () => {

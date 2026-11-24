@@ -18,6 +18,10 @@ WHERE r.geometry IS NOT NULL
   AND ST_DWithin(r.geometry::geography, route.g::geography, $2::float8)
 ORDER BY r.id`;
 
+// Same query for status 'expired' only. Expired rows never exclude or reroute (ADR-0002): they are
+// fetched only to produce warnings when the vehicle would violate them (ADR-0020).
+const EXPIRED_ALONG_ROUTE_SQL = ALONG_ROUTE_SQL.replace("r.status <> 'expired'", "r.status = 'expired'");
+
 // Polygon (metre buffer on geography) around each restriction geometry, for Valhalla exclude_polygons.
 const EXCLUSION_SQL = `
 SELECT id, ST_AsGeoJSON(ST_Buffer(geometry::geography, $2::float8, 'quad_segs=4')::geometry, 7)::json AS polygon
@@ -35,6 +39,14 @@ function createRestrictionsRepo(db) {
       const { rows } = await db.query(ALONG_ROUTE_SQL, [JSON.stringify(line), bufferM]);
       return rows;
     },
+    async findExpiredAlongRoute(coords, bufferM) {
+      if (!Array.isArray(coords) || coords.length === 0) return [];
+      const line = coords.length === 1
+        ? { type: 'Point', coordinates: coords[0] }
+        : { type: 'LineString', coordinates: coords };
+      const { rows } = await db.query(EXPIRED_ALONG_ROUTE_SQL, [JSON.stringify(line), bufferM]);
+      return rows;
+    },
     async exclusionPolygons(ids, bufferM) {
       if (!ids.length) return [];
       const { rows } = await db.query(EXCLUSION_SQL, [ids, bufferM]);
@@ -43,4 +55,4 @@ function createRestrictionsRepo(db) {
   };
 }
 
-module.exports = { createRestrictionsRepo, ALONG_ROUTE_SQL, EXCLUSION_SQL };
+module.exports = { createRestrictionsRepo, ALONG_ROUTE_SQL, EXPIRED_ALONG_ROUTE_SQL, EXCLUSION_SQL };

@@ -30,7 +30,7 @@ export function restrictionItem(r, kind) {
   const isBool = typeof r.value === 'boolean';
   return {
     id: String(r.id),
-    kind, // 'avoided' | 'onRoute' | 'conflict'
+    kind, // 'avoided' | 'onRoute' | 'conflict' | 'expired'
     restrictionType: r.restrictionType,
     typeKey: `type.${r.restrictionType}`,
     valueText: isBool ? null : `${String(r.value)} ${r.unit}`,
@@ -51,7 +51,7 @@ const list = (a, kind) => (Array.isArray(a) ? a.map((r) => restrictionItem(r, ki
  */
 export function routeViewModel(status, body) {
   const b = body && typeof body === 'object' ? body : {};
-  const base = { route: null, summary: null, avoided: [], onRoute: [], conflicts: [], reports: [], coverage: null, structures: null, error: null };
+  const base = { route: null, summary: null, avoided: [], onRoute: [], expiredWarnings: [], expiredCheck: null, alternativeStatus: null, conflicts: [], reports: [], coverage: null, structures: null, error: null };
   if (status === 200) {
     const ts = b.trucksil || {};
     let coords = [];
@@ -68,6 +68,10 @@ export function routeViewModel(status, body) {
       summary: s ? { km: Number(s.length).toFixed(1), min: Math.round(Number(s.time) / 60), reroutes: ts.reroutes ?? 0 } : null,
       avoided: list(ts.avoided, 'avoided'),
       onRoute: list(ts.onRoute, 'onRoute'),
+      // Out-of-date restrictions the vehicle would violate: warning only, never routed around (ADR-0020).
+      expiredWarnings: list(ts.expiredWarnings, 'expired'),
+      expiredCheck: ts.expiredCheck ?? null,
+      alternativeStatus: ts.alternativeStatus ?? null,
       // Unverified driver reports near the route (informational only, ADR-0012).
       reports: reportItems(ts.reports),
       coverage: ts.coverage ? {
